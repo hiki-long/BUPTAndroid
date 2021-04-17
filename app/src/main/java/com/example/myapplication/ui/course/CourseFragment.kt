@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.dashboard
+package com.example.myapplication.ui.course
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,20 +12,20 @@ import com.example.myapplication.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DashboardFragment : Fragment() {
+class CourseFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var courseViewModel: CourseViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        courseViewModel =
+                ViewModelProvider(this).get(CourseViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_course, container, false)
+        val textView: TextView = root.findViewById(R.id.text_course)
+        courseViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

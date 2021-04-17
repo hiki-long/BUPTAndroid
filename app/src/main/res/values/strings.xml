@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">寸光阴</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_todo">待办</string>
+    <string name="title_view">视图</string>
+    <string name="title_course">课程</string>
+    <string name="title_more">更多</string>
 </resources>

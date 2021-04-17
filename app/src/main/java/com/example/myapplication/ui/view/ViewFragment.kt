@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.home
+package com.example.myapplication.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,20 +12,20 @@ import com.example.myapplication.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class ViewFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var viewViewModel: ViewViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        viewViewModel =
+                ViewModelProvider(this).get(ViewViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_view, container, false)
+        val textView: TextView = root.findViewById(R.id.text_view)
+        viewViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
