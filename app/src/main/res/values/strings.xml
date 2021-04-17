@@ -4,7 +4,6 @@
     <string name="title_view">视图</string>
     <string name="title_course">课程</string>
     <string name="title_more">更多</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="color_select_title">清单颜色选择</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
