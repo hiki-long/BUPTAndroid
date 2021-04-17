@@ -8,7 +8,7 @@ import java.time.OffsetDateTime
 
 @Entity(tableName = "Task")
 data class TaskEntity (
-    @PrimaryKey(autoGenerate = true) var task_id: Int = 0,
+    @PrimaryKey(autoGenerate = true) var todo_id: Int = 0,
     var todo_create_time: OffsetDateTime,
     var todo_state: TaskState,
     var todo_name: String,

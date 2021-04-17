@@ -6,7 +6,7 @@ import com.example.myapplication.model.Task
 object TaskMapper {
     fun TaskEntity?.toDomain(): Task? = this?.let {
         Task(
-            task_id = it.task_id,
+            todo_id = it.todo_id,
             todo_create_time = it.todo_create_time,
             todo_state = it.todo_state,
             todo_name = it.todo_name,
@@ -23,7 +23,7 @@ object TaskMapper {
 
     fun Task?.toEntity(): TaskEntity? = this?.let{
         TaskEntity(
-            task_id = it.task_id,
+            todo_id = it.todo_id,
             todo_create_time = it.todo_create_time,
             todo_state = it.todo_state,
             todo_name = it.todo_name,

@@ -3,7 +3,7 @@ package com.example.myapplication.model
 import java.time.OffsetDateTime
 
 data class TaskProject (
-    val task_id: Int = 0,
+    val todo_id: Int = 0,
     val todo_create_time: OffsetDateTime,
     val todo_state: TaskState,
     val todo_name: String,
