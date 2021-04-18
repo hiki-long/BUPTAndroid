@@ -86,5 +86,6 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.13'
     implementation 'org.parceler:parceler-api:1.1.13'
     implementation 'com.github.dhaval2404:colorpicker:2.0'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
 }
