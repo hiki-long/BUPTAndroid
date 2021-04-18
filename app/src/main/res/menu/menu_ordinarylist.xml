@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:title="编辑清单"
+          android:id="@+id/editlist"/>
+    <item android:title="排序"
+          android:id="@+id/sort"/>
+    <item android:title="显示已完成"
+          android:id="@+id/showCompleted"/>
+    <item android:title="删除清单"
+          android:id="@+id/deletelist"/>
+</menu>
