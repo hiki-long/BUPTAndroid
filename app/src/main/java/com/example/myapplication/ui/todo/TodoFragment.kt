@@ -2,6 +2,7 @@ package com.example.myapplication.ui.todo
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.absoluteValue
 
 
 @AndroidEntryPoint
@@ -34,20 +36,15 @@ class TodoFragment : Fragment() {
         todoViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
+            //这里是用来进行测试的右下角按钮，大家的测试代码都可以写在这里
+            //测试弹出编辑清单的窗口代码
 //            var dialog = ListDialogCreate()
 //            dialog.show(parentFragmentManager,"listdialog")
-            MaterialColorPickerDialog
-                .Builder((activity as MainActivity?)!!)        					// Pass Activity Instance
-                .setTitle("Pick Theme")           		// Default "Choose Color"
-                .setColorShape(ColorShape.SQAURE)   	// Default ColorShape.CIRCLE
-                .setColorSwatch(ColorSwatch._300)   	// Default ColorSwatch._500
-                .setDefaultColor("#F5F5F5") 		// Pass Default Color
-                .setColorListener { color, colorHex ->
-                    // Handle Color Selection
-                }
-                .show()
+
+
         }
         return root
     }

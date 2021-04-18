@@ -4,7 +4,9 @@
     <string name="title_view">视图</string>
     <string name="title_course">课程</string>
     <string name="title_more">更多</string>
-    <string name="color_select_title">清单颜色选择</string>
+    <string name="edit_list_title">编辑清单</string>
+    <string name="create_list_title">创建清单</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
+    <string name="select_color">清单颜色</string>
 </resources>
