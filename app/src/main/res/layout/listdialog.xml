@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
         android:text="@string/edit_list_title"
         android:textSize="26sp"
@@ -23,13 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:width="200dp"
-        android:hint="请输入清单名字"
+        android:hint="@string/list_hint"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintHorizontal_bias="0.549"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_title"></EditText>
+        app:layout_constraintTop_toBottomOf="@id/edit_title"
+         />
 
     <LinearLayout
         android:id="@+id/showcolorline"
@@ -48,22 +48,25 @@
             android:layout_marginTop="20dp"
             android:text="@string/select_color"
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="@id/showcolorline"></TextView>
+            app:layout_constraintLeft_toLeftOf="@id/showcolorline"/>
 
         <Button
+            android:id="@id/color_show"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="16dp"
 
-            android:background="@drawable/round_button"></Button>
+            android:background="@drawable/round_button"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@id/select_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ic_baseline_arrow_forward_ios_24"></androidx.appcompat.widget.AppCompatImageView>
+            android:background="@drawable/ic_baseline_arrow_forward_ios_24"
+            />
     </LinearLayout>
 
     <Button
@@ -83,7 +86,7 @@
         android:id="@+id/cancelcolorbutton"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="116dp"
+        android:layout_marginStart="116dp"
         android:layout_marginTop="40dp"
         android:backgroundTint="#AAA"
         android:text="@string/cancel"

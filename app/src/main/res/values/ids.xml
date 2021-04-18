@@ -2,4 +2,5 @@
 <resources>
     <item name="select_color" type="id" />
     <item name="edit_title" type="id" />
+    <item name="color_show" type="id" />
 </resources>

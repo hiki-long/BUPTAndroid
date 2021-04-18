@@ -9,4 +9,5 @@
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
     <string name="select_color">清单颜色</string>
+    <string name="list_hint">请输入清单的名字</string>
 </resources>
