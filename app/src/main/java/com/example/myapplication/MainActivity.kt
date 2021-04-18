@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                 val myItems=listOf("清单","创建日期","截至日期","执行事件","重要级")
                 MaterialDialog(this).show{
                     cornerRadius(16f)
+                    title(R.string.sort)
                     listItemsSingleChoice(items = myItems){ dialog, index, text ->
                         when(index){
                             0->{
