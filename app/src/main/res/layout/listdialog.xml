@@ -3,86 +3,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@id/edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="28dp"
         android:text="@string/edit_list_title"
-        android:textSize="20sp"
+        android:textSize="26sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/list_name"
-        android:width="200dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edit_title"
+        android:layout_marginTop="28dp"
+        android:width="200dp"
+        android:hint="请输入清单名字"
+        android:inputType="text"
+        android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.549"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
-        android:inputType="text"
-        android:hint="请在此输入清单的名字"
-        >
-    </EditText>
+        app:layout_constraintTop_toBottomOf="@id/edit_title"></EditText>
+
     <LinearLayout
         android:id="@+id/showcolorline"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/list_name">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/select_color"
-            android:textSize="26sp"
-            app:layout_constraintLeft_toLeftOf="@id/showcolorline"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="30dp"
-            >
-        </TextView>
+            android:text="@string/select_color"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="@id/showcolorline"></TextView>
+
         <Button
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/round_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="40dp"
 
-            >
-        </Button>
+            android:background="@drawable/round_button"></Button>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_baseline_arrow_forward_ios_24"></androidx.appcompat.widget.AppCompatImageView>
     </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancelcolorbutton"
-        android:backgroundTint="#AAA"
-        android:textColor="#fff"
-        android:text="@string/cancel"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showcolorline"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="44dp"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/confirmcolorbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:backgroundTint="#02A7F0"
-        android:textColor="#fff"
         android:text="@string/confirm"
-        app:layout_constraintLeft_toRightOf="@id/cancelcolorbutton"
-        app:layout_constraintTop_toBottomOf="@id/showcolorline"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="4dp"/>
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cancelcolorbutton"
+        app:layout_constraintTop_toBottomOf="@id/showcolorline" />
+
+    <Button
+        android:id="@+id/cancelcolorbutton"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="116dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#AAA"
+        android:text="@string/cancel"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toStartOf="@+id/confirmcolorbutton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showcolorline" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

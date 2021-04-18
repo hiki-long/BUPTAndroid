@@ -41,11 +41,12 @@ class TodoFragment : Fragment() {
         bt.setOnClickListener {
             //这里是用来进行测试的右下角按钮，大家的测试代码都可以写在这里
             //测试弹出编辑清单的窗口代码
-//            var dialog = ListDialogCreate()
-//            dialog.show(parentFragmentManager,"listdialog")
+            var dialog = ListDialogCreate()
+            dialog.show(parentFragmentManager,"listdialog")
 
 
         }
+
         return root
     }
 }
