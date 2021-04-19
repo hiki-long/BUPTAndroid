@@ -1,13 +1,15 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
 }
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    //buildToolsVersion "30.0.3"
+    buildToolsVersion "30.0.0"
 
     defaultConfig {
         applicationId "com.example.myapplication"

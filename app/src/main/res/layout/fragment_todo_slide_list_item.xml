@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_todo_slide_list"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+</FrameLayout>

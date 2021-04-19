@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="left"
+    android:background="@color/white">
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_today"
+        android:src="@drawable/ic_todo_slide_today"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="30dp"/>
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_important"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_important"
+        android:src="@drawable/ic_todo_slide_import"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_planned"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_planned"
+        android:src="@drawable/ic_todo_slide_planned"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_collectbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_collectbox"
+        android:src="@drawable/ic_todo_slide_collectbox"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/collecbox_listrecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_add"
+        android:src="@drawable/ic_todo_slide_add"
+        app:num=""
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <com.example.myapplication.ui.view.TodoItemView
+            android:id="@+id/collecbox_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:description="@string/collectbox_setting"
+            android:src="@drawable/ic_todo_slide_setting"
+            app:num=""
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:gravity="bottom"/>
+    </LinearLayout>
+
+</LinearLayout>

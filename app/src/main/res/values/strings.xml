@@ -14,6 +14,10 @@
     <string name="massagedelete">清单中所有任务将被删除</string>
     <string name="confirmdelete">删除</string>
     <string name="sort">排序</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="collectbox_today">今天</string>
+    <string name="collectbox_important">重要</string>
+    <string name="collectbox_planned">已计划</string>
+    <string name="collectbox_collectbox">收集箱</string>
+    <string name="collectbox_add">添加清单</string>
+    <string name="collectbox_setting">清单设置</string>
 </resources>
