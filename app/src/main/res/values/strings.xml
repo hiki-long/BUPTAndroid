@@ -14,4 +14,6 @@
     <string name="massagedelete">清单中所有任务将被删除</string>
     <string name="confirmdelete">删除</string>
     <string name="sort">排序</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
