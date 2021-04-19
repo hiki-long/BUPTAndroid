@@ -24,12 +24,14 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
                 R.id.navigation_todo, R.id.navigation_view, R.id.navigation_course, R.id.navigation_more))
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener{
             //还需加上判断是否在todo fragment的逻辑!!
             mainDrawerLayout.openDrawer(GravityCompat.START)
         }
+
         supportActionBar?.let{
             //还需加上判断是否在todo fragment的逻辑!!
             it.setDisplayHomeAsUpEnabled(true)

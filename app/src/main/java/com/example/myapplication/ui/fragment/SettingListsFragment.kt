@@ -19,7 +19,6 @@ class SettingListsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        requireActivity().actionBar?.hide()
         return inflater.inflate(R.layout.fragment_setting_lists, container, false)
     }
 
