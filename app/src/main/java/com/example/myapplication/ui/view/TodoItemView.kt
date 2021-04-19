@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.self_design_collectbox_slide_item_view.view.*
 
-
+//To-do 界面一个item的自定义view
 class TodoItemView(context: Context, attrs: AttributeSet): LinearLayout(context,attrs){
     init{
         val attributes:TypedArray=context.obtainStyledAttributes(attrs, R.styleable.self_design_collect_box_item_view)
