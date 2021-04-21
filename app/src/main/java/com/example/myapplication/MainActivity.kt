@@ -29,7 +29,13 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener{
             //还需加上判断是否在todo fragment的逻辑!!
-            mainDrawerLayout.openDrawer(GravityCompat.START)
+            if (mainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                mainDrawerLayout.closeDrawer(GravityCompat.START)
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+            } else {
+                mainDrawerLayout.openDrawer(GravityCompat.START)
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_resource_return)
+            }
         }
 
         supportActionBar?.let{
@@ -40,10 +46,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home->mainDrawerLayout.openDrawer(GravityCompat.START)
-        }
-        return true;
-    }
 }
