@@ -34,6 +34,7 @@
                 app:defaultNavHost="true"
 
                 app:navGraph="@navigation/mobile_navigation" />
+
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/nav_view"
                 android:layout_width="match_parent"

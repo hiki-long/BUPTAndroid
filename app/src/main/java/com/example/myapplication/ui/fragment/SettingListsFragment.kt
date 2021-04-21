@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.model.Project
 import com.example.myapplication.ui.adapter.ProjectAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 class SettingListsFragment : Fragment() {
     private var projectList=ArrayList<Project>()
@@ -32,5 +35,8 @@ class SettingListsFragment : Fragment() {
         recycleView.layoutManager=layoutManager
         val adapter= ProjectAdapter(requireContext(),projectList)
         recycleView.adapter=adapter
+
+        (activity as MainActivity).needDrawer(false)
     }
+
 }
