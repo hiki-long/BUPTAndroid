@@ -5,6 +5,7 @@ import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -26,22 +27,56 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_todo, R.id.navigation_view, R.id.navigation_course, R.id.navigation_more))
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
         setSupportActionBar(toolbar)
+
+        //tobar drawer open button
         toolbar.setNavigationOnClickListener{
-            //还需加上判断是否在todo fragment的逻辑!!
-            if (mainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                mainDrawerLayout.closeDrawer(GravityCompat.START)
-                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
-            } else {
-                mainDrawerLayout.openDrawer(GravityCompat.START)
-                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_resource_return)
+            if(navView.selectedItemId==R.id.navigation_todo ) {
+                if (mainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mainDrawerLayout.closeDrawer(GravityCompat.START)
+                    supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+                } else {
+                    mainDrawerLayout.openDrawer(GravityCompat.START)
+                    supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_resource_return)
+                }
             }
         }
 
         supportActionBar?.let{
-            //还需加上判断是否在todo fragment的逻辑!!
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+        }
+
+        //when bottom navigationView is seletected
+        //注意！：日后支持滑动切换fragment的时候不知道此判断还是否有效，**潜在bug**
+        navView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.navigation_todo->{
+                    supportActionBar?.let{
+                        it.setDisplayHomeAsUpEnabled(true)
+                        it.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+                    }
+                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                    true
+                }
+                R.id.navigation_course->{
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    true
+                }
+                R.id.navigation_more->{
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    true
+                }
+                R.id.navigation_view->{
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    true
+                }
+                else->false
+            }
         }
 
     }
