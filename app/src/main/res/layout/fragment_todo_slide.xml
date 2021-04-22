@@ -13,37 +13,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:description="@string/collectbox_today"
-        android:src="@drawable/ic_todo_slide_today"
+        android:src="@drawable/ic_baseline_today_24"
         app:num="0"
         android:paddingBottom="10dp"
         android:paddingTop="30dp"/>
-
-    <com.example.myapplication.ui.view.TodoItemView
-        android:id="@+id/collecbox_important"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:description="@string/collectbox_important"
-        android:src="@drawable/ic_todo_slide_import"
-        app:num="0"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"/>
 
     <com.example.myapplication.ui.view.TodoItemView
         android:id="@+id/collecbox_planned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:description="@string/collectbox_planned"
-        android:src="@drawable/ic_todo_slide_planned"
+        android:src="@drawable/ic_baseline_planed_24"
         app:num="0"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"/>
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_important"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_important"
+        android:src="@drawable/ic_baseline_star_24"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
 
     <com.example.myapplication.ui.view.TodoItemView
         android:id="@+id/collecbox_collectbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:description="@string/collectbox_collectbox"
-        android:src="@drawable/ic_todo_slide_collectbox"
+        android:src="@drawable/ic_baseline_inbox_24"
+        app:num="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+    <com.example.myapplication.ui.view.TodoItemView
+        android:id="@+id/collecbox_finished"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:description="@string/collectbox_finished"
+        android:src="@drawable/ic_baseline_finished_24"
         app:num="0"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"/>
@@ -63,10 +74,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:description="@string/collectbox_add"
-        android:src="@drawable/ic_todo_slide_add"
+        android:src="@drawable/ic_baseline_add_24"
         app:num=""
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"/>
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -79,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:description="@string/collectbox_setting"
-            android:src="@drawable/ic_todo_slide_setting"
+            android:src="@drawable/ic_baseline_settings_24"
             app:num=""
             android:paddingBottom="10dp"
             android:paddingTop="10dp"

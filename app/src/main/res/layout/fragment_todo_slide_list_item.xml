@@ -9,7 +9,7 @@
         android:id="@+id/collecbox_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_todo_slide_list"
+        android:src="@drawable/ic_baseline_menu_24"
         app:num="0"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"/>

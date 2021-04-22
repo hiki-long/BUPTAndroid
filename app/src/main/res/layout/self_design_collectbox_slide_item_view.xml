@@ -13,7 +13,7 @@
         android:layout_marginLeft="5dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_todo_slide_add"
+        android:src="@drawable/ic_baseline_add_24"
         android:contentDescription="TODO" />
 
     <TextView

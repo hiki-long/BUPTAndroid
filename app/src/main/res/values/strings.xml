@@ -18,6 +18,7 @@
     <string name="collectbox_important">重要</string>
     <string name="collectbox_planned">已计划</string>
     <string name="collectbox_collectbox">收集箱</string>
+    <string name="collectbox_finished">已完成</string>
     <string name="collectbox_add">添加清单</string>
     <string name="collectbox_setting">清单设置</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
