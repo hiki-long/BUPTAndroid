@@ -1,16 +1,12 @@
 package com.example.myapplication.ui.todo
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.R
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
@@ -22,12 +18,12 @@ import com.github.dhaval2404.colorpicker.model.ColorSwatch
 class ListDialogCreate : DialogFragment() {
     private var thistitle: String? = null
     private lateinit var editTitle: TextView
-    private lateinit var colorselect: AppCompatImageView
     private var cancelbutton: Button? = null
     private var confirmbutton: Button? = null
     private var listcolor: String? = null
     private var showbutton: Button? = null
     private var lastColor: Int? = null
+    private lateinit var linearlayout: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         thistitle = savedInstanceState?.getString("title")
@@ -47,8 +43,8 @@ class ListDialogCreate : DialogFragment() {
         }
         showbutton = view.findViewById(R.id.color_show)
         editTitle = view.findViewById(R.id.edit_title)
-        colorselect = view.findViewById(R.id.select_color)
-        colorselect.setOnClickListener {
+        linearlayout = view.findViewById(R.id.showcolorline)
+        linearlayout.setOnClickListener{
             MaterialColorPickerDialog
                     .Builder(view.context)
                     .setTitle("清单颜色选择")
