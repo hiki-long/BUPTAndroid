@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -48,38 +49,17 @@ class MainActivity : AppCompatActivity() {
             it.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
         }
 
-//        when bottom navigationView is seletected
-//        注意！：日后支持滑动切换fragment的时候不知道此判断还是否有效，**潜在bug**
-//        navView.setOnNavigationItemSelectedListener {
-//            when(it.itemId){
-//                R.id.navigation_todo->{
-//
-//                    supportActionBar?.let{
-//                        it.setDisplayHomeAsUpEnabled(true)
-//                        it.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
-//                    }
-//                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-//                    true
-//                }
-//                R.id.navigation_course->{
-//                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
-//                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-//                    true
-//                }
-//                R.id.navigation_more->{
-//                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
-//                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-//                    true
-//                }
-//                R.id.navigation_view->{
-//                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
-//                    mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-//                    true
-//                }
-//                else->false
-//            }
-//        }
-        val toggle =ActionBarDrawerToggle(this,mainDrawerLayout,R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle =object: ActionBarDrawerToggle(this,mainDrawerLayout,R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            override fun onDrawerClosed(drawerView: View) {
+                super.onDrawerClosed(drawerView)
+                navView.menu.forEach { it.isEnabled=true }
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                super.onDrawerOpened(drawerView)
+                navView.menu.forEach { it.isEnabled=false }
+            }
+        }
         mainDrawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
