@@ -35,10 +35,26 @@ class TodoFragment : Fragment() {
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
-            //这里是用来进行测试的右下角按钮，大家的测试代码都可以写在这里
             //测试弹出编辑清单的窗口代码
+            /*
+            *@ 模块1 弹出编辑清单
             var dialog = ListDialogCreate()
+            //这里的bundle是用来传输标题的数据,小型的数据都可以用bundle传
+            var args = Bundle()
+            args.putString("title", "编辑清单")
+            dialog.arguments = args
             dialog.show(parentFragmentManager, "listdialog")
+            */
+
+            /*
+            * @ 模块2 todo日期选择编辑
+            * */
+            val dialog = DaySelectDialogCreate()
+            val args = Bundle()
+            args.putString("title","设置截止时间")
+            args.putInt("mode",1)
+            dialog.arguments = args
+            dialog.show(parentFragmentManager, "timeselect")
         }
         return root
     }

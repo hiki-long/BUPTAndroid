@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.todo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ import com.github.dhaval2404.colorpicker.listener.ColorListener
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
 
-
 class ListDialogCreate : DialogFragment() {
     private var thistitle: String? = null
     private lateinit var editTitle: TextView
@@ -26,7 +26,9 @@ class ListDialogCreate : DialogFragment() {
     private lateinit var linearlayout: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        thistitle = savedInstanceState?.getString("title")
+        if(arguments != null){
+            thistitle = arguments?.getString("title")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

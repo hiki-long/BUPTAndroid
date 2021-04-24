@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/time_dialog_title"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="这里是标题"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="20dp"/>
+    <CalendarView
+        android:id="@+id/calendarview"
+        app:layout_constraintTop_toBottomOf="@+id/time_dialog_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+<!--    这里Button的图标由春哥替换-->
+    <Button
+        android:id="@+id/select_todo_time"
+        android:drawableLeft="@drawable/ic_baseline_assignment_24"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/calendarview"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="设置时间点"/>
+    <Button
+        android:id="@+id/select_remind_time"
+        android:drawableLeft="@drawable/ic_baseline_assignment_24"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/select_todo_time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="截止时间提醒"/>
+    <Button
+        android:id="@+id/confirmcolorbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#02A7F0"
+        android:text="@string/confirm"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="30dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cancelcolorbutton"
+        app:layout_constraintTop_toBottomOf="@id/select_remind_time" />
+
+    <Button
+        android:id="@+id/cancelcolorbutton"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#AAA"
+        android:text="@string/cancel"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toStartOf="@+id/confirmcolorbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_remind_time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
