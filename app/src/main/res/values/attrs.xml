@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="self_design_collect_box_item_view">
+    <declare-styleable name="self_design_todo_item_view">
         <attr name="description" format="string"/>
         <attr name="num" format="string"/>
         <attr name="android:src"/>

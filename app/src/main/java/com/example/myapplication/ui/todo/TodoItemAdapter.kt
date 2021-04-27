@@ -1,0 +1,31 @@
+package com.example.myapplication.ui.todo
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
+
+class TodoItemAdapter(val itemList:List<TodoItem>):RecyclerView.Adapter<TodoItemAdapter.ViewHolder>() {
+    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
+        val itemName:TextView=view.findViewById(R.id.todo_item_list_item_view_name)
+        val todoNum:TextView=view.findViewById(R.id.todo_item_list_item_view_num)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view=LayoutInflater.from(parent.context).inflate(R.layout.todo_item_list_item_view,parent,false)
+        return ViewHolder(view)
+
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item=itemList[position]
+        holder.itemName.text=item.itemName
+        holder.todoNum.text=item.todoNum.toString()
+    }
+
+    override fun getItemCount(): Int {
+        return itemList.size
+    }
+}
