@@ -25,6 +25,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="todo_item_detail_add_ddl">添加截止日期</string>
     <string name="todo_item_detail_add_execute_time">添加执行时间</string>
-    <string name="todo_item_detail_add_notice" >添加提醒</string>
+    <string name="todo_item_detail_add_notice">添加提醒</string>
     <string name="todo_item_detail_input_hint">添加备注</string>
+    <string name="title_activity_todo_item_detail">TodoItemDetailActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>
