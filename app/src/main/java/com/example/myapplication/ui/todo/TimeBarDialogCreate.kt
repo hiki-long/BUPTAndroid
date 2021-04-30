@@ -13,6 +13,13 @@ import com.loper7.date_time_picker.DateTimePicker
 import kotlinx.android.synthetic.main.select_time_picker.*
 
 class TimeBarDialogCreate : DialogFragment() {
+    //这里是时间选择框弹出的对话框,根据时间选择有3种模式
+    /*
+    * 1.当天时间
+    * 2.时间段选择
+    * 3.自定义时间
+    *
+    * */
     private var mode :Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +47,32 @@ class TimeBarDialogCreate : DialogFragment() {
             timepicker.setDefaultMillisecond(System.currentTimeMillis())
             timepicker.showLabel(true)
             timepicker.setOnDateTimeChangedListener { milliseoncd ->  }
+            val cancel = view.findViewById(R.id.common_cancel) as Button
+            cancel.setOnClickListener {
+                dismiss()
+            }
+            val confirm = view.findViewById(R.id.confirm_time_select) as Button
+            confirm.setOnClickListener {
+                dismiss()
+            }
         }
         else if(mode == 2) {
             //选择时间段
             view = inflater.inflate(R.layout.select_time_fragment, container, false) as View
-            val timebeginpicker = view.findViewById(R.id.dateTimePicker_begin) as DateTimePicker
-            val timeendpicker = view.findViewById(R.id.dateTimePicker_end) as DateTimePicker
+//            val timebeginpicker = view.findViewById(R.id.dateTimePicker_begin) as DateTimePicker
+//            val timeendpicker = view.findViewById(R.id.dateTimePicker_end) as DateTimePicker
+            val cancel = view.findViewById(R.id.common_cancel) as Button
+            cancel.setOnClickListener {
+                dismiss()
+            }
+            val confirm = view.findViewById(R.id.confirm_time_select2) as Button
+            confirm.setOnClickListener {
+                dismiss()
+            }
+
         }
         else {
+            //显示自定义时间
             view = inflater.inflate(R.layout.select_time_picker, container, false) as View
             val timepicker = view.findViewById(R.id.dateTimePicker) as DateTimePicker
             timepicker.setLayout(R.layout.layout_date_picker)
@@ -55,6 +80,14 @@ class TimeBarDialogCreate : DialogFragment() {
             timepicker.setDefaultMillisecond(System.currentTimeMillis())
             timepicker.showLabel(true)
             timepicker.setOnDateTimeChangedListener { milliseoncd ->  }
+            val cancel = view.findViewById(R.id.common_cancel) as Button
+            cancel.setOnClickListener {
+                dismiss()
+            }
+            val confirm = view.findViewById(R.id.confirm_time_select) as Button
+            confirm.setOnClickListener {
+                dismiss()
+            }
         }
 
         return view

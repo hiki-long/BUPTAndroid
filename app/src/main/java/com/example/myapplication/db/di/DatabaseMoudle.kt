@@ -17,7 +17,7 @@ object DatabaseMoudle {
     @Provides
     fun provideDatabase(application: Application) =
         Room.databaseBuilder(application, AppDatabase::class.java, "Database.db")
-            .createFromAsset("database/Database.db")
+            .allowMainThreadQueries()
             .build()
 
     @Provides

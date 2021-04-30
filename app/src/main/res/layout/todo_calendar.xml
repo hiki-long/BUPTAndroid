@@ -39,7 +39,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:text="截止时间提醒"/>
     <Button
-        android:id="@+id/confirmcolorbutton"
+        android:id="@+id/confirm_alltime_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -47,13 +47,13 @@
         android:text="@string/confirm"
         android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cancelcolorbutton"
+        app:layout_constraintStart_toEndOf="@+id/common_cancel"
         app:layout_constraintTop_toBottomOf="@id/select_remind_time" />
 
     <Button
-        android:id="@+id/cancelcolorbutton"
+        android:id="@+id/common_cancel"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -61,7 +61,7 @@
         android:backgroundTint="#AAA"
         android:text="@string/cancel"
         android:textColor="#fff"
-        app:layout_constraintEnd_toStartOf="@+id/confirmcolorbutton"
+        app:layout_constraintEnd_toStartOf="@+id/confirm_alltime_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_remind_time" />
 
