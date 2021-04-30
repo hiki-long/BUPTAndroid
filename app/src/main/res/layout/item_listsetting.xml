@@ -1,9 +1,8 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:gravity="center_vertical">
 
     <ImageView
@@ -12,7 +11,7 @@
         android:layout_height="@dimen/image_listsetting_size"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        app:srcCompat="@mipmap/menu32" />
+        android:src="@drawable/ic_baseline_menu_24" />
 
     <TextView
         android:id="@+id/listName"
@@ -22,25 +21,25 @@
         android:text="1号清单"
         android:textSize="18sp" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right">
-        <ImageButton
-        android:id="@+id/button_edit"
-        android:layout_width="@dimen/image_listsetting_size"
-        android:layout_height="@dimen/image_listsetting_size"
-        android:layout_marginRight="10dp"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
 
-        <ImageButton
-        android:id="@+id/button_delete"
-        android:layout_width="@dimen/image_listsetting_size"
-        android:layout_height="@dimen/image_listsetting_size"
+        <ImageView
+            android:id="@+id/button_edit"
+            android:layout_width="@dimen/image_listsetting_size"
+            android:layout_height="@dimen/image_listsetting_size"
             android:layout_marginRight="10dp"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+            android:src="@drawable/ic_baseline_edit_24" />
+
+        <ImageView
+            android:id="@+id/button_delete"
+            android:layout_width="@dimen/image_listsetting_size"
+            android:layout_height="@dimen/image_listsetting_size"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_baseline_delete_24" />
     </LinearLayout>
 </LinearLayout>

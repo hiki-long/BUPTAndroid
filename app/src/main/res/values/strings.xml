@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">寸光阴</string>
+    <string name="setting_list">清单设置</string>
     <string name="title_todo">待办</string>
     <string name="title_view">视图</string>
     <string name="title_course">课程</string>
@@ -14,6 +15,7 @@
     <string name="massagedelete">清单中所有任务将被删除</string>
     <string name="confirmdelete">删除</string>
     <string name="sort">排序</string>
+    <string name="collectbox_all">所有</string>
     <string name="collectbox_today">今天</string>
     <string name="collectbox_important">重要</string>
     <string name="collectbox_planned">已计划</string>

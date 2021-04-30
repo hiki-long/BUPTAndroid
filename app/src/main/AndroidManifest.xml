@@ -51,7 +51,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.fragment.SettingListsActivity" />
+        <activity android:name=".ui.fragment.SettingListsActivity"
+            android:label="@string/setting_list"/>
+
     </application>
 
 </manifest>

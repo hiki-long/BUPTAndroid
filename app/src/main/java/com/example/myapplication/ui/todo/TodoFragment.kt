@@ -59,7 +59,8 @@ class TodoFragment : Fragment() {
             */
             var editTexten=requireActivity().findViewById<EditText>(R.id.editText_todo)
             var cardView=requireActivity().findViewById<CardView>(R.id.card_todo)
-            var guideline=requireActivity().findViewById<androidx.constraintlayout.widget.Guideline>(R.id.guideline2)
+//            var guideline=requireActivity().findViewById<androidx.constraintlayout.widget.Guideline>(R.id.guideline2)
+            var guideline=requireActivity().findViewById<TextView>(R.id.guideline_none)
             SoftInputUtil.showSoftInput(editTexten)
             cardView.visibility=View.VISIBLE
             val softInputUtil = SoftInputUtil()
