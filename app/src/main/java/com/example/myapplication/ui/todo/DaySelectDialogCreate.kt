@@ -29,6 +29,8 @@ class DaySelectDialogCreate : DialogFragment() {
         val dialogtitle = view.findViewById(R.id.time_dialog_title) as TextView
         val todotime = view.findViewById(R.id.select_todo_time) as Button
         val remindtime = view.findViewById(R.id.select_remind_time) as Button
+        val cancel = view.findViewById(R.id.common_cancel) as Button
+        val confirm = view.findViewById(R.id.confirm_alltime_button) as Button
         dialogtitle?.text =  title
         if(mode == 1)
         {
@@ -54,6 +56,15 @@ class DaySelectDialogCreate : DialogFragment() {
                 timedialog.show(parentFragmentManager, "ShowTimeBar")
             }
         }
+
+        cancel.setOnClickListener {
+            dismiss()
+        }
+
+        confirm.setOnClickListener {
+            dismiss()
+        }
+
         remindtime.setOnClickListener {
             val optiondialog = TimeSelectDialogCreate()
             optiondialog.show(parentFragmentManager, "SelectOption")
