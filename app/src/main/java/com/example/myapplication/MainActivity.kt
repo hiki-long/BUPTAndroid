@@ -1,7 +1,7 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -11,13 +11,18 @@ import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.ui.fragment.SettingListsActivity
+import com.example.myapplication.ui.todo.TodoItem
+import com.example.myapplication.ui.todo.TodoItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_todo_slide.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class  MainActivity : AppCompatActivity() {
+    private val todoItemList=ArrayList<TodoItem>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
         mainDrawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        initSlide()
+
     }
 
     //依附于MainActivity的fragment需要在onViewCreated调用needDrawer函数决定是否打开drawer。
@@ -75,5 +83,36 @@ class MainActivity : AppCompatActivity() {
             mainDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
+    }
+
+    fun initSlide(){
+        createData()
+        val layoutManager=LinearLayoutManager(this)
+        todo_slide_recyclerView.layoutManager=layoutManager
+        val adapter=TodoItemAdapter(todoItemList)
+        todo_slide_recyclerView.adapter=adapter
+
+        todo_slide_add.setOnClickListener{
+            addData()
+            adapter.notifyDataSetChanged()
+        }
+
+        todo_slide_setting.setOnClickListener{
+            var intent= Intent(this,SettingListsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    /*---------------测试函数---------------*/
+    private fun createData(){
+        var count:Int=1
+        repeat(3){
+            todoItemList.add(TodoItem("清单$count",10))
+            count+=1
+        }
+    }
+
+    private fun addData(){
+        todoItemList.add(TodoItem("新增的清单",0))
     }
 }

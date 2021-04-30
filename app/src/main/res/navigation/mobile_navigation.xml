@@ -26,9 +26,4 @@
         android:name="com.example.myapplication.ui.more.MoreFragment"
         android:label="@string/title_more"
         tools:layout="@layout/fragment_more" />
-    <fragment
-        android:id="@+id/settingListsFragment"
-        android:name="com.example.myapplication.ui.fragment.SettingListsFragment"
-        android:label="fragment_setting_lists"
-        tools:layout="@layout/fragment_setting_lists" />
 </navigation>
