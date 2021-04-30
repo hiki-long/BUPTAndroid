@@ -9,13 +9,11 @@
     android:orientation="vertical">
 
     <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_today"
+        android:id="@+id/todo_slide_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:paddingBottom="10dp"
-        android:src="@drawable/ic_baseline_today_24"
-        app:description="@string/collectbox_today"
+        android:src="@drawable/ic_baseline_all_24"
+        app:description="@string/collectbox_all"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,11 +22,23 @@
         app:num="0" />
 
     <com.example.myapplication.ui.todo.TodoItemView
+        android:id="@+id/todo_slide_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_today_24"
+        app:description="@string/collectbox_today"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todo_slide_all"
+        app:layout_constraintVertical_bias="0.0"
+        app:num="0" />
+
+    <com.example.myapplication.ui.todo.TodoItemView
         android:id="@+id/todo_slide_planned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+
         android:src="@drawable/ic_baseline_planed_24"
         app:description="@string/collectbox_planned"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,8 +52,6 @@
         android:id="@+id/todo_slide_important"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:src="@drawable/ic_baseline_star_24"
         app:description="@string/collectbox_important"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,8 +65,6 @@
         android:id="@+id/todo_slide_collectbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:src="@drawable/ic_baseline_inbox_24"
         app:description="@string/collectbox_collectbox"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,8 +78,6 @@
         android:id="@+id/todo_slide_finished"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:src="@drawable/ic_baseline_finished_24"
         app:description="@string/collectbox_finished"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -108,8 +112,6 @@
         android:id="@+id/todo_slide_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10sp"
-        android:paddingBottom="10sp"
         android:src="@drawable/ic_baseline_add_24"
         app:description="@string/collectbox_add"
         app:layout_constraintBottom_toTopOf="@+id/todo_slide_setting"
@@ -124,8 +126,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:src="@drawable/ic_baseline_settings_24"
         app:description="@string/collectbox_setting"
         app:layout_constraintBottom_toBottomOf="parent"

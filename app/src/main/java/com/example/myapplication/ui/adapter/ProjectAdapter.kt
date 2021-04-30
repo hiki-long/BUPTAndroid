@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,8 +20,8 @@ import com.google.android.material.snackbar.Snackbar
 class ProjectAdapter(val context: Context) : ListAdapter<Project, ProjectAdapter.ViewHolder>(MyCallback()) {
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val projectName: TextView =view.findViewById(R.id.listName)
-        val button_edit=view.findViewById<ImageButton>(R.id.button_edit)
-        val button_delete=view.findViewById<ImageButton>(R.id.button_delete)
+        val button_edit=view.findViewById<ImageView>(R.id.button_edit)
+        val button_delete=view.findViewById<ImageView>(R.id.button_delete)
     }
 
     companion object {
