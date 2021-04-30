@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="清单一"
+        />
+
+    <item
+        android:title="清单二"/>
+
+    <item
+        android:title="清单三"/>
+</menu>

@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <application
         android:name=".APP"
         android:allowBackup="true"
@@ -12,6 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:windowSoftInputMode="adjustNothing">
+
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".ui.todo.TodoItemDetailActivity"
+            android:label="">
+        </activity>
 
         <meta-data
             android:name="com.google.android.actions"
@@ -26,9 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.fragment.SettingListsActivity"
             android:label="@string/setting_list"/>
+
     </application>
 
 </manifest>
