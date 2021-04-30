@@ -17,13 +17,21 @@ import com.example.myapplication.model.Project
 import com.example.myapplication.ui.adapter.ProjectAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_setting_lists.*
 
 class SettingListsActivity : AppCompatActivity() {
     private var projectList=ArrayList<Project>()
 //    private lateinit var liveProjectList:LiveData<ArrayList<Project>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_lists)
+        //设置toolbar
+        setSupportActionBar(setting_toolbar)
+        setting_toolbar.title = "清单设置"
+        setting_toolbar.setNavigationIcon(R.drawable.ic_back_24)
+        setting_toolbar.setNavigationOnClickListener { this.finish() }
+
         for(i in 0..4){
             projectList.add(Project(i,"${i}号清单",0))
         }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">寸光阴</string>
+    <string name="setting_list">清单设置</string>
     <string name="title_todo">待办</string>
     <string name="title_view">视图</string>
     <string name="title_course">课程</string>

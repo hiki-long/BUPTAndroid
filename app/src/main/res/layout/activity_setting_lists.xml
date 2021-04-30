@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_setting_lists"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/materialTextView"
-        style="?attr/textAppearanceOverline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="清单设置"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/setting_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView2"
@@ -39,7 +41,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView2"
         tools:layout_editor_absoluteX="0dp">
@@ -48,8 +50,7 @@
             android:layout_width="@dimen/image_listsetting_size"
             android:layout_height="@dimen/image_listsetting_size"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_baseline_all_24"
-            />
+            android:src="@drawable/ic_baseline_all_24" />
 
         <Switch
             android:id="@+id/switch_all"
@@ -66,7 +67,7 @@
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         tools:layout_editor_absoluteX="0dp">
@@ -75,7 +76,7 @@
             android:layout_width="@dimen/image_listsetting_size"
             android:layout_height="@dimen/image_listsetting_size"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_baseline_today_24"/>
+            android:src="@drawable/ic_baseline_today_24" />
 
         <Switch
             android:id="@+id/switch_today"
@@ -92,7 +93,7 @@
     <LinearLayout
         android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
         tools:layout_editor_absoluteX="0dp">
@@ -101,7 +102,7 @@
             android:layout_width="@dimen/image_listsetting_size"
             android:layout_height="@dimen/image_listsetting_size"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_baseline_star_24"/>
+            android:src="@drawable/ic_baseline_star_24" />
 
         <Switch
             android:id="@+id/switch_important"
@@ -118,7 +119,7 @@
     <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
         tools:layout_editor_absoluteX="0dp">
@@ -127,7 +128,7 @@
             android:layout_width="@dimen/image_listsetting_size"
             android:layout_height="@dimen/image_listsetting_size"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_baseline_planed_24"/>
+            android:src="@drawable/ic_baseline_planed_24" />
 
         <Switch
             android:id="@+id/switch_planed"
@@ -144,7 +145,7 @@
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
         tools:layout_editor_absoluteX="0dp">
@@ -153,7 +154,7 @@
             android:layout_width="@dimen/image_listsetting_size"
             android:layout_height="@dimen/image_listsetting_size"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_baseline_finished_24"/>
+            android:src="@drawable/ic_baseline_finished_24" />
 
         <Switch
             android:id="@+id/switch_completed"
@@ -170,7 +171,7 @@
     <LinearLayout
         android:id="@+id/linearLayout11"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
         tools:layout_editor_absoluteX="0dp">
@@ -209,9 +210,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/listrecyclerView"
         tools:layout_editor_absoluteX="0dp">
 
@@ -219,7 +220,7 @@
             android:id="@+id/button_addlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_add_24"/>
+            android:src="@drawable/ic_baseline_add_24" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView_addlist"
