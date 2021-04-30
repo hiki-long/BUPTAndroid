@@ -16,23 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:windowSoftInputMode="adjustNothing">
-        
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
-
-
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
 
         <activity
             android:name=".ui.todo.TodoItemDetailActivity"
