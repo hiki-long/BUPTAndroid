@@ -125,6 +125,11 @@ class TodoFragment : Fragment() {
                 Toast.makeText(requireContext(), "点击了：$s", Toast.LENGTH_SHORT).show()
             }
         }
+
+        //测试detail页面代码：
+        testButton.setOnClickListener {
+            TodoItemDetailActivity.actionStart(context)
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
