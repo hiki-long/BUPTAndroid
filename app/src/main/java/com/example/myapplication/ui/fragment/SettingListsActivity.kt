@@ -1,10 +1,12 @@
 package com.example.myapplication.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -53,6 +55,41 @@ class SettingListsActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager, "listdialog")
         }
 
+        var shp=getSharedPreferences("list_settings", Context.MODE_PRIVATE)
+        switch_all.isChecked=shp.getBoolean("all",true)
+        switch_today.isChecked=shp.getBoolean("today",true)
+        switch_planed.isChecked=shp.getBoolean("planed",true)
+        switch_important.isChecked=shp.getBoolean("important",true)
+        switch_completed.isChecked=shp.getBoolean("completed",true)
+        switch_autohind.isChecked=shp.getBoolean("autohind",true)
+        var editor=shp.edit()
+
+        switch_all.setOnCheckedChangeListener { buttonView, isChecked ->
+            editor.putBoolean("all", isChecked)
+            editor.apply()
+        }
+        switch_today.setOnCheckedChangeListener { buttonView, isChecked ->
+            editor.putBoolean("today", isChecked)
+            editor.apply()
+        }
+        switch_planed.setOnCheckedChangeListener { buttonView, isChecked ->
+            editor.putBoolean("planed", isChecked)
+            editor.apply()
+        }
+        switch_important.setOnCheckedChangeListener { buttonView, isChecked ->
+            editor.putBoolean("important", isChecked)
+            editor.apply()
+        }
+        switch_completed.setOnCheckedChangeListener { buttonView, isChecked ->
+            editor.putBoolean("completed", isChecked)
+            editor.apply()
+        }
+        switch_autohind.setOnCheckedChangeListener { buttonView, isChecked ->
+            editor.putBoolean("autohind", isChecked)
+            editor.apply()
+        }
+
+
 //        liveProjectList.observe(this,{
 //            adapter.submitList(it)
 //            adapter.notifyDataSetChanged()
@@ -86,7 +123,6 @@ class SettingListsActivity : AppCompatActivity() {
 //                adapter.notifyDataSetChanged()
             }
         }).attachToRecyclerView(recycleView)
-
     }
 
 }
