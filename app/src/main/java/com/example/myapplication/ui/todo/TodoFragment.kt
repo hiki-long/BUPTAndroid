@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -135,7 +137,6 @@ class TodoFragment : Fragment() {
             softInputUtil.attachSoftInput(cardView, object : ISoftInputChanged {
                 override fun onChanged(isSoftInputShow: Boolean, softInputHeight: Int, viewOffset: Int) {
                     if (isSoftInputShow) {
-                        Log.e("hfhhf", "onCreateView: ${cardView.translationY}", )
                         cardView.translationY = cardView.translationY - viewOffset
                     } else {
                         //cardView.visibility = View.GONE
