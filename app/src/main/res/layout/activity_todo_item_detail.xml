@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.1504788" />
 
     <CheckBox
         android:id="@+id/todo_item_detail_checkBox"
@@ -22,6 +22,7 @@
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/todo_item_detail_toolbar"
+        android:text="待办事例"
         tools:text="待办事例" />
 
     <ImageView
@@ -101,7 +102,7 @@
                 android:id="@+id/todo_item_detail_add_notice_Constraintlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -133,6 +134,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/todo_item_detail_add_notice"
                     android:textColor="@color/black"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline29"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -141,12 +143,12 @@
                     android:id="@+id/imageView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/ic_baseline_notifications_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline28"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_close_32" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -154,20 +156,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/guideline11"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/todo_item_detail_add_notice_Constraintlayout">
 
                 <ImageView
                     android:id="@+id/imageView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline14"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.444"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_baseline_notifications_24" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline14"
@@ -187,7 +190,9 @@
                     android:id="@+id/todo_item_detail_ddl_notice_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="到期提醒：提前1天(09:00)提醒"
                     android:textColor="@color/black"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline16"
                     app:layout_constraintTop_toTopOf="parent"
@@ -213,7 +218,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/todo_item_detail_execute_notice_ConstraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -231,10 +236,12 @@
                     android:id="@+id/imageView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline15"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_baseline_notifications_24" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline17"
@@ -247,7 +254,9 @@
                     android:id="@+id/todo_item_detail_execute_notice_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="执行提醒：提前30min提醒"
                     android:textColor="@color/black"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline17"
                     app:layout_constraintTop_toTopOf="parent"
@@ -270,13 +279,6 @@
                     app:srcCompat="@drawable/ic_close_32" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -316,7 +318,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline19"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="创建于 xxxx-xx-xx" />
+                tools:text="创建于 xxxx-xx-xx"
+                android:text="创建于 xxxx-xx-xx"/>
 
             <ImageView
                 android:id="@+id/todo_item_detail_delete"
@@ -327,7 +330,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_star_32" />
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.textfield.TextInputEditText
@@ -401,7 +404,9 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline23"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_deadline" />
+
+
 
                 <TextView
                     android:id="@+id/todo_item_detail_add_ddl_text"
@@ -445,7 +450,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.04" />
+                    app:layout_constraintGuide_begin="16dp" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline10"
@@ -470,7 +475,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline25"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_baseline_today_24" />
 
                 <TextView
                     android:id="@+id/todo_item_detail_add_execute_text"
@@ -490,10 +495,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    android:src="@drawable/ic_close_32"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline10"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_close_32" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -508,10 +513,10 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@mipmap/menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
+
 
         <TextView
             android:id="@+id/todo_item_detail_toolbar_title"
@@ -521,13 +526,14 @@
             android:textSize="20sp"
             tools:layout_editor_absoluteX="72dp"
             tools:layout_editor_absoluteY="14dp"
+            android:text="收集箱"
             tools:text="收集箱" />
 
         <ImageView
             android:id="@+id/todo_item_detail_toolbar_down_pull"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:src="@drawable/ic_baseline_arrow_drop_down_24"
             tools:layout_editor_absoluteX="133dp"
             tools:layout_editor_absoluteY="28dp" />
 

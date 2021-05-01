@@ -8,118 +8,100 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_all"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_all_24"
-        app:description="@string/collectbox_all"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="0" />
-
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_today"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_today_24"
-        app:description="@string/collectbox_today"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_all"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="0" />
-
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_planned"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:src="@drawable/ic_baseline_planed_24"
-        app:description="@string/collectbox_planned"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_today"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="0" />
-
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_important"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_star_24"
-        app:description="@string/collectbox_important"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_planned"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="0" />
-
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_collectbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_inbox_24"
-        app:description="@string/collectbox_collectbox"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_important"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="0" />
-
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_finished"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_finished_24"
-        app:description="@string/collectbox_finished"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_collectbox"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="0" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_finished"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/todo_slide_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constrainedHeight="true"/>
-
-    <com.example.myapplication.ui.todo.TodoItemView
-        android:id="@+id/todo_slide_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_add_24"
-        app:description="@string/collectbox_add"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/todo_slide_setting"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todo_slide_recyclerView"
-        app:layout_constraintVertical_bias="0.0"
-        app:num="" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_all_24"
+                app:description="@string/collectbox_all"
+                app:num="0" />
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_today"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_today_24"
+                app:description="@string/collectbox_today"
+                app:num="0">
+
+            </com.example.myapplication.ui.todo.TodoItemView>
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_planned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/ic_baseline_planed_24"
+                app:description="@string/collectbox_planned"
+                app:num="0">
+
+            </com.example.myapplication.ui.todo.TodoItemView>
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_important"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_star_24"
+                app:description="@string/collectbox_important"
+                app:num="0">
+
+            </com.example.myapplication.ui.todo.TodoItemView>
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_collectbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_inbox_24"
+                app:description="@string/collectbox_collectbox"
+                app:num="0" />
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_finished"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_finished_24"
+                app:description="@string/collectbox_finished"
+                app:num="0">
+
+            </com.example.myapplication.ui.todo.TodoItemView>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/todo_slide_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constrainedHeight="true">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_add_24"
+                app:description="@string/collectbox_add"
+                app:num="" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <com.example.myapplication.ui.todo.TodoItemView
         android:id="@+id/todo_slide_setting"
@@ -130,14 +112,8 @@
         app:description="@string/collectbox_setting"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:num="" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8112175" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

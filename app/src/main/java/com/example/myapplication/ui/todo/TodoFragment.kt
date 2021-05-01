@@ -1,11 +1,11 @@
 package com.example.myapplication.ui.todo
 
 import android.annotation.SuppressLint
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -129,17 +129,16 @@ class TodoFragment : Fragment() {
             */
             var editTexten=requireActivity().findViewById<EditText>(R.id.editText_todo)
             var cardView=requireActivity().findViewById<CardView>(R.id.card_todo)
-//            var guideline=requireActivity().findViewById<androidx.constraintlayout.widget.Guideline>(R.id.guideline2)
-            var guideline=requireActivity().findViewById<TextView>(R.id.guideline_none)
             SoftInputUtil.showSoftInput(editTexten)
             cardView.visibility=View.VISIBLE
             val softInputUtil = SoftInputUtil()
-            softInputUtil.attachSoftInput(guideline, object : ISoftInputChanged {
+            softInputUtil.attachSoftInput(cardView, object : ISoftInputChanged {
                 override fun onChanged(isSoftInputShow: Boolean, softInputHeight: Int, viewOffset: Int) {
                     if (isSoftInputShow) {
-                        guideline.translationY = guideline.translationY - viewOffset
+                        Log.e("hfhhf", "onCreateView: ${cardView.translationY}", )
+                        cardView.translationY = cardView.translationY - viewOffset
                     } else {
-                        cardView.visibility = View.GONE
+                        //cardView.visibility = View.GONE
                     }
                 }
             })
@@ -152,7 +151,9 @@ class TodoFragment : Fragment() {
             softKeyBoardListener.setListener(object : OnSoftKeyBoardChangeListener {
                 override fun keyBoardShow(height: Int) {
                     //软键盘已经显示，做逻辑
-                    cardView.visibility = View.VISIBLE
+                    editTexten.setText("dddddddddddddddddddddddddddddd".toCharArray(),0,30)
+                    editTexten.setText("".toCharArray(),0,0)
+                    cardView.visibility=View.VISIBLE
                 }
 
                 override fun keyBoardHide(height: Int) {
@@ -194,6 +195,11 @@ class TodoFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "点击了：$s", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        //测试detail页面代码：
+        testButton.setOnClickListener {
+            TodoItemDetailActivity.actionStart(context)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
