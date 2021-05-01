@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.ui.fragment.SettingListsActivity
+import com.example.myapplication.ui.todo.ListDialogCreate
 import com.example.myapplication.ui.todo.TodoItem
 import com.example.myapplication.ui.todo.TodoItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -113,6 +114,12 @@ class  MainActivity : AppCompatActivity() {
     }
 
     private fun addData(){
-        todoItemList.add(TodoItem("新增的清单",0))
+//        todoItemList.add(TodoItem("新增的清单",0))
+        var dialog = ListDialogCreate()
+        //这里的bundle是用来传输标题的数据,小型的数据都可以用bundle传
+        var args = Bundle()
+        args.putString("title", "添加清单")
+        dialog.arguments = args
+        dialog.show(supportFragmentManager, "listdialog")
     }
 }

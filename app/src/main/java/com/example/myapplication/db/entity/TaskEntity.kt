@@ -14,10 +14,10 @@ data class TaskEntity (
     var todo_name: String,
     var project_id: Int,
     var todo_priority: TaskPriority,
-    var todo_execute_starttime: OffsetDateTime,
-    var todo_execute_endtime: OffsetDateTime,
+    var todo_execute_starttime: OffsetDateTime?,
+    var todo_execute_endtime: OffsetDateTime?,
     var todo_execute_remind: OffsetDateTime?,
-    var todo_deadline: OffsetDateTime,
-    var todo_deadline_remind: OffsetDateTime,
+    var todo_deadline: OffsetDateTime?,
+    var todo_deadline_remind: OffsetDateTime?,
     var todo_description: String?
     )

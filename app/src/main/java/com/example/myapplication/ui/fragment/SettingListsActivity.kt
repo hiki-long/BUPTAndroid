@@ -15,10 +15,13 @@ import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.model.Project
 import com.example.myapplication.ui.adapter.ProjectAdapter
+import com.example.myapplication.ui.todo.ListDialogCreate
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_setting_lists.*
 
+@AndroidEntryPoint
 class SettingListsActivity : AppCompatActivity() {
     private var projectList=ArrayList<Project>()
 //    private lateinit var liveProjectList:LiveData<ArrayList<Project>>
@@ -39,9 +42,16 @@ class SettingListsActivity : AppCompatActivity() {
         val recycleView=findViewById<RecyclerView>(R.id.listrecyclerView)
         val layoutManager= LinearLayoutManager(this)
         recycleView.layoutManager=layoutManager
-        val adapter= ProjectAdapter(this)
+        val adapter= ProjectAdapter(this, supportFragmentManager)
         adapter.submitList(projectList)
         recycleView.adapter=adapter
+        linearLayout_List.setOnClickListener {
+            var dialog = ListDialogCreate()
+            var args = Bundle()
+            args.putString("title", "添加清单")
+            dialog.arguments = args
+            dialog.show(supportFragmentManager, "listdialog")
+        }
 
 //        liveProjectList.observe(this,{
 //            adapter.submitList(it)

@@ -9,10 +9,10 @@ data class Task (
     val todo_name: String,
     val project_id : Int,
     val todo_priority: TaskPriority,
-    val todo_execute_starttime: OffsetDateTime,
-    val todo_execute_endtime: OffsetDateTime,
+    val todo_execute_starttime: OffsetDateTime?,
+    val todo_execute_endtime: OffsetDateTime?,
     val todo_execute_remind: OffsetDateTime?,
-    val todo_deadline: OffsetDateTime,
-    val todo_deadline_remind: OffsetDateTime,
+    val todo_deadline: OffsetDateTime?,
+    val todo_deadline_remind: OffsetDateTime?,
     val todo_description: String?
 )

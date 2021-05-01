@@ -53,7 +53,7 @@ class ListDialogCreate : DialogFragment() {
         }
         confirmbutton?.setOnClickListener {
             //这里之后要加入对数据库的操作
-            insertTodo()
+//            insertTodo()
             dismiss()
         }
         showbutton = view.findViewById(R.id.color_show)
