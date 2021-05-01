@@ -44,6 +44,11 @@ class TodoItemDetailActivity : AppCompatActivity() {
             popupMenu.menuInflater.inflate(R.menu.todo_item_detail_toobar_menu, popupMenu.menu)
             popupMenu.show()
         }
+        todo_item_detail_toolbar_title.setOnClickListener {
+            val popupMenu = PopupMenu(this, it)
+            popupMenu.menuInflater.inflate(R.menu.todo_item_detail_toobar_menu, popupMenu.menu)
+            popupMenu.show()
+        }
 
         todo_item_detail_add_ddl_constraintLayout.setOnClickListener {
             //For test

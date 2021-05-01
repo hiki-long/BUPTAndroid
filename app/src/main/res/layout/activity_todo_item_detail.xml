@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.1504788" />
 
     <CheckBox
         android:id="@+id/todo_item_detail_checkBox"
@@ -145,10 +145,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
+                    android:src="@drawable/ic_baseline_notifications_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline28"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -170,7 +170,7 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline14"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.444"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_baseline_notifications_24" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline14"
@@ -241,7 +241,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline15"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_baseline_notifications_24" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline17"
@@ -330,7 +330,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_star_32" />
+                app:srcCompat="@drawable/ic_baseline_delete_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.textfield.TextInputEditText
@@ -404,7 +404,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline23"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_deadline" />
 
 
 
@@ -450,7 +450,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.04" />
+                    app:layout_constraintGuide_begin="16dp" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline10"
@@ -475,7 +475,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline25"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_star_32" />
+                    app:srcCompat="@drawable/ic_baseline_today_24" />
 
                 <TextView
                     android:id="@+id/todo_item_detail_add_execute_text"
@@ -495,10 +495,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    android:src="@drawable/ic_close_32"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline10"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_close_32" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -533,7 +533,7 @@
             android:id="@+id/todo_item_detail_toolbar_down_pull"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:src="@drawable/ic_baseline_arrow_drop_down_24"
             tools:layout_editor_absoluteX="133dp"
             tools:layout_editor_absoluteY="28dp" />
 
