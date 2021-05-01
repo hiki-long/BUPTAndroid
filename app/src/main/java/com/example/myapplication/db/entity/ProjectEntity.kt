@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class ProjectEntity(
     @PrimaryKey(autoGenerate = true) var project_id: Int = 0,
     var project_name: String,
-    var project_color: Int
+    var project_color: Int?
 ) {
 
     override fun toString(): String {

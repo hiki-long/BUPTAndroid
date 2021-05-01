@@ -3,7 +3,7 @@ package com.example.myapplication.db.di
 import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.db.dao.TaskDao
 import com.example.myapplication.db.dao.TaskProjectViewDao
-import com.example.myapplication.db.repository.ProjectPepository
+import com.example.myapplication.db.repository.ProjectRepository
 import com.example.myapplication.db.repository.TaskProjectViewRepository
 import com.example.myapplication.db.repository.TaskRepository
 import com.example.myapplication.model.Task
@@ -23,7 +23,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProjectRepository(projectDao: ProjectDao) = ProjectPepository(projectDao)
+    fun provideProjectRepository(projectDao: ProjectDao) = ProjectRepository(projectDao)
 
     @Provides
     @Singleton

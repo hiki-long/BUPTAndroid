@@ -53,7 +53,7 @@ class ListDialogCreate : DialogFragment() {
         }
         confirmbutton?.setOnClickListener {
             //这里之后要加入对数据库的操作
-//            insertTodo()
+            insertList()
             dismiss()
         }
         showbutton = view.findViewById(R.id.color_show)
@@ -68,6 +68,7 @@ class ListDialogCreate : DialogFragment() {
                     .setDefaultColor("")
                     .setColorListener { color, colorHex ->
                         listcolor = colorHex
+                        lastColor = color
                         showbutton?.setBackgroundColor(color)
                     }
                     .show()
@@ -76,9 +77,18 @@ class ListDialogCreate : DialogFragment() {
         return view
     }
 
+    private fun insertList() {
+        val name = testview?.findViewById(R.id.list_name) as EditText
+        testViewModel.InsertList(name.text.toString(),lastColor, emptyList()).observe(
+                viewLifecycleOwner,
+                {
+                    findNavController().navigateUp()
+                }
+        )
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun insertTodo() {
-
         val name = testview?.findViewById(R.id.list_name) as EditText
         testViewModel.InsertTask(OffsetDateTime.now(), TaskState.DONE,"sdf",1, TaskPriority.COMMON, OffsetDateTime.now(),OffsetDateTime.now(),OffsetDateTime.now(),OffsetDateTime.now(),OffsetDateTime.now(),"none").observe(
                 viewLifecycleOwner,

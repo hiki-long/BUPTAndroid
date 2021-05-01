@@ -7,7 +7,7 @@ import com.example.myapplication.model.Project
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ProjectPepository(private val projectDao: ProjectDao){
+class ProjectRepository(private val projectDao: ProjectDao){
     fun getProjects(): Flow<List<Project?>> = projectDao.getProjects().map { list -> list.map { it.toDomain() } }
 
     fun getProject(id: Int): Flow<Project?> = projectDao.getProject(id).map { it.toDomain() }

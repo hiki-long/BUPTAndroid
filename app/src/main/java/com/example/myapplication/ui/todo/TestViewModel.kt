@@ -1,11 +1,11 @@
 package com.example.myapplication.ui.todo
 
-import android.text.Editable
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.example.myapplication.model.Task
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
+import com.example.myapplication.usecase.InsertListCase
 import com.example.myapplication.usecase.InsertTodoCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.OffsetDateTime
@@ -14,7 +14,17 @@ import javax.inject.Inject
 @HiltViewModel
 class TestViewModel @Inject constructor(
         private val setTodo: InsertTodoCase,
+        private val setList: InsertListCase
 ) :ViewModel() {
+
+    fun InsertList(
+            project_name: String,
+            project_color: Int?,
+            tasks: List<Task?>
+    )
+    = liveData {
+        emit(setList.invoke(project_name, project_color,tasks))
+    }
 
     fun InsertTask(
             todo_create_time: OffsetDateTime,
