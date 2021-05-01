@@ -67,9 +67,25 @@ class  MainActivity : AppCompatActivity() {
         }
         mainDrawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
         initSlide()
 
+//        //禁止侧边栏recycleview滑动
+//        todo_slide_recyclerView.layoutManager()
+//        /*
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this,
+//                        LinearLayoutManager.VERTICAL, false) {
+//                    @Override
+//                    public boolean canScrollVertically() {
+//                        return false;
+//                    }
+//                };
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//
+//        adapter = new RecyclerAdapter(this,picList,channelList,girlList,normalList);
+//        recyclerView.setAdapter(adapter);
+//         */
     }
 
     //依附于MainActivity的fragment需要在onViewCreated调用needDrawer函数决定是否打开drawer。
@@ -102,6 +118,7 @@ class  MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 
     /*---------------测试函数---------------*/
     private fun createData(){
