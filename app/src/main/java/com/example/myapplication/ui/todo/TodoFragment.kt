@@ -16,6 +16,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
+import com.example.myapplication.db.dao.TaskDao
+import com.example.myapplication.db.dao.TaskDao_Impl
+import com.example.myapplication.db.repository.TaskRepository
+import com.example.myapplication.model.Task
+import com.example.myapplication.usecase.InsertTodoCase
 import com.example.myapplication.utils.SoftInputUtil
 import com.example.myapplication.utils.SoftInputUtil.ISoftInputChanged
 import com.example.myapplication.utils.SoftKeyBoardListener
@@ -24,12 +29,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kongzue.stacklabelview.interfaces.OnLabelClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_todo.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
     private lateinit var todoViewModel: TodoViewModel
-
     @SuppressLint("ServiceCast")
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -163,7 +169,6 @@ class TodoFragment : Fragment() {
                 }
             })
 
-
             /*
             * @ 模块2 todo日期选择编辑
             * */
@@ -225,15 +230,27 @@ class TodoFragment : Fragment() {
                 MaterialDialog(requireContext()).show {
                     cornerRadius(16f)
                     title(R.string.sort)
-                    listItemsSingleChoice(items = myItems) { dialog, index, text ->
-                        when (index) {
-                            0 -> {
-                                Toast.makeText(this.context, "you clicked 0", Toast.LENGTH_SHORT)
-                                        .show()
+                    listItemsSingleChoice(items = myItems,waitForPositiveButton = false){ dialog, index, text ->
+                        when(index){
+                            0->{
+                                Toast.makeText(this.context,"you clicked 0",Toast.LENGTH_SHORT).show()
+                                dismiss()
+                            }
+                            1->{
+                                dismiss()
+                            }
+                            2->{
+                                dismiss()
+                            }
+                            3->{
+                                dismiss()
+                            }
+                            4->{
+                                dismiss()
                             }
                         }
                     }
-                    positiveButton(R.string.confirm)
+                    negativeButton(R.string.cancel)
                 }
             }
             R.id.showCompleted -> {
