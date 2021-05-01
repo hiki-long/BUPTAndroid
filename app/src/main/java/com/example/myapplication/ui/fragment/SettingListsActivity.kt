@@ -32,7 +32,7 @@ class SettingListsActivity : AppCompatActivity() {
         setting_toolbar.setNavigationIcon(R.drawable.ic_back_24)
         setting_toolbar.setNavigationOnClickListener { this.finish() }
 
-        for(i in 0..4){
+        for(i in 0..6){
             projectList.add(Project(i,"${i}号清单",0))
         }
         //liveProjectList.value=projectList
@@ -48,7 +48,7 @@ class SettingListsActivity : AppCompatActivity() {
 //            adapter.notifyDataSetChanged()
 //        })
 
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.START or ItemTouchHelper.END){
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0){
             override fun onMove(
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder,
@@ -67,13 +67,13 @@ class SettingListsActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 //                var word=allWords.get(viewHolder.adapterPosition)
 //                wordViewModel.deleteWords(word)
-                var p = projectList.removeAt(viewHolder.adapterPosition)
-                Snackbar.make(findViewById(R.id.activity_setting_lists),"删除一条清单", Snackbar.LENGTH_SHORT)
-                        .setAction("撤销"){
-                            projectList.add(p)
-                            adapter.notifyDataSetChanged()
-                        }.show()
-                adapter.notifyDataSetChanged()
+//                var p = projectList.removeAt(viewHolder.adapterPosition)
+//                Snackbar.make(findViewById(R.id.activity_setting_lists),"删除一条清单", Snackbar.LENGTH_SHORT)
+//                        .setAction("撤销"){
+//                            projectList.add(p)
+//                            adapter.notifyDataSetChanged()
+//                        }.show()
+//                adapter.notifyDataSetChanged()
             }
         }).attachToRecyclerView(recycleView)
 
