@@ -1,9 +1,6 @@
 package com.example.myapplication.ui.todo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.myapplication.model.Project
 import com.example.myapplication.model.Task
 import com.example.myapplication.model.TaskPriority
@@ -23,6 +20,10 @@ class TodoViewModel @Inject constructor(
 ) :ViewModel() {
 
     val lists: LiveData<List<Project?>> = getLists().asLiveData()
+
+    var time_point: MutableLiveData<OffsetDateTime?> = MutableLiveData() //时间点
+    var time_point2: MutableLiveData<OffsetDateTime?> = MutableLiveData() //时间端的第二个时间点
+    var time_point3: MutableLiveData<OffsetDateTime?> = MutableLiveData() //自定义时间点
 
     fun InsertList(
             project_name: String,
@@ -48,4 +49,5 @@ class TodoViewModel @Inject constructor(
             =   liveData {
         emit(setTodo.invoke(todo_create_time,todo_state,todo_name,project_id,todo_priority,todo_execute_starttime,todo_execute_endtime,todo_execute_remind,todo_deadline,todo_deadline_remind,todo_description))
     }
+
 }
