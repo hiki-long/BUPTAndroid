@@ -1,10 +1,14 @@
 package com.example.myapplication.ui.todo
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import com.example.myapplication.model.Project
 import com.example.myapplication.model.Task
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
+import com.example.myapplication.usecase.GetListsCase
 import com.example.myapplication.usecase.InsertListCase
 import com.example.myapplication.usecase.InsertTodoCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +18,11 @@ import javax.inject.Inject
 @HiltViewModel
 class TestViewModel @Inject constructor(
         private val setTodo: InsertTodoCase,
-        private val setList: InsertListCase
+        private val setList: InsertListCase,
+        getLists: GetListsCase,
 ) :ViewModel() {
+
+    val lists: LiveData<List<Project?>> = getLists().asLiveData()
 
     fun InsertList(
             project_name: String,

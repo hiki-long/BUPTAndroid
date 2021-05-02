@@ -2,6 +2,7 @@ package com.example.myapplication.db.di
 
 import com.example.myapplication.db.repository.ProjectRepository
 import com.example.myapplication.db.repository.TaskRepository
+import com.example.myapplication.usecase.GetListsCase
 import com.example.myapplication.usecase.InsertListCase
 import com.example.myapplication.usecase.InsertTodoCase
 import dagger.Module
@@ -26,5 +27,10 @@ object UseCaseModule {
             projectRepository: ProjectRepository
     ) = InsertListCase(projectRepository)
 
+    @Provides
+    @ViewModelScoped
+    fun provideGetProjects(
+            projectRepository: ProjectRepository
+    ) = GetListsCase(projectRepository)
 
 }

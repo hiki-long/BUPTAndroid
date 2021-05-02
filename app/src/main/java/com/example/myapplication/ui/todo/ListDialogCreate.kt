@@ -33,7 +33,7 @@ class ListDialogCreate : DialogFragment() {
     private var lastColor: Int? = null
     private lateinit var linearlayout: LinearLayout
     private var testview : View? = null
-    private val testViewModel by viewModels<TestViewModel>()
+    private val testViewModel by viewModels<TodoViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null){

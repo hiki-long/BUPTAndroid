@@ -2,6 +2,7 @@ package com.example.myapplication.ui.todo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
@@ -12,15 +13,14 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
+import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
-import com.example.myapplication.db.dao.TaskDao
-import com.example.myapplication.db.dao.TaskDao_Impl
-import com.example.myapplication.db.repository.TaskRepository
-import com.example.myapplication.model.Task
-import com.example.myapplication.usecase.InsertTodoCase
+import com.example.myapplication.model.TaskPriority
+import com.example.myapplication.model.TaskState
 import com.example.myapplication.utils.SoftInputUtil
 import com.example.myapplication.utils.SoftInputUtil.ISoftInputChanged
 import com.example.myapplication.utils.SoftKeyBoardListener
@@ -29,8 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kongzue.stacklabelview.interfaces.OnLabelClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_todo.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
 
 
 @AndroidEntryPoint
@@ -47,9 +46,6 @@ class TodoFragment : Fragment() {
             ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
         val textView: TextView = root.findViewById(R.id.text_todo)
-        todoViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
 
         val remind_time = root.findViewById<ImageView>(R.id.remind_time)
         //这里是popumMenu使用的例子，仅供参考
@@ -178,6 +174,18 @@ class TodoFragment : Fragment() {
 //            args.putInt("mode",1)
 //            dialog.arguments = args
 //            dialog.show(parentFragmentManager, "timeselect")
+
+            /*
+              @ 模块3 project数据获取,只有list数据更新的时候observer才能看到,初始化的时候会更新一次
+             */
+            todoViewModel.lists.observe( viewLifecycleOwner,  {
+                    for (value in it)
+                    {
+                        Log.d("message","$value")
+                    }
+                }
+            )
+
         }
         return root
     }
@@ -258,4 +266,6 @@ class TodoFragment : Fragment() {
         }
         return true;
     }
+
+
 }
