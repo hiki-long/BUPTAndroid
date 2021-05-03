@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -19,7 +20,9 @@ import com.example.myapplication.ui.todo.TodoItem
 import com.example.myapplication.ui.todo.TodoItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_setting_lists.*
 import kotlinx.android.synthetic.main.fragment_todo_slide.*
+import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 
 @AndroidEntryPoint
 class  MainActivity : AppCompatActivity() {
@@ -102,7 +105,43 @@ class  MainActivity : AppCompatActivity() {
 
     }
 
+    fun setTopListVisibility(){
+        var shp=getSharedPreferences("list_settings", Context.MODE_PRIVATE)
+        if(shp.getBoolean("autohind",false)){
+            todo_slide_all.visibility = if (todo_slide_all.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+            todo_slide_planned.visibility =
+                if (todo_slide_planned.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+            todo_slide_important.visibility =
+                if (todo_slide_important.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+            todo_slide_finished.visibility =
+                if (todo_slide_finished.todo_item_list_item_view_num.text!="0") View .VISIBLE else View.GONE
+            todo_slide_today.visibility =
+                if (todo_slide_today.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+        }
+        else {
+            todo_slide_all.visibility = if (shp.getBoolean("all", true)) View.VISIBLE else View.GONE
+            todo_slide_planned.visibility =
+                if (shp.getBoolean("planned", true)) View.VISIBLE else View.GONE
+            todo_slide_important.visibility =
+                if (shp.getBoolean("important", true)) View.VISIBLE else View.GONE
+            todo_slide_finished.visibility =
+                if (shp.getBoolean("completed", true)) View.VISIBLE else View.GONE
+            todo_slide_today.visibility =
+                if (shp.getBoolean("today", true)) View.VISIBLE else View.GONE
+        }
+    }
+
     fun initSlide(){
+        var shpEdit=getSharedPreferences("list_settings", Context.MODE_PRIVATE).edit()
+        shpEdit.putBoolean("all", true)
+        shpEdit.putBoolean("planned", true)
+        shpEdit.putBoolean("important", true)
+        shpEdit.putBoolean("completed", true)
+        shpEdit.putBoolean("today", true)
+        shpEdit.putBoolean("autohind",false)
+        shpEdit.apply()
+
+        setTopListVisibility()
         createData()
         val layoutManager=LinearLayoutManager(this)
         todo_slide_recyclerView.layoutManager=layoutManager
@@ -120,11 +159,15 @@ class  MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        setTopListVisibility()
+    }
 
     /*---------------测试函数---------------*/
     private fun createData(){
         var count:Int=1
-        repeat(3){
+        repeat(100){
             todoItemList.add(TodoItem("清单$count",10))
             count+=1
         }

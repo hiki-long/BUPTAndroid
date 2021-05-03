@@ -58,6 +58,16 @@
 
             </com.example.myapplication.ui.todo.TodoItemView>
 
+
+
+            <com.example.myapplication.ui.todo.TodoItemView
+                android:id="@+id/todo_slide_finished"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_finished_24"
+                app:description="@string/collectbox_finished"
+                app:num="0"/>
+
             <com.example.myapplication.ui.todo.TodoItemView
                 android:id="@+id/todo_slide_collectbox"
                 android:layout_width="match_parent"
@@ -66,31 +76,24 @@
                 app:description="@string/collectbox_collectbox"
                 app:num="0" />
 
-            <com.example.myapplication.ui.todo.TodoItemView
-                android:id="@+id/todo_slide_finished"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_finished_24"
-                app:description="@string/collectbox_finished"
-                app:num="0">
-
-            </com.example.myapplication.ui.todo.TodoItemView>
-
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/black" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/todo_slide_recyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:nestedScrollingEnabled="false"
-                app:layout_constrainedHeight="true">
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todo_slide_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingTop="5dp">
+                </androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
 
-            </androidx.recyclerview.widget.RecyclerView>
+
 
             <com.example.myapplication.ui.todo.TodoItemView
                 android:id="@+id/todo_slide_add"

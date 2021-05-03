@@ -58,10 +58,10 @@ class SettingListsActivity : AppCompatActivity() {
         var shp=getSharedPreferences("list_settings", Context.MODE_PRIVATE)
         switch_all.isChecked=shp.getBoolean("all",true)
         switch_today.isChecked=shp.getBoolean("today",true)
-        switch_planed.isChecked=shp.getBoolean("planed",true)
+        switch_planed.isChecked=shp.getBoolean("planned",true)
         switch_important.isChecked=shp.getBoolean("important",true)
         switch_completed.isChecked=shp.getBoolean("completed",true)
-        switch_autohind.isChecked=shp.getBoolean("autohind",true)
+        switch_autohind.isChecked=shp.getBoolean("autohind",false)
         var editor=shp.edit()
 
         switch_all.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -73,7 +73,7 @@ class SettingListsActivity : AppCompatActivity() {
             editor.apply()
         }
         switch_planed.setOnCheckedChangeListener { buttonView, isChecked ->
-            editor.putBoolean("planed", isChecked)
+            editor.putBoolean("planned", isChecked)
             editor.apply()
         }
         switch_important.setOnCheckedChangeListener { buttonView, isChecked ->
