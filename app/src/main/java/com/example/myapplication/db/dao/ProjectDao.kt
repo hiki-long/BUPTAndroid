@@ -18,9 +18,9 @@ interface ProjectDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertProject(project: ProjectEntity): Long
 
-    //Color不清楚表示形式，这里暂定用十六进制的RGB来表示
-    @Query("Update project SET project_color = :color")
-    fun setProjectColor(color: Int)
+    //Color表示为0xFF(R,G,B)的数值，因此Int是负数
+    @Query("Update project SET project_color = :color WHERE project_id = :id")
+    fun setProjectColor(id: Int, color: Int)
 
     @Query("Update project SET project_name = :name WHERE project_id = :id")
     fun setProjectName(id: Int, name: String)
