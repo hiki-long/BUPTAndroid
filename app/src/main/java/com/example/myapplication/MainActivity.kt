@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -18,6 +20,7 @@ import com.example.myapplication.ui.fragment.SettingListsActivity
 import com.example.myapplication.ui.todo.ListDialogCreate
 import com.example.myapplication.ui.todo.TodoItem
 import com.example.myapplication.ui.todo.TodoItemAdapter
+import com.example.myapplication.ui.todo.TodoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_setting_lists.*
@@ -27,9 +30,12 @@ import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 @AndroidEntryPoint
 class  MainActivity : AppCompatActivity() {
     private val todoItemList=ArrayList<TodoItem>()
+    private lateinit var todoViewModel: TodoViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        todoViewModel =
+            ViewModelProvider(this).get(TodoViewModel::class.java)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -167,7 +173,7 @@ class  MainActivity : AppCompatActivity() {
     /*---------------测试函数---------------*/
     private fun createData(){
         var count:Int=1
-        repeat(100){
+        repeat(10){
             todoItemList.add(TodoItem("清单$count",10))
             count+=1
         }
@@ -181,5 +187,13 @@ class  MainActivity : AppCompatActivity() {
         args.putString("title", "添加清单")
         dialog.arguments = args
         dialog.show(supportFragmentManager, "listdialog")
+
+//        todoViewModel.lists.observe( this,  {
+//            for (value in it)
+//            {
+//                Log.d("message","$value")
+//            }
+//        }
+//        )
     }
 }
