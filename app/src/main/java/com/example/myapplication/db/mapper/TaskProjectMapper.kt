@@ -1,9 +1,12 @@
 package com.example.myapplication.db.mapper
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.myapplication.db.view.TaskProjectView
 import com.example.myapplication.model.TaskProject
 
 object TaskProjectMapper {
+    @RequiresApi(Build.VERSION_CODES.O)
     fun TaskProjectView?.toDomain(): TaskProject? = this?.let{
         TaskProject(
             project_id = it.task.project_id,
