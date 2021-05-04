@@ -9,9 +9,8 @@ class InsertListCase (private val projectRepository: ProjectRepository) {
             project_name: String,
             project_color: Int?,
             tasks: List<Task?> = emptyList()
-    ):Long? =  projectRepository.insert(Project(
+    ):Long? =projectRepository.insert(Project(
             project_name = project_name,
             project_color = project_color,
-            tasks = tasks
-    ))
+            tasks = tasks))
 }

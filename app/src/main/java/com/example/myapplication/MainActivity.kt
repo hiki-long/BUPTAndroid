@@ -31,11 +31,25 @@ import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 class  MainActivity : AppCompatActivity() {
     private val todoItemList=ArrayList<TodoItem>()
     private lateinit var todoViewModel: TodoViewModel
+    private lateinit var adapter:TodoItemAdapter;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        adapter=initSlide()
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
+
+        todoViewModel.lists.observe( this,  {
+            todoItemList.clear()
+            for (value in it)
+            {
+                if (value != null) {
+                    todoItemList.add(TodoItem(value.project_name,value.tasks.size))
+                }
+                adapter.notifyDataSetChanged()
+            }
+        }
+        )
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -77,25 +91,8 @@ class  MainActivity : AppCompatActivity() {
         }
         mainDrawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        initSlide()
 
-//        //禁止侧边栏recycleview滑动
-//        todo_slide_recyclerView.layoutManager()
-//        /*
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this,
-//                        LinearLayoutManager.VERTICAL, false) {
-//                    @Override
-//                    public boolean canScrollVertically() {
-//                        return false;
-//                    }
-//                };
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//
-//        adapter = new RecyclerAdapter(this,picList,channelList,girlList,normalList);
-//        recyclerView.setAdapter(adapter);
-//         */
+
     }
 
     //依附于MainActivity的fragment需要在onViewCreated调用needDrawer函数决定是否打开drawer。
@@ -137,7 +134,7 @@ class  MainActivity : AppCompatActivity() {
         }
     }
 
-    fun initSlide(){
+    fun initSlide():TodoItemAdapter{
         var shpEdit=getSharedPreferences("list_settings", Context.MODE_PRIVATE).edit()
         shpEdit.putBoolean("all", true)
         shpEdit.putBoolean("planned", true)
@@ -156,13 +153,13 @@ class  MainActivity : AppCompatActivity() {
 
         todo_slide_add.setOnClickListener{
             addData()
-            adapter.notifyDataSetChanged()
         }
 
         todo_slide_setting.setOnClickListener{
             var intent= Intent(this,SettingListsActivity::class.java)
             startActivity(intent)
         }
+        return adapter
     }
 
     override fun onResume() {
@@ -170,13 +167,9 @@ class  MainActivity : AppCompatActivity() {
         setTopListVisibility()
     }
 
-    /*---------------测试函数---------------*/
+
     private fun createData(){
-        var count:Int=1
-        repeat(10){
-            todoItemList.add(TodoItem("清单$count",10))
-            count+=1
-        }
+
     }
 
     private fun addData(){
@@ -187,13 +180,5 @@ class  MainActivity : AppCompatActivity() {
         args.putString("title", "添加清单")
         dialog.arguments = args
         dialog.show(supportFragmentManager, "listdialog")
-
-//        todoViewModel.lists.observe( this,  {
-//            for (value in it)
-//            {
-//                Log.d("message","$value")
-//            }
-//        }
-//        )
     }
 }
