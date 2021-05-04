@@ -4,6 +4,7 @@ import com.example.myapplication.db.repository.ProjectRepository;
 import com.example.myapplication.model.Project;
 import com.example.myapplication.model.Task
 
+//插入list
 class InsertListCase (private val projectRepository: ProjectRepository) {
     suspend operator fun invoke(
             project_name: String,

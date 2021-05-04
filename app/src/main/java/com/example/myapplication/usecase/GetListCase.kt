@@ -4,9 +4,9 @@ import com.example.myapplication.db.repository.ProjectRepository
 import com.example.myapplication.model.Project
 import kotlinx.coroutines.flow.Flow
 
-//获取所有的list信息
-class GetListsCase (
+//获得指定id的清单信息
+class GetListCase (
         val projectRepository: ProjectRepository
 ) {
-    operator fun invoke(): Flow<List<Project?>> = projectRepository.getProjects()
+    operator fun invoke(id: Int): Flow<Project?> = projectRepository.getProject(id)
 }

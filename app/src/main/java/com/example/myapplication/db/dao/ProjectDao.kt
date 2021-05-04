@@ -15,6 +15,9 @@ interface ProjectDao {
     @Query("DELETE FROM project WHERE project_id = :id")
     fun deleteProject(id: Int)
 
+    @Query("DELETE FROM project")
+    fun deleteAllProject()
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertProject(project: ProjectEntity): Long
 

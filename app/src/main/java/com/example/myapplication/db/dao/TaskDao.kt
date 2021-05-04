@@ -2,7 +2,10 @@ package com.example.myapplication.db.dao
 
 import androidx.room.*
 import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.model.TaskPriority
+import com.example.myapplication.model.TaskState
 import kotlinx.coroutines.flow.Flow
+import java.time.OffsetDateTime
 
 @Dao
 interface TaskDao {
@@ -19,11 +22,8 @@ interface TaskDao {
     fun insertTask(task: TaskEntity): Long
 
     //更新task状态
-    @Query("UPDATE task SET todo_state = 'DOING' WHERE todo_id = :id")
-    fun setTaskDoing(id: Int)
-
-    @Query("UPDATE task SET todo_state = 'DONE' WHERE todo_id = :id")
-    fun setTaskDone(id: Int)
+    @Query("UPDATE task SET todo_state = :todo_state WHERE todo_id = :todo_id")
+    fun setTodoState(todo_id: Int, todo_state: TaskState)
 
     //更新task名字
     @Query("UPDATE task SET todo_name = :name WHERE todo_id = :id")
@@ -32,4 +32,33 @@ interface TaskDao {
     @Update
     fun updateTask(task: TaskEntity)
 
+    @Query("SELECT * FROM task WHERE project_id = :project_id")
+    fun getOneProjectTasks(project_id: Int): Flow<List<TaskEntity>>
+
+    @Query("DELETE FROM task")
+    fun deleteAllTasks()
+
+    @Query("UPDATE task SET todo_description = :todo_description WHERE todo_id = :todo_id")
+    fun updateDesc(todo_id: Int, todo_description: String?)
+
+    @Query("UPDATE task SET project_id = :project_id WHERE todo_id = :todo_id")
+    fun updateTaskRelateProject(todo_id:Int, project_id: Int)
+
+    @Query("UPDATE task SET todo_deadline = :todo_deadline WHERE todo_id = :todo_id")
+    fun updateDeadLineTime(todo_id: Int, todo_deadline: OffsetDateTime?)
+
+    @Query("UPDATE task SET todo_deadline_remind = :todo_deadline_remind WHERE todo_id = :todo_id")
+    fun updateDeadLineRemind(todo_id: Int, todo_deadline_remind: OffsetDateTime?)
+
+    @Query("UPDATE task SET todo_execute_remind = :todo_execute_remind WHERE todo_id = :todo_id")
+    fun updateExecuteRemindTime(todo_id: Int, todo_execute_remind: OffsetDateTime?)
+
+    @Query("UPDATE task SET todo_execute_starttime = :todo_execute_starttime WHERE todo_id = :todo_id")
+    fun updateExecuteStartTime(todo_id: Int, todo_execute_starttime: OffsetDateTime?)
+
+    @Query("UPDATE task SET todo_execute_endtime = :todo_execute_endtime WHERE todo_id = :todo_id")
+    fun updateExecuteEndTime(todo_id: Int, todo_execute_endtime: OffsetDateTime?)
+
+    @Query("UPDATE task SET todo_priority = :todo_priority WHERE todo_id = :todo_id")
+    fun updatePriority(todo_id: Int, todo_priority: TaskPriority)
 }
