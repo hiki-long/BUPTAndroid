@@ -26,7 +26,7 @@
         tools:text="待办事例" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/todo_importance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
@@ -99,7 +99,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline12">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/todo_item_detail_add_notice_Constraintlayout"
+                android:id="@+id/todo_remind_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible"
@@ -158,7 +158,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/todo_item_detail_add_notice_Constraintlayout">
+                app:layout_constraintTop_toBottomOf="@+id/todo_remind_layout">
 
                 <ImageView
                     android:id="@+id/imageView4"
@@ -334,7 +334,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/todo_item_detail_remark_editText"
+            android:id="@+id/text_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
@@ -366,7 +366,7 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/todo_item_detail_add_ddl_constraintLayout"
+                android:id="@+id/todo_end_time_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline22"
@@ -396,7 +396,7 @@
                     app:layout_constraintGuide_percent="0.18" />
 
                 <ImageView
-                    android:id="@+id/imageView10"
+                    android:id="@+id/img_end_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -435,7 +435,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/todo_item_detail_add_execute_constraintLayout"
+                android:id="@+id/todo_execute_time_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"

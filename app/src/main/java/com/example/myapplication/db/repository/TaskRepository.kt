@@ -1,6 +1,7 @@
 package com.example.myapplication.db.repository
 
 import com.example.myapplication.db.dao.TaskDao
+import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.db.mapper.TaskMapper.toDomain
 import com.example.myapplication.db.mapper.TaskMapper.toEntity
 import com.example.myapplication.model.Task

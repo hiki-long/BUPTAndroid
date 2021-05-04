@@ -2,16 +2,13 @@ package com.example.myapplication.ui.todo
 
 import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_todo_item_detail.*
 
 class TodoItemDetailActivity : AppCompatActivity() {
@@ -50,12 +47,12 @@ class TodoItemDetailActivity : AppCompatActivity() {
             popupMenu.show()
         }
 
-        todo_item_detail_add_ddl_constraintLayout.setOnClickListener {
+        todo_end_time_layout.setOnClickListener {
             //For test
             todo_item_detail_add_ddl_text.text = "4月18日 周日 到期"
             todo_item_detail_add_ddl_del.visibility = View.VISIBLE
         }
-        todo_item_detail_add_execute_constraintLayout.setOnClickListener {
+        todo_execute_time_layout.setOnClickListener {
             //For test
             todo_item_detail_add_execute_text.text = "4月18日 周日 xx:xx-xx:xx 执行"
             todo_item_detail_add_execute_del.visibility = View.VISIBLE
@@ -70,9 +67,9 @@ class TodoItemDetailActivity : AppCompatActivity() {
             todo_item_detail_add_execute_del.visibility = View.GONE
         }
 
-        todo_item_detail_add_notice_Constraintlayout.setOnClickListener {
+        todo_remind_layout.setOnClickListener {
             //For test
-            todo_item_detail_add_notice_Constraintlayout.visibility = View.GONE
+            todo_remind_layout.visibility = View.GONE
             todo_item_detail_ddl_notice_ConstraintLayout.visibility = View.VISIBLE
             todo_item_detail_execute_notice_ConstraintLayout.visibility = View.VISIBLE
             noticeNum = 2
@@ -81,13 +78,13 @@ class TodoItemDetailActivity : AppCompatActivity() {
         todo_item_detail_ddl_notice_del.setOnClickListener {
             todo_item_detail_ddl_notice_ConstraintLayout.visibility = View.GONE
             noticeNum -= 1
-            todo_item_detail_add_notice_Constraintlayout.visibility = View.VISIBLE
+            todo_remind_layout.visibility = View.VISIBLE
         }
 
         todo_item_detail_execute_notice_del.setOnClickListener {
             todo_item_detail_execute_notice_ConstraintLayout.visibility = View.GONE
             noticeNum -= 1
-            todo_item_detail_add_notice_Constraintlayout.visibility = View.VISIBLE
+            todo_remind_layout.visibility = View.VISIBLE
         }
 
         todo_item_detail_delete.setOnClickListener {

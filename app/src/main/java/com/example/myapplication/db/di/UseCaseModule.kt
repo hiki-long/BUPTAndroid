@@ -79,4 +79,10 @@ object UseCaseModule {
             taskRepository: TaskRepository
     ) = DeleteTodoCase(taskRepository)
 
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetTasks(
+            taskRepository: TaskRepository
+    ) = GetTasksCase(taskRepository)
 }
