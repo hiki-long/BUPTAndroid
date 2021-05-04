@@ -2,6 +2,7 @@ package com.example.myapplication.db.dao
 
 import androidx.room.*
 import com.example.myapplication.db.entity.ProjectEntity
+import com.example.myapplication.db.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,6 +12,9 @@ interface ProjectDao {
 
     @Query("SELECT * FROM project ORDER BY project_id")
     fun getProjects(): Flow<List<ProjectEntity>>
+
+    @Query("SELECT * FROM project WHERE project_name=:name")
+    fun getProjectsByName(name:String):List<ProjectEntity>
 
     @Query("DELETE FROM project WHERE project_id = :id")
     fun deleteProject(id: Int)
@@ -27,6 +31,7 @@ interface ProjectDao {
 
     @Query("Update project SET project_name = :name WHERE project_id = :id")
     fun setProjectName(id: Int, name: String)
+
 
     @Update
     fun updateProject(project: ProjectEntity)

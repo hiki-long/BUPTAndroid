@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -83,6 +80,11 @@ class ListDialogCreate : DialogFragment() {
                 viewLifecycleOwner,
                 {
                     findNavController().navigateUp()
+
+                    if(it?.compareTo(-1) == 0)
+                    {
+                        Toast.makeText(activity,"新增失败：已有同名清单",Toast.LENGTH_SHORT).show()
+                    }
                 }
         )
     }

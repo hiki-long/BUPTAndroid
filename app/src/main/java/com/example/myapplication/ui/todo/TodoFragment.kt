@@ -145,7 +145,7 @@ class TodoFragment : Fragment() {
                     }
                 }
             })
-
+            Log.d("message","测试测试")
             /**
              * 添加软键盘监听
              */

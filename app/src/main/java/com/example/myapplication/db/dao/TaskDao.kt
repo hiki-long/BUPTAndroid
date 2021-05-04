@@ -18,6 +18,7 @@ interface TaskDao {
     @Query("SELECT * FROM task ORDER BY datetime(todo_create_time)")
     fun getTasks(): Flow<List<TaskEntity>>
 
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertTask(task: TaskEntity): Long
 
