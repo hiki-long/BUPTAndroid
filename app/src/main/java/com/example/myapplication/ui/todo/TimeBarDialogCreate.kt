@@ -14,6 +14,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
+import com.example.myapplication.ui.fragment.AddTaskActivity
+import com.example.myapplication.ui.fragment.AddTaskViewModel
 import com.loper7.date_time_picker.DateTimeConfig
 import com.loper7.date_time_picker.DateTimePicker
 import java.text.SimpleDateFormat
@@ -24,7 +26,7 @@ import java.util.*
 
 class TimeBarDialogCreate : DialogFragment() {
     private var CurrentTime: Long? = null
-    private lateinit var viewmodel: TodoViewModel
+    private lateinit var viewmodel: AddTaskViewModel
     //这里是时间选择框弹出的对话框,根据时间选择有3种模式
     /*
     * 1.当天时间
@@ -35,7 +37,7 @@ class TimeBarDialogCreate : DialogFragment() {
     private var mode :Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewmodel = ViewModelProvider(requireActivity()).get(TodoViewModel::class.java)
+        viewmodel = ViewModelProvider(requireActivity()).get(AddTaskViewModel::class.java)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

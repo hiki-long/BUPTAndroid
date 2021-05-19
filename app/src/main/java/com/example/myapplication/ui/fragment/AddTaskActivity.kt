@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_setting_lists.*
 
 class AddTaskActivity : AppCompatActivity() {
-    private lateinit var todoViewModel: TodoViewModel
+    private lateinit var addtaskViewModel: AddTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
@@ -28,10 +29,8 @@ class AddTaskActivity : AppCompatActivity() {
         addTask_toolbar.setNavigationIcon(R.drawable.ic_back_24)
         setSupportActionBar(addTask_toolbar)
         addTask_toolbar.setNavigationOnClickListener { this.finish() }
+        addtaskViewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
 
-
-//        todoViewModel =
-//            ViewModelProvider(this).get(TodoViewModel::class.java)
         todo_end_time.setOnClickListener {
             val dialog = DaySelectDialogCreate()
             val args = Bundle()

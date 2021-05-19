@@ -5,15 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.todo_calendar.*
 
 class TimeSelectDialogCreate : DialogFragment() {
     private var mode : Int? = null
     private var title: String? = null
+    private lateinit var viewmodel: TodoViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(arguments != null)
+        {
+            mode = arguments?.getInt("mode")
+        }
+//        viewmodel = ViewModelProvider(requireActivity()).get(TodoViewModel::class.java)
     }
     //这里是弹出提前提醒的选择框
 
@@ -29,9 +39,10 @@ class TimeSelectDialogCreate : DialogFragment() {
         cancel.setOnClickListener {
             dismiss()
         }
-        confirm.setOnClickListener {
-            dismiss()
-        }
+//        confirm.setOnClickListener {
+//
+//            dismiss()
+//        }
         selecttime.setOnClickListener {
             val temp = Bundle()
             temp.putInt("mode", 3)
@@ -40,7 +51,41 @@ class TimeSelectDialogCreate : DialogFragment() {
             timepickdialog.show(parentFragmentManager, "timeselect")
             dismiss()
         }
+        val radio_group = view.findViewById<RadioGroup>(R.id.select_time_group)
+//        radio_group.setOnCheckedChangeListener { group, checkedId ->
+//            val radio: RadioButton = view.findViewById(checkedId)
+//                    Toast.makeText(view.context," On checked change : ${radio.text}",
+//                        Toast.LENGTH_SHORT).show()
+//        }
+        // Get radio group selected status and text using button click event
+        confirm.setOnClickListener{
+            // Get the checked radio button id from radio group
+            var id: Int = radio_group.checkedRadioButtonId
+            if (id!=-1){ // If any radio button checked from radio group
+                // Get the instance of radio button using id
+                val radio:RadioButton = view.findViewById(id)
+                if(radio.text != "无"){
+                    if(mode == 1)
+                    {
+//                        viewmodel.pre_time.value = radio.text.toString()
+                    }
+                    else {
 
+                    }
+                }
+            }else{
+                // If no radio button checked in this radio group
+
+            }
+
+        }
         return view
     }
+
+
+
+
+
 }
+
+

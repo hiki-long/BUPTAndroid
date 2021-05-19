@@ -12,7 +12,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.myapplication.R
+import com.example.myapplication.ui.fragment.AddTaskViewModel
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -20,7 +22,8 @@ import java.time.format.DateTimeFormatter
 class DaySelectDialogCreate : DialogFragment() {
     private var mode : Int? = null
     private var title: String? = null
-    private lateinit var viewmodel: TodoViewModel
+//    private lateinit var viewmodel: TodoViewModel
+    private lateinit var viewmodel: AddTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null)
@@ -28,7 +31,8 @@ class DaySelectDialogCreate : DialogFragment() {
             title = arguments?.getString("title")
             mode = arguments?.getInt("mode")
         }
-        viewmodel = ViewModelProvider(requireActivity()).get(TodoViewModel::class.java)
+//        viewmodel = ViewModelProvider(requireActivity()).get(TodoViewModel::class.java)
+        viewmodel = ViewModelProvider(requireActivity()).get(AddTaskViewModel::class.java)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
