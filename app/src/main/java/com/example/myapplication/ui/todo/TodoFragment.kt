@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.PopupMenu
@@ -14,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +26,12 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
+import com.example.myapplication.model.TaskPriority
+import com.example.myapplication.model.TaskState
+import com.example.myapplication.utils.SoftInputUtil
+import com.example.myapplication.utils.SoftInputUtil.ISoftInputChanged
+import com.example.myapplication.utils.SoftKeyBoardListener
+import com.example.myapplication.utils.SoftKeyBoardListener.OnSoftKeyBoardChangeListener
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.ui.adapter.TaskAdapter
 import com.example.myapplication.ui.fragment.AddTaskActivity
@@ -31,10 +41,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.kongzue.stacklabelview.interfaces.OnLabelClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_todo.*
+import java.time.OffsetDateTime
+
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
-    private lateinit var todoViewModel: TodoViewModel
+   // private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var tasklist:ArrayList<TaskEntity>
     private var adapter= TaskAdapter()
@@ -46,12 +58,13 @@ class TodoFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        todoViewModel =
-            ViewModelProvider(this).get(TodoViewModel::class.java)
+//        todoViewModel =
+//            ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
-        todoViewModel.text.observe(viewLifecycleOwner, Observer {
-            //textView.text = it
-        })
+//        val textView: TextView = root.findViewById(R.id.text_todo)
+//        todoViewModel.text.observe(viewLifecycleOwner, Observer {
+//            //textView.text = it
+//        })
 
         mainViewModel.getTasks().observe(
                 viewLifecycleOwner,
@@ -62,9 +75,14 @@ class TodoFragment : Fragment() {
                 }
         )
 
-
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
+            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,"测试实例1",1,TaskPriority.COMMON, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(),"hhhhhh").observe(
+                    viewLifecycleOwner,
+                    {
+                        findNavController().navigateUp()
+                    }
+            )
             var intent= Intent(requireActivity(), AddTaskActivity::class.java)
             startActivity(intent)
         }

@@ -13,6 +13,8 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTasks(): Flow<List<TaskEntity>> =taskDao.getTasks()
 
+    fun getTasks(): Flow<List<TaskEntity>> =taskDao.getTasks()
+
     suspend fun deleteTask(id: Int) = taskDao.deleteTask(id)
 
     suspend fun insert(task: Task):Long ? = task.toEntity()?.let { taskDao.insertTask(it) }
