@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.PopupMenu
@@ -45,7 +46,7 @@ import java.time.OffsetDateTime
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
-    private lateinit var todoViewModel: TodoViewModel
+   // private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var tasklist:ArrayList<TaskEntity>
     private var adapter= TaskAdapter()
@@ -57,13 +58,13 @@ class TodoFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        todoViewModel =
-            ViewModelProvider(this).get(TodoViewModel::class.java)
+//        todoViewModel =
+//            ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
-        val textView: TextView = root.findViewById(R.id.text_todo)
-        todoViewModel.text.observe(viewLifecycleOwner, Observer {
-            //textView.text = it
-        })
+//        val textView: TextView = root.findViewById(R.id.text_todo)
+//        todoViewModel.text.observe(viewLifecycleOwner, Observer {
+//            //textView.text = it
+//        })
 
         mainViewModel.getTasks().observe(
                 viewLifecycleOwner,
@@ -72,9 +73,16 @@ class TodoFragment : Fragment() {
                     adapter.submitList(tasklist)
                     findNavController().navigateUp()
                 }
+        )
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
+            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,"测试实例1",1,TaskPriority.COMMON, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(),"hhhhhh").observe(
+                    viewLifecycleOwner,
+                    {
+                        findNavController().navigateUp()
+                    }
+            )
             var intent= Intent(requireActivity(), AddTaskActivity::class.java)
             startActivity(intent)
         }
@@ -195,6 +203,4 @@ class TodoFragment : Fragment() {
         }
         return true;
     }
-
-
 }

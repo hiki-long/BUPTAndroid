@@ -16,6 +16,8 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTaskInProject(project_id: Int): Flow<List<Task?>> = taskDao.getOneProjectTasks(project_id).map { list -> list.map { it.toDomain() } }
 
+    fun getTasks(): Flow<List<TaskEntity>> =taskDao.getTasks()
+
     suspend fun deleteTask(id: Int) = taskDao.deleteTask(id)
 
     suspend fun insert(task: Task): Long? = task.toEntity()?.let { taskDao.insertTask(it) }
