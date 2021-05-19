@@ -46,7 +46,7 @@ import java.time.OffsetDateTime
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
-   // private lateinit var todoViewModel: TodoViewModel
+    private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var tasklist:ArrayList<TaskEntity>
     private var adapter= TaskAdapter()
@@ -58,8 +58,8 @@ class TodoFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-//        todoViewModel =
-//            ViewModelProvider(this).get(TodoViewModel::class.java)
+        todoViewModel =
+            ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
 //        val textView: TextView = root.findViewById(R.id.text_todo)
 //        todoViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -137,6 +137,7 @@ class TodoFragment : Fragment() {
 //                var word=allWords.get(viewHolder.adapterPosition)
 //                wordViewModel.deleteWords(word)
                 var p = tasklist.removeAt(viewHolder.adapterPosition)
+
                 Snackbar.make(requireActivity().findViewById(R.id.fragment_todo),"删除一项task", Snackbar.LENGTH_SHORT)
                         .setAction("撤销"){
                             tasklist.add(p)

@@ -4,16 +4,22 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.ui.todo.DaySelectDialogCreate
 import com.example.myapplication.ui.todo.TimeBarDialogCreate
+import com.example.myapplication.ui.todo.TodoViewModel
+import com.example.myapplication.viewmodel.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_setting_lists.*
 
 class AddTaskActivity : AppCompatActivity() {
+    private lateinit var todoViewModel: TodoViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
@@ -23,6 +29,9 @@ class AddTaskActivity : AppCompatActivity() {
         setSupportActionBar(addTask_toolbar)
         addTask_toolbar.setNavigationOnClickListener { this.finish() }
 
+
+//        todoViewModel =
+//            ViewModelProvider(this).get(TodoViewModel::class.java)
         todo_end_time.setOnClickListener {
             val dialog = DaySelectDialogCreate()
             val args = Bundle()

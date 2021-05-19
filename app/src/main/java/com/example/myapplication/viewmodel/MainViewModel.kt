@@ -18,6 +18,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
         private val insertTodoCase: InsertTodoCase,
         private val getTasks: GetTasksCase,
+        //private val d
 ) : ViewModel() {
     fun insertTask(todo_create_time: OffsetDateTime,
                    todo_state: TaskState,
@@ -36,5 +37,5 @@ class MainViewModel @Inject constructor(
             }
 
     fun getTasks(): LiveData<List<TaskEntity>> = getTasks.invoke().asLiveData()
-
+    //fun deleteTask(id: Int) = taskDao.deleteTask(id)
 }
