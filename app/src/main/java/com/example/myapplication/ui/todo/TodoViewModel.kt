@@ -21,10 +21,6 @@ class TodoViewModel @Inject constructor(
 
     val lists: LiveData<List<Project?>> = getLists().asLiveData()
 
-    var time_point: MutableLiveData<OffsetDateTime?> = MutableLiveData() //时间点
-    var time_point2: MutableLiveData<OffsetDateTime?> = MutableLiveData() //时间端的第二个时间点
-    var time_point3: MutableLiveData<OffsetDateTime?> = MutableLiveData() //自定义时间点
-
     fun InsertList(
             project_name: String,
             project_color: Int?,
