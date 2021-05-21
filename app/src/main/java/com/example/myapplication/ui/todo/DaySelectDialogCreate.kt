@@ -67,9 +67,8 @@ class DaySelectDialogCreate : DialogFragment() {
             })
             viewmodel.time_point3.observe(viewLifecycleOwner, {
                 val offset :Int = 9
-                ChangeBarTwo("执行时间提醒(${it?.toLocalDate()} ${it?.hour}时${it?.minute}分)")
+                ChangeBarTwo("截止时间提醒(${it?.toLocalDate()} ${it?.hour}时${it?.minute}分)")
             })
-
         }
         else
         {
@@ -89,10 +88,10 @@ class DaySelectDialogCreate : DialogFragment() {
                     val BeginMinute = String.format("%02d",it.minute)
                     val EndHour = String.format("%02d",endtime?.hour)
                     val EndMinute = String.format("%02d",endtime?.minute)
-                    ChangeBarOne("设置截止时段($BeginHour:$BeginMinute-$EndHour:$EndMinute)")
+                    ChangeBarOne("设置执行时段($BeginHour:$BeginMinute-$EndHour:$EndMinute)")
                 }
                 else {
-                    ChangeBarOne("设置截止时段")
+                    ChangeBarOne("设置执行时段")
                 }
             })
             viewmodel.time_point2.observe(viewLifecycleOwner, Observer {
@@ -102,15 +101,15 @@ class DaySelectDialogCreate : DialogFragment() {
                     val EndMinute = String.format("%02d",it.minute)
                     val BeginHour = String.format("%02d",begintime?.hour)
                     val BeginMinute = String.format("%02d",begintime?.minute)
-                    ChangeBarOne("设置截止时段($BeginHour:$BeginMinute-$EndHour:$EndMinute)")
+                    ChangeBarOne("设置执行时段($BeginHour:$BeginMinute-$EndHour:$EndMinute)")
                 }
                 else {
-                    ChangeBarOne("设置截止时间段")
+                    ChangeBarOne("设置执行时段")
                 }
             })
             viewmodel.time_point3.observe(viewLifecycleOwner, {
                 val offset :Int = 9
-                ChangeBarTwo("截止时间提醒(${it?.toLocalDate()} ${it?.hour}时${it?.minute}分)")
+                ChangeBarTwo("执行时间提醒(${it?.toLocalDate()} ${it?.hour}时${it?.minute}分)")
             })
         }
 
@@ -123,8 +122,26 @@ class DaySelectDialogCreate : DialogFragment() {
         }
 
         remindtime.setOnClickListener {
+            val temp = Bundle()
+            temp.putInt("mode", mode!!)
             val optiondialog = TimeSelectDialogCreate()
+            optiondialog.arguments = temp
             optiondialog.show(parentFragmentManager, "SelectOption")
+            if(mode == 1) {
+                viewmodel.pre_time.observe(viewLifecycleOwner, {
+                    when(it!!.length) {
+                        0 -> ChangeBarTwo("截止时间提醒")
+                        else -> ChangeBarTwo("截止时间提醒($it)")
+                    }
+                })
+            } else {
+                viewmodel.pre_time2.observe(viewLifecycleOwner, {
+                    when(it!!.length) {
+                        0 -> ChangeBarTwo("执行时间提醒")
+                        else -> ChangeBarTwo("执行时间提醒($it)")
+                    }
+                })
+            }
         }
         return view
     }
