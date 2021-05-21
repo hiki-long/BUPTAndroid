@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.example.myapplication.R
 import com.example.myapplication.ui.fragment.AddTaskViewModel
+import com.example.myapplication.ui.uti.UtiFunc
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -66,8 +67,9 @@ class DaySelectDialogCreate : DialogFragment() {
                 }
             })
             viewmodel.time_point3.observe(viewLifecycleOwner, {
-                val offset :Int = 9
-                ChangeBarTwo("截止时间提醒(${it?.toLocalDate()} ${it?.hour}时${it?.minute}分)")
+                val time = UtiFunc.Time2String(it!!)
+//                ChangeBarTwo("截止时间提醒(${it?.toLocalDate()} ${it?.hour}时${it?.minute}分)")
+                ChangeBarTwo("截止时间提醒($time)")
             })
         }
         else
