@@ -42,6 +42,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.kongzue.stacklabelview.interfaces.OnLabelClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_todo.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 
 
@@ -138,12 +140,18 @@ class TodoFragment : Fragment() {
 //                var word=allWords.get(viewHolder.adapterPosition)
 //                wordViewModel.deleteWords(word)
                 var p = tasklist.removeAt(viewHolder.adapterPosition)
-
+                var flag=true
                 Snackbar.make(requireActivity().findViewById(R.id.fragment_todo),"删除一项task", Snackbar.LENGTH_SHORT)
                         .setAction("撤销"){
                             tasklist.add(p)
+                            flag=false
                             adapter.notifyDataSetChanged()
                         }.show()
+                GlobalScope.launch {
+                    Thread.sleep(5000)
+                    if(flag)
+                        mainViewModel.deleteTask(p.todo_id)
+                }
                 adapter.notifyDataSetChanged()
             }
         }).attachToRecyclerView(recyclerview)

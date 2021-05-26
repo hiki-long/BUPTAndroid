@@ -1,24 +1,24 @@
 package com.example.myapplication.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
+import androidx.room.Delete
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.model.Task
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
+import com.example.myapplication.usecase.DeleteTodoCase
 import com.example.myapplication.usecase.GetTasksCase
 import com.example.myapplication.usecase.InsertTodoCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
         private val insertTodoCase: InsertTodoCase,
-        private val getTasks: GetTasksCase,
-        //private val d
+        private val getTasksCase: GetTasksCase,
+        private val deleteTaskCase: DeleteTodoCase,
 ) : ViewModel() {
     fun insertTask(todo_create_time: OffsetDateTime,
                    todo_state: TaskState,
@@ -36,6 +36,9 @@ class MainViewModel @Inject constructor(
                         todo_execute_endtime,todo_execute_remind,todo_deadline,todo_deadline_remind,todo_description))
             }
 
-    fun getTasks(): LiveData<List<TaskEntity>> = getTasks.invoke().asLiveData()
-    //fun deleteTask(id: Int) = taskDao.deleteTask(id)
+    fun getTasks(): LiveData<List<TaskEntity>> = getTasksCase.invoke().asLiveData()
+
+    fun deleteTask(id: Int) = viewModelScope.launch {
+        deleteTaskCase.invoke(id)
+    }
 }

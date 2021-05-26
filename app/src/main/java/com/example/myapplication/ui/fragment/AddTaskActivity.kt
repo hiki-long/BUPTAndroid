@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_setting_lists.*
 
 class AddTaskActivity : AppCompatActivity() {
     private lateinit var addtaskViewModel: AddTaskViewModel
+    private val TAG = "AddTaskActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
@@ -38,6 +40,7 @@ class AddTaskActivity : AppCompatActivity() {
             args.putInt("mode",1)
             dialog.arguments = args
             dialog.show(this.supportFragmentManager, "timeselect")
+            Log.d(TAG, "onCreate: "+addtaskViewModel.time_point)
         }
 
         todo_execute_time.setOnClickListener {
@@ -65,6 +68,7 @@ class AddTaskActivity : AppCompatActivity() {
                     val timedialog = TimeBarDialogCreate()
                     timedialog.arguments = temp
                     timedialog.show(supportFragmentManager, "ShowTimeBar")
+                    Log.d(TAG, "onCreate: "+addtaskViewModel.time_point2)
                 }
                 1 -> {
                     val temp = Bundle()
@@ -72,6 +76,7 @@ class AddTaskActivity : AppCompatActivity() {
                     val timedialog = TimeBarDialogCreate()
                     timedialog.arguments = temp
                     timedialog.show(supportFragmentManager, "ShowTimeBar")
+                    Log.d(TAG, "onCreate: "+addtaskViewModel.time_point3)
                 }
             }
             return true
