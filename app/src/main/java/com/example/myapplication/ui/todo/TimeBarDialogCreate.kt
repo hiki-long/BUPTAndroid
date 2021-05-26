@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -27,6 +28,9 @@ import java.util.*
 class TimeBarDialogCreate : DialogFragment() {
     private var CurrentTime: Long? = null
     private lateinit var viewmodel: AddTaskViewModel
+    private var RecordValue: OffsetDateTime? = null
+    private var RecordValue2: OffsetDateTime? = null
+    private var RecordValue3: OffsetDateTime? = null
     //这里是时间选择框弹出的对话框,根据时间选择有3种模式
     /*
     * 1.当天时间
@@ -77,9 +81,8 @@ class TimeBarDialogCreate : DialogFragment() {
             timepicker.showLabel(true)
             timepicker.setOnDateTimeChangedListener { milliseoncd ->
                 run {
-                    viewmodel.time_point.value = FormatTime(milliseoncd)
-                    viewmodel.time_point2.value = FormatTime(milliseoncd + 3600000)
-//                    Log.d("message", milliseoncd.toString())
+                    RecordValue = FormatTime(milliseoncd)
+                    RecordValue2 = FormatTime(milliseoncd + 3600000)
                 }
             }
             val cancel = view.findViewById(R.id.common_cancel) as Button
@@ -88,6 +91,8 @@ class TimeBarDialogCreate : DialogFragment() {
             }
             val confirm = view.findViewById(R.id.confirm_time_select) as Button
             confirm.setOnClickListener {
+                viewmodel.time_point.value = RecordValue
+                viewmodel.time_point2.value = RecordValue2
                 dismiss()
             }
 
@@ -99,11 +104,12 @@ class TimeBarDialogCreate : DialogFragment() {
             val timebeginpicker = view.findViewById(R.id.dateTimePicker_begin) as DateTimePicker
             val timeendpicker = view.findViewById(R.id.dateTimePicker_end) as DateTimePicker
             timeendpicker.setDefaultMillisecond(System.currentTimeMillis() + 3600000)
-            timebeginpicker.setOnDateTimeChangedListener { milliseoncd -> viewmodel.time_point.value = FormatTime(milliseoncd) }
-            timeendpicker.setOnDateTimeChangedListener {milliseoncd ->
-                    viewmodel.time_point2.value = FormatTime(milliseoncd)
+            timebeginpicker.setOnDateTimeChangedListener { milliseoncd ->
+                RecordValue = FormatTime(milliseoncd)
             }
-
+            timeendpicker.setOnDateTimeChangedListener {milliseoncd ->
+                RecordValue2 = FormatTime(milliseoncd)
+            }
 
             val cancel = view.findViewById(R.id.common_cancel) as Button
             cancel.setOnClickListener {
@@ -111,7 +117,13 @@ class TimeBarDialogCreate : DialogFragment() {
             }
             val confirm = view.findViewById(R.id.confirm_time_select2) as Button
             confirm.setOnClickListener {
-                dismiss()
+                if (RecordValue!! > RecordValue2!!) {
+                    Toast.makeText(context,"起始时间不能大于结束时间",Toast.LENGTH_SHORT).show()
+                } else {
+                    viewmodel.time_point.value = RecordValue
+                    viewmodel.time_point2.value = RecordValue2
+                    dismiss()
+                }
             }
 
         }
@@ -122,13 +134,16 @@ class TimeBarDialogCreate : DialogFragment() {
             timepicker.setLayout(R.layout.layout_date_picker)
             timepicker.setLabelText("年","月","日","时","分")
             timepicker.showLabel(true)
-            timepicker.setOnDateTimeChangedListener { milliseoncd -> viewmodel.time_point3.value = FormatTime(milliseoncd) }
+            timepicker.setOnDateTimeChangedListener { milliseoncd ->
+                RecordValue3 = FormatTime(milliseoncd)
+            }
             val cancel = view.findViewById(R.id.common_cancel) as Button
             cancel.setOnClickListener {
                 dismiss()
             }
             val confirm = view.findViewById(R.id.confirm_time_select) as Button
             confirm.setOnClickListener {
+                viewmodel.time_point3.value = RecordValue3
                 dismiss()
             }
         }

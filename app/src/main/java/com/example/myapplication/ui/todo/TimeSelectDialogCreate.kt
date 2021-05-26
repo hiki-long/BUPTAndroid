@@ -11,19 +11,20 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
+import com.example.myapplication.ui.fragment.AddTaskViewModel
 import kotlinx.android.synthetic.main.todo_calendar.*
 
 class TimeSelectDialogCreate : DialogFragment() {
     private var mode : Int? = null
     private var title: String? = null
-    private lateinit var viewmodel: TodoViewModel
+    private lateinit var viewmodel: AddTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null)
         {
             mode = arguments?.getInt("mode")
         }
-//        viewmodel = ViewModelProvider(requireActivity()).get(TodoViewModel::class.java)
+        viewmodel = ViewModelProvider(requireActivity()).get(AddTaskViewModel::class.java)
     }
     //这里是弹出提前提醒的选择框
 
@@ -39,10 +40,6 @@ class TimeSelectDialogCreate : DialogFragment() {
         cancel.setOnClickListener {
             dismiss()
         }
-//        confirm.setOnClickListener {
-//
-//            dismiss()
-//        }
         selecttime.setOnClickListener {
             val temp = Bundle()
             temp.putInt("mode", 3)
@@ -67,17 +64,26 @@ class TimeSelectDialogCreate : DialogFragment() {
                 if(radio.text != "无"){
                     if(mode == 1)
                     {
-//                        viewmodel.pre_time.value = radio.text.toString()
+                        viewmodel.pre_time.value = radio.text.toString()
                     }
                     else {
-
+                        viewmodel.pre_time2.value = radio.text.toString()
+                    }
+                }
+                else {
+                    if(mode == 1)
+                    {
+                        viewmodel.pre_time.value = ""
+                    }
+                    else
+                    {
+                        viewmodel.pre_time2.value = ""
                     }
                 }
             }else{
                 // If no radio button checked in this radio group
-
             }
-
+            dismiss()
         }
         return view
     }
