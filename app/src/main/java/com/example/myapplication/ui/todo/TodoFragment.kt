@@ -64,10 +64,6 @@ class TodoFragment : Fragment() {
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_todo)
-//        todoViewModel.text.observe(viewLifecycleOwner, Observer {
-//            //textView.text = it
-//        })
 
         mainViewModel.getTasks().observe(
                 viewLifecycleOwner,
@@ -80,12 +76,12 @@ class TodoFragment : Fragment() {
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
-            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,"测试实例1",1,TaskPriority.COMMON, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(),"hhhhhh").observe(
-                    viewLifecycleOwner,
-                    {
-                        findNavController().navigateUp()
-                    }
-            )
+//            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,"测试实例1",1,TaskPriority.COMMON, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(),"hhhhhh").observe(
+//                    viewLifecycleOwner,
+//                    {
+//                        findNavController().navigateUp()
+//                    }
+//            )
             var intent= Intent(requireActivity(), AddTaskActivity::class.java)
             startActivity(intent)
         }
@@ -104,21 +100,6 @@ class TodoFragment : Fragment() {
         recyclerview.doOnPreDraw {
             startPostponedEnterTransition()
         }
-//        var labels = ArrayList<String>()
-//        labels.add("花哪儿记账")
-//        labels.add("给未来写封信")
-//        labels.add("我也不知道我是谁")
-//        stackLabelView.setDeleteButton(true)
-//        stackLabelView.labels = labels
-//        stackLabelView.onLabelClickListener = OnLabelClickListener { index, v, s ->
-//            if (stackLabelView.isDeleteButton) {      //是否开启了删除模式
-//                //删除并重新设置标签
-//                labels.removeAt(index)
-//                stackLabelView.labels = labels
-//            } else {
-//                Toast.makeText(requireContext(), "点击了：$s", Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.START or ItemTouchHelper.END){
             override fun onMove(
@@ -148,7 +129,7 @@ class TodoFragment : Fragment() {
                             adapter.notifyDataSetChanged()
                         }.show()
                 GlobalScope.launch {
-                    Thread.sleep(5000)
+                    Thread.sleep(4000)
                     if(flag)
                         mainViewModel.deleteTask(p.todo_id)
                 }
@@ -156,11 +137,6 @@ class TodoFragment : Fragment() {
             }
         }).attachToRecyclerView(recyclerview)
 
-
-        //测试detail页面代码：
-//        testButton.setOnClickListener {
-//            TodoItemDetailActivity.actionStart(context)
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

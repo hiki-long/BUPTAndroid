@@ -1,7 +1,9 @@
 package com.example.myapplication.ui.todo
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.lifecycle.observe
 import com.example.myapplication.R
 import com.example.myapplication.ui.fragment.AddTaskViewModel
 import com.example.myapplication.ui.uti.UtiFunc
+import kotlinx.android.synthetic.main.todo_calendar.*
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -23,6 +26,7 @@ import java.time.format.DateTimeFormatter
 class DaySelectDialogCreate : DialogFragment() {
     private var mode : Int? = null
     private var title: String? = null
+    private val TAG = "DaySelectDialogCreate"
 //    private lateinit var viewmodel: TodoViewModel
     private lateinit var viewmodel: AddTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,6 +124,7 @@ class DaySelectDialogCreate : DialogFragment() {
         }
 
         confirm.setOnClickListener {
+            onListener?.confirm(true,mode!!)
             dismiss()
         }
 
@@ -162,6 +167,27 @@ class DaySelectDialogCreate : DialogFragment() {
             val remindtime = view?.findViewById(R.id.select_remind_time) as Button
             remindtime.text = title
         }
+    }
+
+    private var onListener: OnListener? = null
+
+    override fun onAttach(context:Context) {
+        super.onAttach(context);
+        if (context is OnListener) {
+            onListener = context as OnListener;
+        } else {
+            throw RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach();
+        onListener = null;
+    }
+
+    public interface OnListener{
+        fun confirm(flag:Boolean,mode:Int)
     }
 
 

@@ -54,7 +54,7 @@ class TodoItemDetailActivity : AppCompatActivity() {
         }
         todo_execute_time_layout.setOnClickListener {
             //For test
-            todo_item_detail_add_execute_text.text = "4月18日 周日 xx:xx-xx:xx 执行"
+            collection.text = "4月18日 周日 xx:xx-xx:xx 执行"
             todo_item_detail_add_execute_del.visibility = View.VISIBLE
         }
         todo_item_detail_add_ddl_del.setOnClickListener {
@@ -62,7 +62,7 @@ class TodoItemDetailActivity : AppCompatActivity() {
             todo_item_detail_add_ddl_del.visibility = View.GONE
         }
         todo_item_detail_add_execute_del.setOnClickListener {
-            todo_item_detail_add_execute_text.text =
+            collection.text =
                 getString(R.string.todo_item_detail_add_execute_time)
             todo_item_detail_add_execute_del.visibility = View.GONE
         }

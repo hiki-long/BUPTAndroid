@@ -29,9 +29,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="2dp"
                 android:text="待办实例"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/text_execute_time"
                 app:layout_constraintStart_toEndOf="@+id/checkBox"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,41 +66,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/text__deadline"
                 app:layout_constraintStart_toStartOf="@+id/text_todoName"
-                app:layout_constraintTop_toBottomOf="@+id/text_todoName"
                 tools:text="4月15日 11:00-14:00执行" />
 
             <TextView
                 android:id="@+id/text__deadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
                 android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_todoName"
-                app:layout_constraintTop_toBottomOf="@+id/text_execute_time"
                 tools:text="4月15日 11:00-14:00执行" />
 
             <ImageView
                 android:id="@+id/img_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text__deadline"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.849"
                 app:srcCompat="@drawable/ic_baseline_notifications_24" />
 
             <ImageView
                 android:id="@+id/img_descrip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/img_alert"
-                app:layout_constraintEnd_toStartOf="@+id/textview_list"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_alert"
-                app:layout_constraintTop_toTopOf="@+id/img_alert"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.905"
                 app:srcCompat="@drawable/ic_baseline_assignment_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
