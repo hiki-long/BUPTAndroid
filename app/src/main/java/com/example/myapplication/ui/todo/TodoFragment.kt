@@ -65,7 +65,7 @@ class TodoFragment : Fragment() {
             ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
 
-        mainViewModel.getTasks().observe(
+        mainViewModel.getTasks(0).observe(
                 viewLifecycleOwner,
                 {
                     tasklist = it as ArrayList<TaskEntity>
@@ -95,17 +95,20 @@ class TodoFragment : Fragment() {
         (activity as MainActivity).needDrawer(true)
 
         postponeEnterTransition()
-        recyclerview.layoutManager= LinearLayoutManager(requireActivity())
-        recyclerview.adapter=adapter
+        recyclerview.layoutManager = LinearLayoutManager(requireActivity())
+        recyclerview.adapter = adapter
         recyclerview.doOnPreDraw {
             startPostponedEnterTransition()
         }
 
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.START or ItemTouchHelper.END){
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.START or ItemTouchHelper.END
+        ) {
             override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
             ): Boolean {
 //                var wordFrom=allWords.get(viewHolder.adapterPosition)
 //                var wordTo=allWords.get(target.adapterPosition)
@@ -113,7 +116,7 @@ class TodoFragment : Fragment() {
 //                wordFrom.id=wordTo.id
 //                wordTo.id=idtemp
 //                wordViewModel.updateWords(wordFrom,wordTo)
-                adapter.notifyItemMoved(viewHolder.adapterPosition,target.adapterPosition)
+                adapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
                 return false
             }
 
@@ -121,22 +124,31 @@ class TodoFragment : Fragment() {
 //                var word=allWords.get(viewHolder.adapterPosition)
 //                wordViewModel.deleteWords(word)
                 var p = tasklist.removeAt(viewHolder.adapterPosition)
-                var flag=true
-                Snackbar.make(requireActivity().findViewById(R.id.fragment_todo),"删除一项task", Snackbar.LENGTH_SHORT)
-                        .setAction("撤销"){
-                            tasklist.add(p)
-                            flag=false
-                            adapter.notifyDataSetChanged()
-                        }.show()
+                var flag = true
+                Snackbar.make(
+                    requireActivity().findViewById(R.id.fragment_todo),
+                    "删除一项task",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAction("撤销") {
+                        tasklist.add(p)
+                        flag = false
+                        adapter.notifyDataSetChanged()
+                    }.show()
                 GlobalScope.launch {
                     Thread.sleep(4000)
-                    if(flag)
+                    if (flag)
                         mainViewModel.deleteTask(p.todo_id)
                 }
                 adapter.notifyDataSetChanged()
             }
         }).attachToRecyclerView(recyclerview)
 
+        adapter.taskClickListener = object : TaskAdapter.TaskClickListener {
+            override fun updateTask(task: TaskEntity) {
+                mainViewModel.updateTask(task)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -157,34 +169,26 @@ class TodoFragment : Fragment() {
 
             }
             R.id.sort -> {
-                val myItems = listOf("清单", "创建日期", "截至日期", "执行事件", "重要级")
+                val myItems = listOf("清单", "创建日期", "截至日期", "执行时间", "重要级")
                 MaterialDialog(requireContext()).show {
                     cornerRadius(16f)
                     title(R.string.sort)
                     listItemsSingleChoice(items = myItems,waitForPositiveButton = false){ dialog, index, text ->
-                        when(index){
-                            0->{
-                                Toast.makeText(this.context,"you clicked 0",Toast.LENGTH_SHORT).show()
-                                dismiss()
+                        mainViewModel.getTasks(index).observe(
+                            viewLifecycleOwner,
+                            {
+                                tasklist = it as ArrayList<TaskEntity>
+                                adapter.submitList(tasklist)
+                                findNavController().navigateUp()
                             }
-                            1->{
-                                dismiss()
-                            }
-                            2->{
-                                dismiss()
-                            }
-                            3->{
-                                dismiss()
-                            }
-                            4->{
-                                dismiss()
-                            }
-                        }
+                        )
+                        dismiss()
                     }
                     negativeButton(R.string.cancel)
                 }
             }
             R.id.showCompleted -> {
+
             }
         }
         return true;

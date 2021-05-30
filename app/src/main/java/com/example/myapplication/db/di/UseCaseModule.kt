@@ -85,4 +85,10 @@ object UseCaseModule {
     fun provideGetTasks(
             taskRepository: TaskRepository
     ) = GetTasksCase(taskRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideUpdateTask(
+        taskRepository: TaskRepository
+    ) = UpdateTaskCase(taskRepository)
 }
