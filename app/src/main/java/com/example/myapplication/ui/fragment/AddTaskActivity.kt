@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.fragment
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_task.*
 import java.time.OffsetDateTime
+import java.util.*
 
 @AndroidEntryPoint
 class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
@@ -34,7 +38,8 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
     private var todo_execute_remind: OffsetDateTime? = null
     private var todo_deadline: OffsetDateTime? = null
     private var todo_deadline_remind: OffsetDateTime? = null
-
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pi:PendingIntent
     private val TAG = "AddTaskActivity"
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +55,8 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
         todo_end_time.setOnClickListener {
             val dialog = DaySelectDialogCreate()
             val args = Bundle()
-            args.putString("title","设置截止时间")
-            args.putInt("mode",1)
+            args.putString("title", "设置截止时间")
+            args.putInt("mode", 1)
             dialog.arguments = args
             dialog.show(this.supportFragmentManager, "timeselect")
         }
@@ -59,22 +64,22 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
         todo_execute_time.setOnClickListener {
             val dialog = DaySelectDialogCreate()
             val args = Bundle()
-            args.putString("title","设置执行时间")
-            args.putInt("mode",2)
+            args.putString("title", "设置执行时间")
+            args.putInt("mode", 2)
             dialog.arguments = args
             dialog.show(this.supportFragmentManager, "timeselect")
         }
 
         val popupMenu1 = PopupMenu(
-                this,
-                todo_remind
+            this,
+            todo_remind
         )
         //2、添加menu项目
         popupMenu1.menu.add(Menu.NONE, 0, 0, "截止时间提醒")
         popupMenu1.menu.add(Menu.NONE, 1, 1, "执行时间提醒")
 
         popupMenu1.setOnMenuItemClickListener(fun(it: MenuItem): Boolean {
-            when(it.itemId) {
+            when (it.itemId) {
                 0 -> {
                     val temp = Bundle()
                     temp.putInt("mode", 3)
@@ -98,13 +103,13 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
 
         //下面应该是根据数据库表来动态生成menu
         val popupMenu2 = PopupMenu(
-                this,
-                todo_project_type
+            this,
+            todo_project_type
         )
         popupMenu2.menu.add(Menu.NONE, 0, 0, "收件箱")
         popupMenu2.menu.add(Menu.NONE, 1, 1, "更多清单")
-        popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
-            when(it.itemId){
+        popupMenu2.setOnMenuItemClickListener(fun(it: MenuItem): Boolean {
+            when (it.itemId) {
                 //这里之后填充点击的事件
 
             }
@@ -123,20 +128,37 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
         }
 
         val bt: FloatingActionButton = findViewById(R.id.button_submit)
+        //确认按钮
         bt.setOnClickListener {
-            //TODO 进行数据库插入操作
             var todo_priority=TaskPriority.COMMON
             if(important)
                 todo_priority=TaskPriority.EMERGENCY
-            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,editTextTextMultiLine.text.toString(), 1,todo_priority,todo_execute_starttime,
-                    todo_execute_endtime,todo_execute_remind,todo_deadline,todo_deadline_remind,text_description.text.toString())
-                    .observe(this,{})
+            mainViewModel.insertTask(
+                OffsetDateTime.now(),
+                TaskState.DOING,
+                editTextTextMultiLine.text.toString(),
+                1,
+                todo_priority,
+                todo_execute_starttime,
+                todo_execute_endtime,
+                todo_execute_remind,
+                todo_deadline,
+                todo_deadline_remind,
+                text_description.text.toString()
+            )
+                    .observe(this, {})
+            if(todo_deadline_remind!=null){
+                AlarmService.addNotification(this,todo_deadline_remind.toString() , "deadline", editTextTextMultiLine.text.toString()+"任务还未完成哦！")
+            }
+            if(todo_execute_remind!=null){
+                AlarmService.addNotification(this,todo_execute_remind.toString() , "execute", editTextTextMultiLine.text.toString()+"任务要做了哦！")
+            }
             this.finish()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun confirm(flag: Boolean, mode:Int) {
+    override fun confirm(flag: Boolean, mode: Int) {
         if(flag){
             if(mode==1) {
                 todo_deadline = addtaskViewModel.time_point.value
@@ -180,19 +202,19 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 //提醒选择时间
                 else if(addtaskViewModel.pre_time2.value!=null){
                     todo_execute_remind=when(addtaskViewModel.pre_time2.value){
-                        "当天"->{
+                        "当天" -> {
                             todo_execute_starttime
                         }
-                        "提前1天"->{
+                        "提前1天" -> {
                             todo_execute_starttime?.minusDays(1)
                         }
-                        "提前2天"->{
+                        "提前2天" -> {
                             todo_execute_starttime?.minusDays(2)
                         }
-                        "提前3天"->{
+                        "提前3天" -> {
                             todo_execute_starttime?.minusDays(3)
                         }
-                        "提前1周"->{
+                        "提前1周" -> {
                             todo_execute_starttime?.minusDays(7)
                         }
                         else -> {
@@ -203,11 +225,11 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 if(todo_execute_starttime!=null)
                     text_execute_time.setText(UtiFunc.Time2String(todo_execute_starttime!!))
             }
-            Log.d(TAG, "onCreate: pre_time "+addtaskViewModel.pre_time.value)
-            Log.d(TAG, "onCreate: pre_time2 "+addtaskViewModel.pre_time2.value)
-            Log.d(TAG, "onCreate: time_point "+addtaskViewModel.time_point.value)
-            Log.d(TAG, "onCreate: time_point2"+addtaskViewModel.time_point2.value)
-            Log.d(TAG, "onCreate: time_point3"+addtaskViewModel.time_point3.value)
+            Log.d(TAG, "onCreate: pre_time " + addtaskViewModel.pre_time.value)
+            Log.d(TAG, "onCreate: pre_time2 " + addtaskViewModel.pre_time2.value)
+            Log.d(TAG, "onCreate: time_point " + addtaskViewModel.time_point.value)
+            Log.d(TAG, "onCreate: time_point2" + addtaskViewModel.time_point2.value)
+            Log.d(TAG, "onCreate: time_point3" + addtaskViewModel.time_point3.value)
         }
     }
 }
