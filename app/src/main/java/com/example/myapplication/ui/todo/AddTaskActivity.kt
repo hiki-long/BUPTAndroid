@@ -114,6 +114,7 @@ class AddTaskActivity : AppCompatActivity() {
 
         popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
             choosedProject=projects?.get(it.itemId)
+            collection.setText(choosedProject?.project_name)
             return true
         })
         todo_project_type.setOnClickListener {
