@@ -16,6 +16,7 @@ class MainViewModel @Inject constructor(
         private val getTasksCase: GetTasksCase,
         private val deleteTaskCase: DeleteTodoCase,
         private val updateTaskCase: UpdateTaskCase,
+        private val getListsCase:GetListsCase
 ) : ViewModel() {
     fun insertTask(todo_create_time: OffsetDateTime,
                    todo_state: TaskState,
@@ -35,6 +36,9 @@ class MainViewModel @Inject constructor(
 
     fun getTasks(order:Int?,projectid:Int=0): LiveData<List<TaskEntity>> = getTasksCase.invoke(order,projectid).asLiveData()
 
+    fun getProjects()=getListsCase.invoke().asLiveData()
+    //fun getTodayTasks():LiveData<List<TaskEntity>> = getTasksCase.invoke()
+
     fun deleteTask(id: Int) = viewModelScope.launch {
         deleteTaskCase.invoke(id)
     }
@@ -42,4 +46,6 @@ class MainViewModel @Inject constructor(
     fun updateTask(task:TaskEntity) = viewModelScope.launch {
         updateTaskCase.invoke(task)
     }
+
+
 }

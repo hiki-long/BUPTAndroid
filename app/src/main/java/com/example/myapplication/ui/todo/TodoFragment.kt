@@ -1,13 +1,16 @@
 package com.example.myapplication.ui.todo
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.GravityCompat
 import androidx.core.view.doOnPreDraw
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +19,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
+import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.db.entity.TaskEntity
@@ -40,7 +45,10 @@ class TodoFragment : Fragment() {
     private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var tasklist:ArrayList<TaskEntity>
+    private lateinit var db: AppDatabase
     private var adapter= TaskAdapter()
+    private var currentProjectId=2
+    private var currentProjectName="dsfsdf"
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ServiceCast")
     override fun onCreateView(
@@ -71,6 +79,8 @@ class TodoFragment : Fragment() {
 //                    }
 //            )
             var intent= Intent(requireActivity(), AddTaskActivity::class.java)
+            intent.putExtra("projectId",currentProjectId)
+            intent.putExtra("projectName",currentProjectName)
             startActivity(intent)
         }
         return root
@@ -137,6 +147,9 @@ class TodoFragment : Fragment() {
                 mainViewModel.updateTask(task)
             }
         }
+        db= Room.databaseBuilder(
+            (activity as MainActivity).applicationContext,
+        AppDatabase::class.java,getString(R.string.databaseName)).allowMainThreadQueries().build()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -190,6 +203,31 @@ class TodoFragment : Fragment() {
                 adapter.submitList(tasklist)
             }
         )
+        currentProjectId=projectId
+        currentProjectName=projectName
         activity?.setTitle(projectName)
+        activity?.findViewById<DrawerLayout>(R.id.mainDrawerLayout)?.closeDrawer(GravityCompat.START)
+    }
+
+    fun changeDisplayFilter(mode:String){
+        when(mode){
+            "all"->{
+                db.taskDao().getAllTask()
+
+            }
+            "today"->{
+
+            }
+            "important"->{
+
+            }
+            "planned"->{
+
+            }
+            "finished"->{
+
+            }
+
+        }
     }
 }

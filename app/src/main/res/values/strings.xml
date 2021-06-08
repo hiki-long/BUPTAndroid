@@ -41,4 +41,5 @@
         <item>截止时间提醒</item>
         <item>执行时间提醒</item>
     </string-array>
+    <string name="databaseName">Database.db</string>
 </resources>

@@ -17,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
+import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.ui.fragment.SettingListsActivity
 import com.example.myapplication.ui.todo.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,23 +27,22 @@ import kotlinx.android.synthetic.main.fragment_todo_slide.*
 import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 
 @AndroidEntryPoint
-class  MainActivity : AppCompatActivity() {
-    private val listList=ArrayList<listItem>()
+class MainActivity : AppCompatActivity() {
+    private val listList = ArrayList<listItem>()
     private lateinit var todoViewModel: TodoViewModel
-    private lateinit var adapter:TodoItemAdapter;
+    private lateinit var adapter: TodoItemAdapter;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        adapter=initSlide()
+        adapter = initSlide()
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
 
-        todoViewModel.lists.observe( this,  {
+        todoViewModel.lists.observe(this, {
             listList.clear()
-            for (value in it)
-            {
+            for (value in it) {
                 if (value != null) {
-                    listList.add(listItem(value.project_name,value.tasks.size,value.project_id))
+                    listList.add(listItem(value.project_name, value.tasks.size, value.project_id))
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -52,16 +53,22 @@ class  MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_todo, R.id.navigation_view, R.id.navigation_course, R.id.navigation_more))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_todo,
+                R.id.navigation_view,
+                R.id.navigation_course,
+                R.id.navigation_more
+            )
+        )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         setSupportActionBar(toolbar)
 
         //tobar drawer open button
-        toolbar.setNavigationOnClickListener{
-            if(navView.selectedItemId==R.id.navigation_todo ) {
+        toolbar.setNavigationOnClickListener {
+            if (navView.selectedItemId == R.id.navigation_todo) {
                 if (mainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                     mainDrawerLayout.closeDrawer(GravityCompat.START)
                 } else {
@@ -70,20 +77,25 @@ class  MainActivity : AppCompatActivity() {
             }
         }
 
-        supportActionBar?.let{
+        supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
         }
 
-        val toggle =object: ActionBarDrawerToggle(this,mainDrawerLayout,R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+        val toggle = object : ActionBarDrawerToggle(
+            this,
+            mainDrawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        ) {
             override fun onDrawerClosed(drawerView: View) {
                 super.onDrawerClosed(drawerView)
-                navView.menu.forEach { it.isEnabled=true }
+                navView.menu.forEach { it.isEnabled = true }
             }
 
             override fun onDrawerOpened(drawerView: View) {
                 super.onDrawerOpened(drawerView)
-                navView.menu.forEach { it.isEnabled=false }
+                navView.menu.forEach { it.isEnabled = false }
             }
         }
         mainDrawerLayout.addDrawerListener(toggle)
@@ -93,32 +105,31 @@ class  MainActivity : AppCompatActivity() {
     }
 
     //依附于MainActivity的fragment需要在onViewCreated调用needDrawer函数决定是否打开drawer。
-    fun needDrawer(judge: Boolean){
-        if(judge){
+    fun needDrawer(judge: Boolean) {
+        if (judge) {
             mainDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-        else{
+        } else {
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
             mainDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
     }
 
-    fun setTopListVisibility(){
-        var shp=getSharedPreferences("list_settings", Context.MODE_PRIVATE)
-        if(shp.getBoolean("autohind",false)){
-            todo_slide_all.visibility = if (todo_slide_all.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+    fun setTopListVisibility() {
+        var shp = getSharedPreferences("list_settings", Context.MODE_PRIVATE)
+        if (shp.getBoolean("autohind", false)) {
+            todo_slide_all.visibility =
+                if (todo_slide_all.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
             todo_slide_planned.visibility =
-                if (todo_slide_planned.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+                if (todo_slide_planned.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
             todo_slide_important.visibility =
-                if (todo_slide_important.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
+                if (todo_slide_important.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
             todo_slide_finished.visibility =
-                if (todo_slide_finished.todo_item_list_item_view_num.text!="0") View .VISIBLE else View.GONE
+                if (todo_slide_finished.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
             todo_slide_today.visibility =
-                if (todo_slide_today.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
-        }
-        else {
+                if (todo_slide_today.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
+        } else {
             todo_slide_all.visibility = if (shp.getBoolean("all", true)) View.VISIBLE else View.GONE
             todo_slide_planned.visibility =
                 if (shp.getBoolean("planned", true)) View.VISIBLE else View.GONE
@@ -131,33 +142,45 @@ class  MainActivity : AppCompatActivity() {
         }
     }
 
-    fun initSlide():TodoItemAdapter{
-        var shpEdit=getSharedPreferences("list_settings", Context.MODE_PRIVATE).edit()
-        shpEdit.putBoolean("all", true)
-        shpEdit.putBoolean("planned", true)
-        shpEdit.putBoolean("important", true)
-        shpEdit.putBoolean("completed", true)
-        shpEdit.putBoolean("today", true)
-        shpEdit.putBoolean("autohind",false)
-        shpEdit.apply()
+    fun initSlide(): TodoItemAdapter {
 
         setTopListVisibility()
         createData()
-        val layoutManager=LinearLayoutManager(this)
-        todo_slide_recyclerView.layoutManager=layoutManager
-        val adapter=TodoItemAdapter(listList,(supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).childFragmentManager.fragments.get(0) as TodoFragment)
-        todo_slide_recyclerView.adapter=adapter
+        val layoutManager = LinearLayoutManager(this)
+        todo_slide_recyclerView.layoutManager = layoutManager
+        val todoFragment =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).childFragmentManager.fragments.get(
+                0
+            ) as TodoFragment
+        val adapter = TodoItemAdapter(listList, todoFragment)
+        todo_slide_recyclerView.adapter = adapter
 
-        todo_slide_add.setOnClickListener{
+        todo_slide_all.setOnClickListener {
+            todoFragment.changeDisplayFilter("all")
+        }
+        todo_slide_planned.setOnClickListener {
+            todoFragment.changeDisplayFilter("planned")
+        }
+        todo_slide_important.setOnClickListener {
+            todoFragment.changeDisplayFilter("important")
+        }
+        todo_slide_finished.setOnClickListener {
+            todoFragment.changeDisplayFilter("finished")
+        }
+        todo_slide_today.setOnClickListener {
+            todoFragment.changeDisplayFilter("today")
+        }
+
+        todo_slide_add.setOnClickListener {
             addData()
         }
 
-        todo_slide_setting.setOnClickListener{
-            var intent= Intent(this,SettingListsActivity::class.java)
+        todo_slide_setting.setOnClickListener {
+            var intent = Intent(this, SettingListsActivity::class.java)
             startActivity(intent)
         }
 
-        todo_slide_all.setOnClickListener{
+        todo_slide_all.setOnClickListener {
 
         }
 
@@ -170,11 +193,11 @@ class  MainActivity : AppCompatActivity() {
     }
 
 
-    private fun createData(){
+    private fun createData() {
 
     }
 
-    private fun addData(){
+    private fun addData() {
 //        todoItemList.add(TodoItem("新增的清单",0))
         var dialog = ListDialogCreate()
         //这里的bundle是用来传输标题的数据,小型的数据都可以用bundle传

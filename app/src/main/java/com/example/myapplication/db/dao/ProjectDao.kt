@@ -13,6 +13,9 @@ interface ProjectDao {
     @Query("SELECT * FROM project ORDER BY project_id")
     fun getProjects(): Flow<List<ProjectEntity>>
 
+    @Query("SELECT * FROM project ORDER BY project_id")
+    fun getProjectsList():List<ProjectEntity?>?
+
     @Query("SELECT * FROM project WHERE project_name=:name")
     fun getProjectsByName(name:String):List<ProjectEntity>
 
