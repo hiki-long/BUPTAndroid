@@ -10,20 +10,14 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
-import com.example.myapplication.ui.fragment.AddTaskActivity
 import com.example.myapplication.ui.fragment.AddTaskViewModel
 import com.loper7.date_time_picker.DateTimeConfig
 import com.loper7.date_time_picker.DateTimePicker
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.util.*
 
 class TimeBarDialogCreate : DialogFragment() {
     private var CurrentTime: Long? = null

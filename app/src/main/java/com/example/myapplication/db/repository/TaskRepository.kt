@@ -18,6 +18,8 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTasks(): Flow<List<TaskEntity>> =taskDao.getTasks()
 
+    fun getTasksOfAProject(project_id: Int):Flow<List<TaskEntity>> = taskDao.getOneProjectTasks(project_id)
+
     fun getTasksOrderByProject(): Flow<List<TaskEntity>> =taskDao.getTasksOrderByProject()
 
     fun getTasksOrderByDeadline(): Flow<List<TaskEntity>> =taskDao.getTasksOrderByDeadline()

@@ -3,7 +3,6 @@ package com.example.myapplication
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -11,25 +10,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.ui.fragment.SettingListsActivity
-import com.example.myapplication.ui.todo.ListDialogCreate
-import com.example.myapplication.ui.todo.TodoItem
-import com.example.myapplication.ui.todo.TodoItemAdapter
-import com.example.myapplication.ui.todo.TodoViewModel
+import com.example.myapplication.ui.todo.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_setting_lists.*
 import kotlinx.android.synthetic.main.fragment_todo_slide.*
 import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 
 @AndroidEntryPoint
 class  MainActivity : AppCompatActivity() {
-    private val todoItemList=ArrayList<TodoItem>()
+    private val listList=ArrayList<listItem>()
     private lateinit var todoViewModel: TodoViewModel
     private lateinit var adapter:TodoItemAdapter;
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +37,11 @@ class  MainActivity : AppCompatActivity() {
             ViewModelProvider(this).get(TodoViewModel::class.java)
 
         todoViewModel.lists.observe( this,  {
-            todoItemList.clear()
+            listList.clear()
             for (value in it)
             {
                 if (value != null) {
-                    todoItemList.add(TodoItem(value.project_name,value.tasks.size))
+                    listList.add(listItem(value.project_name,value.tasks.size,value.project_id))
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -148,7 +145,7 @@ class  MainActivity : AppCompatActivity() {
         createData()
         val layoutManager=LinearLayoutManager(this)
         todo_slide_recyclerView.layoutManager=layoutManager
-        val adapter=TodoItemAdapter(todoItemList)
+        val adapter=TodoItemAdapter(listList,(supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).childFragmentManager.fragments.get(0) as TodoFragment)
         todo_slide_recyclerView.adapter=adapter
 
         todo_slide_add.setOnClickListener{
@@ -159,6 +156,11 @@ class  MainActivity : AppCompatActivity() {
             var intent= Intent(this,SettingListsActivity::class.java)
             startActivity(intent)
         }
+
+        todo_slide_all.setOnClickListener{
+
+        }
+
         return adapter
     }
 

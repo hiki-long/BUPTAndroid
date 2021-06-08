@@ -15,6 +15,7 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE todo_id = :id")
     fun getTask(id: Int): Flow<TaskEntity>
 
+
     @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY datetime(todo_create_time)")
     fun getTasks(): Flow<List<TaskEntity>>
 

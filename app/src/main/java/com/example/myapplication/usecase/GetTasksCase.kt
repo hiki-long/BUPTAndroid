@@ -30,7 +30,7 @@ class GetTasksCase(
      *
      * @param id Task id.
      */
-    operator fun invoke(order:Int?): Flow<List<TaskEntity>> =
+    operator fun invoke(order:Int?,projectId: Int =0): Flow<List<TaskEntity>> =
         if(order==null||order==1)
             taskRepository.getTasks()
         else if(order==0)
@@ -41,6 +41,9 @@ class GetTasksCase(
             taskRepository.getTasksOrderByExecuteTime()
         else if(order==4)
             taskRepository.getTasksOrderByPriority()
+        //获取某个project的所有tasks
+        else if(order==5)
+            taskRepository.getTasksOfAProject(projectId)
         else
             taskRepository.getTasks()
 }

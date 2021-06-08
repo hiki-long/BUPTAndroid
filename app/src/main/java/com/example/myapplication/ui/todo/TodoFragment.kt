@@ -4,21 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,17 +22,12 @@ import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
-import com.example.myapplication.utils.SoftInputUtil
-import com.example.myapplication.utils.SoftInputUtil.ISoftInputChanged
-import com.example.myapplication.utils.SoftKeyBoardListener
-import com.example.myapplication.utils.SoftKeyBoardListener.OnSoftKeyBoardChangeListener
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.ui.adapter.TaskAdapter
 import com.example.myapplication.ui.fragment.AddTaskActivity
 import com.example.myapplication.viewmodel.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.kongzue.stacklabelview.interfaces.OnLabelClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.coroutines.GlobalScope
@@ -192,5 +180,16 @@ class TodoFragment : Fragment() {
             }
         }
         return true;
+    }
+
+    fun changeDisplayTask(projectId:Int,projectName:String){
+        mainViewModel.getTasks(5, projectId).observe(
+            viewLifecycleOwner,
+            {
+                tasklist = it as ArrayList<TaskEntity>
+                adapter.submitList(tasklist)
+            }
+        )
+        activity?.setTitle(projectName)
     }
 }

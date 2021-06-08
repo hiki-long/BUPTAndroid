@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
+import com.example.myapplication.ui.todo.TodoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -37,5 +38,6 @@ class CourseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).needDrawer(false)
+        val test=ViewModelProvider(this).get(TodoViewModel::class.java)
     }
 }

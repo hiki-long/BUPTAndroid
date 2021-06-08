@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class TodoViewModel @Inject constructor(
+class AddItemViewModel @Inject constructor(
     private val setTodo: InsertTodoCase,
     private val setList: InsertListCase,
     getLists: GetListsCase
