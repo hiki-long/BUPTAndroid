@@ -1,74 +1,69 @@
 package com.example.myapplication.ui.todo
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnPreDraw
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.db.AppDatabase
-import com.example.myapplication.model.TaskPriority
-import com.example.myapplication.model.TaskState
+import com.example.myapplication.db.dao.TaskDao
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.ui.adapter.TaskAdapter
 import com.example.myapplication.ui.fragment.AddTaskActivity
 import com.example.myapplication.viewmodel.MainViewModel
+import com.example.myapplication.viewmodel.TasksViewModelSimple
+import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.OffsetDateTime
 
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
     private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
-    private lateinit var tasklist:ArrayList<TaskEntity>
-    private lateinit var db: AppDatabase
-    private var adapter= TaskAdapter()
-    private var currentProjectId=2
-    private var currentProjectName="dsfsdf"
+    private lateinit var tasklist: ArrayList<TaskEntity>
+    private lateinit var taskDao: TaskDao
+    private lateinit var tasksViewModel: TasksViewModelSimple
+    private var adapter = TaskAdapter()
+    private var currentProjectId = 2
+    private var currentProjectName = "dsfsdf"
+    private var lastLiveData:LiveData<List<TaskEntity>>?=null
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ServiceCast")
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
 
-        mainViewModel.getTasks(0).observe(
-                viewLifecycleOwner,
-                {
-                    tasklist = it as ArrayList<TaskEntity>
-                    adapter.submitList(tasklist)
-                    findNavController().navigateUp()
-                }
-        )
+        databaseBinder(TodoListDisplayOptions.initialization)
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
@@ -78,14 +73,13 @@ class TodoFragment : Fragment() {
 //                        findNavController().navigateUp()
 //                    }
 //            )
-            var intent= Intent(requireActivity(), AddTaskActivity::class.java)
-            intent.putExtra("projectId",currentProjectId)
-            intent.putExtra("projectName",currentProjectName)
+            var intent = Intent(requireActivity(), AddTaskActivity::class.java)
+            intent.putExtra("projectId", currentProjectId)
+            intent.putExtra("projectName", currentProjectName)
             startActivity(intent)
         }
         return root
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -147,9 +141,11 @@ class TodoFragment : Fragment() {
                 mainViewModel.updateTask(task)
             }
         }
-        db= Room.databaseBuilder(
-            (activity as MainActivity).applicationContext,
-        AppDatabase::class.java,getString(R.string.databaseName)).allowMainThreadQueries().build()
+        taskDao = AppDatabase.getDatabase(activity as MainActivity).taskDao()
+        tasksViewModel = ViewModelProvider(
+            this,
+            TasksViewModelSimpleFactory(taskDao)
+        ).get(TasksViewModelSimple::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -174,15 +170,19 @@ class TodoFragment : Fragment() {
                 MaterialDialog(requireContext()).show {
                     cornerRadius(16f)
                     title(R.string.sort)
-                    listItemsSingleChoice(items = myItems,waitForPositiveButton = false){ dialog, index, text ->
-                        mainViewModel.getTasks(index).observe(
-                            viewLifecycleOwner,
-                            {
-                                tasklist = it as ArrayList<TaskEntity>
-                                adapter.submitList(tasklist)
-                                findNavController().navigateUp()
-                            }
-                        )
+                    listItemsSingleChoice(
+                        items = myItems,
+                        waitForPositiveButton = false
+                    ) { dialog, index, text ->
+                        databaseBinder(TodoListDisplayOptions.getTasksInOneOrder,index=index)
+//                        mainViewModel.getTasks(index).observe(
+//                            viewLifecycleOwner,
+//                            {
+//                                tasklist = it as ArrayList<TaskEntity>
+//                                adapter.submitList(tasklist)
+//                                findNavController().navigateUp()
+//                            }
+//                        )
                         dismiss()
                     }
                     negativeButton(R.string.cancel)
@@ -195,39 +195,96 @@ class TodoFragment : Fragment() {
         return true;
     }
 
-    fun changeDisplayTask(projectId:Int,projectName:String){
-        mainViewModel.getTasks(5, projectId).observe(
-            viewLifecycleOwner,
-            {
-                tasklist = it as ArrayList<TaskEntity>
-                adapter.submitList(tasklist)
-            }
-        )
-        currentProjectId=projectId
-        currentProjectName=projectName
-        activity?.setTitle(projectName)
-        activity?.findViewById<DrawerLayout>(R.id.mainDrawerLayout)?.closeDrawer(GravityCompat.START)
-    }
-
-    fun changeDisplayFilter(mode:String){
+    fun databaseBinder(mode:TodoListDisplayOptions, index:Int=-1, projectId: Int=-1, projectName: String="None"){
+        lastLiveData?.removeObservers(viewLifecycleOwner)
         when(mode){
-            "all"->{
-                db.taskDao().getAllTask()
+            TodoListDisplayOptions.initialization->{
+                lastLiveData=mainViewModel.getTasks(0)
+                lastLiveData!!.observe(
+                    viewLifecycleOwner,
+                    {
+                        tasklist = it as ArrayList<TaskEntity>
+                        adapter.submitList(tasklist)
+                        findNavController().navigateUp()
+                    }
+                )
+            }
+            TodoListDisplayOptions.getTasksInOneOrder-> {
+                if (BuildConfig.DEBUG && index == -1) {
+                    error("Assertion failed")
+                }
+                lastLiveData = mainViewModel.getTasks(index)
+                lastLiveData!!.observe(
+                    viewLifecycleOwner,
+                    {
+                        tasklist = it as ArrayList<TaskEntity>
+                        adapter.submitList(tasklist)
+                        findNavController().navigateUp()
+                    }
+                )
+            }
+            TodoListDisplayOptions.getOneProjectTask-> {
+                if (BuildConfig.DEBUG && !(projectId != -1 && projectName != "None")) {
+                    error("Assertion failed")
+                }
+                activity?.setTitle(projectName)
+                activity?.findViewById<DrawerLayout>(R.id.mainDrawerLayout)
+                    ?.closeDrawer(GravityCompat.START)
+                lastLiveData = mainViewModel.getTasks(5, projectId)
+                lastLiveData!!.observe(
+                    viewLifecycleOwner,
+                    {
+                        tasklist = it as ArrayList<TaskEntity>
+                        adapter.submitList(tasklist)
+                        findNavController().navigateUp()
+                    }
+                )
+                currentProjectId = projectId
+                currentProjectName = projectName
 
             }
-            "today"->{
-
+            TodoListDisplayOptions.filterAll -> {
+                lastLiveData = tasksViewModel.tasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
             }
-            "important"->{
-
+            TodoListDisplayOptions.filterToday -> {
+                lastLiveData = tasksViewModel.todayTasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
             }
-            "planned"->{
-
+            TodoListDisplayOptions.filterImportant -> {
+                lastLiveData = tasksViewModel.importantTasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
             }
-            "finished"->{
-
+            TodoListDisplayOptions.filterPlanned -> {
+                lastLiveData=tasksViewModel.plannedTasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
+            }
+            TodoListDisplayOptions.filterFinished -> {
+                lastLiveData=tasksViewModel.finishedTasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
             }
 
         }
     }
+
 }

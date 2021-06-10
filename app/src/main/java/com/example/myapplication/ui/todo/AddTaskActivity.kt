@@ -14,12 +14,18 @@ import androidx.lifecycle.observe
 import androidx.room.Room
 import com.example.myapplication.R
 import com.example.myapplication.db.AppDatabase
+import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.db.entity.ProjectEntity
 import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.model.Project
 import com.example.myapplication.ui.todo.DaySelectDialogCreate
 import com.example.myapplication.ui.todo.TimeBarDialogCreate
 import com.example.myapplication.ui.todo.TodoViewModel
+import com.example.myapplication.ui.todo.listItem
 import com.example.myapplication.viewmodel.MainViewModel
+import com.example.myapplication.viewmodel.ProjectsViewModelSimple
+import com.example.myapplication.viewmodel.TasksViewModelSimple
+import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_setting_lists.*
@@ -27,15 +33,13 @@ import kotlinx.coroutines.flow.toList
 
 class AddTaskActivity : AppCompatActivity() {
     private lateinit var addtaskViewModel: AddTaskViewModel
-    private lateinit var appDatabase:AppDatabase
-
+    private lateinit var projectsViewModelSimple: ProjectsViewModelSimple
+    private lateinit var projectDao: ProjectDao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
-        appDatabase= Room.databaseBuilder(applicationContext,
-            AppDatabase::class.java,"Database.db").allowMainThreadQueries().build()
-        //设置toolbar
+        projectDao=AppDatabase.getDatabase(this).projectDao()       //设置toolbar
         addTask_toolbar.title = "添加task"
         addTask_toolbar.setNavigationIcon(R.drawable.ic_back_24)
         setSupportActionBar(addTask_toolbar)
@@ -98,25 +102,30 @@ class AddTaskActivity : AppCompatActivity() {
                 this,
                 todo_project_type
         )
-        val projects=appDatabase.projectDao().getProjectsList()
-        var choosedProject: ProjectEntity? = projects?.get(0)
-        if(currentProjectId!=-1) {
-            collection.setText(currentProjectName)
-            choosedProject=projects?.find{it?.project_id==currentProjectId }
-        }
-        var index=0
-        if (projects != null) {
-            for(aProject in projects){
-                    popupMenu2.menu.add(Menu.NONE, index, index, aProject?.project_name)
-                    index+=1
+        projectsViewModelSimple=ViewModelProvider(this,ProjectsViewModelSimpleFactory(projectDao)).get(ProjectsViewModelSimple::class.java)
+        projectsViewModelSimple.projectsListLiveData.observe(this, {
+            val projectList=it as ArrayList<ProjectEntity>
+            if(!projectList.isEmpty()){
+                var choosedProject: ProjectEntity = projectList.get(0)
+                if(currentProjectId!=-1) {
+                    choosedProject= projectList.find{it?.project_id==currentProjectId }!!
+                }
+                collection.setText(choosedProject.project_name)
+                var index=0
+                if (!projectList.isEmpty()) {
+                    for(aProject in projectList){
+                        popupMenu2.menu.add(Menu.NONE, index, index, aProject?.project_name)
+                        index+=1
+                    }
+                }
+                popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
+                    choosedProject=projectList.get(it.itemId)
+                    collection.setText(choosedProject?.project_name)
+                    return true
+                })
             }
-        }
-
-        popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
-            choosedProject=projects?.get(it.itemId)
-            collection.setText(choosedProject?.project_name)
-            return true
         })
+
         todo_project_type.setOnClickListener {
             popupMenu2.show()
         }

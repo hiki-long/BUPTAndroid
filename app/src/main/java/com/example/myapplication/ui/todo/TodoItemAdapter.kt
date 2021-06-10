@@ -25,7 +25,7 @@ class TodoItemAdapter(val itemList:List<listItem>,val fragment:TodoFragment):Rec
         holder.itemName.text=item.itemName
         holder.todoNum.text=item.todoNum.toString()
         holder.itemView.setOnClickListener {
-            fragment.changeDisplayTask(item.projectId,item.itemName)
+            fragment.databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = item.projectId,projectName = item.itemName)
         }
     }
 

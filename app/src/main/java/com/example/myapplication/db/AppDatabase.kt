@@ -26,22 +26,18 @@ abstract class AppDatabase : RoomDatabase(){
 
     abstract fun taskProjectViewDao(): TaskProjectViewDao
 
-//    companion object{
-//        //单例模式,只有一个database即可
-//        @Volatile
-//        private var instance: AppDatabase?= null
-//        private val LOCK = Any()
-//        operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
-//            instance ?: createDatabase(context).also {instance = it}
-//
-//        }
-//        private fun createDatabase(context: Context) =
-//            Room.databaseBuilder(
-//                context.applicationContext,
-//                AppDatabase::class.java,
-//                "app.db"
-//            )
-//            .createFromAsset("database/AppDatabase.db")
-//            .build()
-//    }
+    companion object{
+        //单例模式,只有一个database即可
+        private var instance:AppDatabase?=null
+        @Synchronized
+        fun getDatabase(context: Context):AppDatabase{
+            instance?.let{
+                return it
+            }
+            return Room.databaseBuilder(context.applicationContext,
+            AppDatabase::class.java,"Database.db").allowMainThreadQueries().build().apply {
+                instance=this
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.myapplication.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.myapplication.db.entity.ProjectEntity
 import com.example.myapplication.db.entity.TaskEntity
@@ -15,6 +16,9 @@ interface ProjectDao {
 
     @Query("SELECT * FROM project ORDER BY project_id")
     fun getProjectsList():List<ProjectEntity?>?
+
+    @Query("SELECT * FROM project ORDER BY project_id")
+    fun getProjectsListLiveData():LiveData<List<ProjectEntity>>
 
     @Query("SELECT * FROM project WHERE project_name=:name")
     fun getProjectsByName(name:String):List<ProjectEntity>

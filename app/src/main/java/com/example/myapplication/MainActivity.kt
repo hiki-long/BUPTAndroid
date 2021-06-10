@@ -4,23 +4,29 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.example.myapplication.db.AppDatabase
+import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.ui.fragment.SettingListsActivity
 import com.example.myapplication.ui.todo.*
+import com.example.myapplication.viewmodel.MainViewModel
+import com.example.myapplication.viewmodel.TasksViewModelSimple
+import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_todo_slide.*
@@ -30,23 +36,51 @@ import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 class MainActivity : AppCompatActivity() {
     private val listList = ArrayList<listItem>()
     private lateinit var todoViewModel: TodoViewModel
+    private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var adapter: TodoItemAdapter;
+    private lateinit var tasksViewModel: TasksViewModelSimple
+    private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val taskDao = AppDatabase.getDatabase(this).taskDao()
+        tasksViewModel = ViewModelProvider(
+            this,
+            TasksViewModelSimpleFactory(taskDao)
+        ).get(TasksViewModelSimple::class.java)
         adapter = initSlide()
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
 
+
+
         todoViewModel.lists.observe(this, {
+            tasksOfAProjectLiveDataList.forEach {
+                it.removeObservers(this)
+            }
             listList.clear()
+            tasksOfAProjectLiveDataList.clear()
             for (value in it) {
                 if (value != null) {
                     listList.add(listItem(value.project_name, value.tasks.size, value.project_id))
                 }
-                adapter.notifyDataSetChanged()
+            }
+            for(index in 0 until  listList.size){
+                val item=listList[index]
+                val id=item.projectId
+                val liveData=mainViewModel.getTasks(5, id)
+                liveData.observe(
+                    this,
+                    {
+                        item.todoNum=it.size
+                        adapter.notifyDataSetChanged()
+                    }
+                )
+                tasksOfAProjectLiveDataList.add(liveData)
             }
         }
+
         )
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -155,20 +189,27 @@ class MainActivity : AppCompatActivity() {
         val adapter = TodoItemAdapter(listList, todoFragment)
         todo_slide_recyclerView.adapter = adapter
 
+        setTopTasksNum()
+
         todo_slide_all.setOnClickListener {
-            todoFragment.changeDisplayFilter("all")
+            mainDrawerLayout.closeDrawer(GravityCompat.START)
+            todoFragment.databaseBinder(TodoListDisplayOptions.filterAll)
         }
         todo_slide_planned.setOnClickListener {
-            todoFragment.changeDisplayFilter("planned")
+            mainDrawerLayout.closeDrawer(GravityCompat.START)
+            todoFragment.databaseBinder(TodoListDisplayOptions.filterPlanned)
         }
         todo_slide_important.setOnClickListener {
-            todoFragment.changeDisplayFilter("important")
+            mainDrawerLayout.closeDrawer(GravityCompat.START)
+            todoFragment.databaseBinder(TodoListDisplayOptions.filterImportant)
         }
         todo_slide_finished.setOnClickListener {
-            todoFragment.changeDisplayFilter("finished")
+            mainDrawerLayout.closeDrawer(GravityCompat.START)
+            todoFragment.databaseBinder(TodoListDisplayOptions.filterFinished)
         }
         todo_slide_today.setOnClickListener {
-            todoFragment.changeDisplayFilter("today")
+            mainDrawerLayout.closeDrawer(GravityCompat.START)
+            todoFragment.databaseBinder(TodoListDisplayOptions.filterToday)
         }
 
         todo_slide_add.setOnClickListener {
@@ -180,9 +221,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        todo_slide_all.setOnClickListener {
-
-        }
 
         return adapter
     }
@@ -205,5 +243,23 @@ class MainActivity : AppCompatActivity() {
         args.putString("title", "添加清单")
         dialog.arguments = args
         dialog.show(supportFragmentManager, "listdialog")
+    }
+
+    private fun setTopTasksNum(){
+        tasksViewModel.tasksLiveData.observe(this, {
+            todo_slide_all.undateTodoNum(it.size)
+        })
+        tasksViewModel.todayTasksLiveData.observe(this,{
+            todo_slide_today.undateTodoNum(it.size)
+        })
+        tasksViewModel.importantTasksLiveData.observe(this,{
+            todo_slide_important.undateTodoNum(it.size)
+        })
+        tasksViewModel.plannedTasksLiveData.observe(this,{
+            todo_slide_planned.undateTodoNum(it.size)
+        })
+        tasksViewModel.finishedTasksLiveData.observe(this,{
+            todo_slide_finished.undateTodoNum(it.size)
+        })
     }
 }
