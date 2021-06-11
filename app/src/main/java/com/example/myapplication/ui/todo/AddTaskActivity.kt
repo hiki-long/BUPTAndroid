@@ -2,7 +2,6 @@ package com.example.myapplication.ui.fragment
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,29 +13,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import androidx.room.Room
 import com.example.myapplication.R
 import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.db.entity.ProjectEntity
-import com.example.myapplication.db.entity.TaskEntity
-import com.example.myapplication.model.Project
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.todo.DaySelectDialogCreate
 import com.example.myapplication.ui.todo.TimeBarDialogCreate
-import com.example.myapplication.ui.todo.TodoViewModel
-import com.example.myapplication.ui.todo.listItem
 import com.example.myapplication.ui.uti.UtiFunc
 import com.example.myapplication.viewmodel.MainViewModel
 import com.example.myapplication.viewmodel.ProjectsViewModelSimple
-import com.example.myapplication.viewmodel.TasksViewModelSimple
 import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_task.*
-import kotlinx.android.synthetic.main.activity_setting_lists.*
-import kotlinx.coroutines.flow.toList
 import java.time.OffsetDateTime
 
 @AndroidEntryPoint
@@ -131,7 +122,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 if(currentProjectId!=-1) {
                     choosedProject= projectList.find{it?.project_id==currentProjectId }!!
                 }
-                collection.setText(choosedProject.project_name)
+                todo_item_detail_add_execute_time_text.setText(choosedProject.project_name)
                 var index=0
                 if (!projectList.isEmpty()) {
                     for(aProject in projectList){
@@ -141,7 +132,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 }
                 popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
                     choosedProject=projectList.get(it.itemId)
-                    collection.setText(choosedProject?.project_name)
+                    todo_item_detail_add_execute_time_text.setText(choosedProject?.project_name)
                     return true
                 })
             }

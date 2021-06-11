@@ -10,7 +10,6 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
@@ -74,35 +73,88 @@ class TodoItemDetailActivity : AppCompatActivity() {
             popupMenu.show()
         }
 
+        val ddlTime=taskItem.todo_deadline
+        if(ddlTime!=null){
+            todo_item_detail_add_ddl_text.text = UtiFunc.Time2String(ddlTime)+" 到期"
+            todo_item_detail_add_ddl_del.visibility = View.VISIBLE
+        }
+        else{
+            todo_item_detail_add_ddl_text.text=getString(R.string.todo_item_detail_add_ddl)
+            todo_item_detail_add_ddl_del.visibility=View.GONE
+        }
+
+        val executeStartTime=taskItem.todo_execute_starttime
+        val executeEndTime=taskItem.todo_execute_endtime
+        if(executeStartTime!=null && executeEndTime!=null){
+            todo_item_detail_add_execute_time_text.text = UtiFunc.Time2String(executeStartTime)+" 至\n"+UtiFunc.Time2String(executeEndTime)+" 执行"
+            todo_item_detail_add_execute_time_del.visibility = View.VISIBLE
+        }
+        else{
+            todo_item_detail_add_execute_time_text.text=getString(R.string.todo_item_detail_add_execute_time)
+            todo_item_detail_add_execute_time_del.visibility=View.GONE
+        }
+
+        val ddlNotification=taskItem.todo_deadline_remind
+        if(ddlNotification!=null){
+            todo_item_detail_ddl_notice_ConstraintLayout.visibility = View.VISIBLE
+            todo_item_detail_ddl_notice_text.text="到期提醒:"+UtiFunc.Time2String(ddlNotification)
+        }
+        else{
+            todo_item_detail_ddl_notice_ConstraintLayout.visibility=View.GONE
+        }
+
+        val executeNotification=taskItem.todo_execute_remind
+        if(executeNotification!=null){
+            todo_item_detail_execute_notice_ConstraintLayout.visibility=View.VISIBLE
+            todo_item_detail_execute_notice_text.text="执行提醒"+UtiFunc.Time2String(executeNotification)
+        }
+        else{
+            todo_item_detail_execute_notice_ConstraintLayout.visibility=View.GONE
+        }
+
+        if(executeNotification!=null && ddlNotification!=null){
+            todo_remind_layout.visibility=View.GONE
+        }
+        else{
+            todo_remind_layout.visibility=View.VISIBLE
+        }
+        
+        val extraInfo=taskItem.todo_description
+        if(extraInfo!=null){
+            text_description.setText(extraInfo)
+        }
+        else{
+            text_description.setText("")
+        }
+
+        val createTime=taskItem.todo_create_time
+        todo_item_detail_create_time.text="创建于："+ UtiFunc.Time2String(createTime)
+
+
+
         todo_end_time_layout.setOnClickListener {
-            val ddlTime=taskItem.todo_deadline
-            if(ddlTime!=null){
-                todo_item_detail_add_ddl_text.text = UtiFunc.Time2String(ddlTime)+" 到期"
-                todo_item_detail_add_ddl_del.visibility = View.VISIBLE
-            }
-            else{
-                todo_item_detail_add_ddl_del.visibility=View.GONE
-            }
+            //write here：
+
+            todo_item_detail_add_ddl_del.visibility = View.VISIBLE
         }
         todo_execute_time_layout.setOnClickListener {
-            val executeStartTime=taskItem.todo_execute_starttime
-            val executeEndTime=taskItem.todo_execute_endtime
-            if(executeStartTime!=null && executeEndTime!=null){
-                collection.text = UtiFunc.Time2String(executeStartTime)+" 至 "+UtiFunc.Time2String(executeEndTime)+"执行"
-                todo_item_detail_add_execute_del.visibility = View.VISIBLE
-            }
-            else
-                todo_item_detail_add_execute_del.visibility=View.GONE
+            //write here：
 
+            todo_item_detail_add_execute_time_del.visibility = View.VISIBLE
         }
+
+
         todo_item_detail_add_ddl_del.setOnClickListener {
             todo_item_detail_add_ddl_text.text = getString(R.string.todo_item_detail_add_ddl)
             todo_item_detail_add_ddl_del.visibility = View.GONE
+            // write here
+
         }
-        todo_item_detail_add_execute_del.setOnClickListener {
-            collection.text =
+        todo_item_detail_add_execute_time_del.setOnClickListener {
+            todo_item_detail_add_execute_time_text.text =
                 getString(R.string.todo_item_detail_add_execute_time)
-            todo_item_detail_add_execute_del.visibility = View.GONE
+            todo_item_detail_add_execute_time_del.visibility = View.GONE
+            // write here:
         }
 
         todo_remind_layout.setOnClickListener {
