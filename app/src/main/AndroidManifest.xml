@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
@@ -17,12 +20,16 @@
         android:theme="@style/Theme.MyApplication"
         android:windowSoftInputMode="adjustResize">
 
+        <service
+            android:name=".ui.fragment.AlarmService"
+            android:enabled="true"
+            android:process="system" >
+        </service>
+
         <activity
             android:name=".ui.todo.TodoItemDetailActivity"
-            android:label="">
-        </activity>
-
-        <activity android:name=".ui.fragment.AddTaskActivity"></activity>
+            android:label="" />
+        <activity android:name=".ui.fragment.AddTaskActivity" />
 
         <meta-data
             android:name="com.google.android.actions"
@@ -37,9 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.fragment.SettingListsActivity"
-            android:label="@string/setting_list"/>
-
+        <activity
+            android:name=".ui.fragment.SettingListsActivity"
+            android:label="@string/setting_list" />
     </application>
 
 </manifest>

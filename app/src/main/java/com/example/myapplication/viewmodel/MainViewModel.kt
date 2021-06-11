@@ -34,10 +34,7 @@ class MainViewModel @Inject constructor(
                         todo_execute_endtime,todo_execute_remind,todo_deadline,todo_deadline_remind,todo_description))
             }
 
-    fun getTasks(order:Int?,projectid:Int=0): LiveData<List<TaskEntity>> = getTasksCase.invoke(order,projectid).asLiveData()
-
-    fun getProjects()=getListsCase.invoke().asLiveData()
-    //fun getTodayTasks():LiveData<List<TaskEntity>> = getTasksCase.invoke()
+    fun getTasks(order:Int?): LiveData<List<TaskEntity>> = getTasksCase.invoke(order).asLiveData()
 
     fun deleteTask(id: Int) = viewModelScope.launch {
         deleteTaskCase.invoke(id)
@@ -46,6 +43,4 @@ class MainViewModel @Inject constructor(
     fun updateTask(task:TaskEntity) = viewModelScope.launch {
         updateTaskCase.invoke(task)
     }
-
-
 }
