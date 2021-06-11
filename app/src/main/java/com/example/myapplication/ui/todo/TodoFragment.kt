@@ -153,6 +153,7 @@ class TodoFragment : Fragment() {
         inflater.inflate(R.menu.menu_ordinarylist, menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.editlist -> {
@@ -195,6 +196,7 @@ class TodoFragment : Fragment() {
         return true;
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun databaseBinder(mode:TodoListDisplayOptions, index:Int=-1, projectId: Int=-1, projectName: String="None"){
         lastLiveData?.removeObservers(viewLifecycleOwner)
         when(mode){
@@ -252,7 +254,7 @@ class TodoFragment : Fragment() {
                 })
             }
             TodoListDisplayOptions.filterToday -> {
-                lastLiveData = tasksViewModel.todayTasksLiveData
+                lastLiveData = tasksViewModel.todayTasksLiveData()
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>
                     adapter.submitList(tasklist)

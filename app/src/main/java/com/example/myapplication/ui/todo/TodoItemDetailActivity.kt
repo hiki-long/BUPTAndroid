@@ -14,17 +14,19 @@ import kotlinx.android.synthetic.main.activity_todo_item_detail.*
 class TodoItemDetailActivity : AppCompatActivity() {
     //目前有显示了多少个提醒
     var noticeNum = 0
+    var id:Int=0
 
     companion object {
-        fun actionStart(context: Context?) {
-
+        fun actionStart(context: Context?,taskId:Int) {
             val intent = Intent(context, TodoItemDetailActivity::class.java)
+            intent.putExtra("taskId",taskId)
             context?.startActivity(intent)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        id = intent.getIntExtra("taskId",0)
         setContentView(R.layout.activity_todo_item_detail)
         initView()
 

@@ -49,7 +49,7 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         var holder=ViewHolder(view)
 
         holder.itemView.setOnClickListener {
-            TodoItemDetailActivity.actionStart(parent.context)
+            TodoItemDetailActivity.actionStart(parent.context,0)
         }
 
         holder.img_importance.setOnClickListener {
