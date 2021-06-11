@@ -48,10 +48,6 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         val view= LayoutInflater.from(parent.context).inflate(R.layout.item_task,parent,false)
         var holder=ViewHolder(view)
 
-        holder.itemView.setOnClickListener {
-            TodoItemDetailActivity.actionStart(parent.context,0)
-        }
-
         holder.img_importance.setOnClickListener {
             if(important){
                 holder.img_importance.setImageResource(R.drawable.ic_baseline_star_border_24)
@@ -84,6 +80,10 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         holder.task=task
 
         holder.todoName.text=task.todo_name
+
+        holder.itemView.setOnClickListener {
+            TodoItemDetailActivity.actionStart(holder.itemView.context,task.todo_id)
+        }
 
         if(task.todo_execute_starttime!=null)
             holder.execute_time.text=UtiFunc.Time2String(task.todo_execute_starttime!!)

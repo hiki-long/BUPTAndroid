@@ -48,7 +48,7 @@ class TodoItemDetailActivity : AppCompatActivity() {
             this,
             TasksViewModelSimpleFactory(AppDatabase.getDatabase(this).taskDao())
         ).get(TasksViewModelSimple::class.java)
-        tasksViewModelSimple.getTaskLiveDataOfTaskId(id).observe(this, Observer {
+        tasksViewModelSimple.getTaskLiveDataOfTaskId(id).observe(this, {
             initView(it)
         })
 
