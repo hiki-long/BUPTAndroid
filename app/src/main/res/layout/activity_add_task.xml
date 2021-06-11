@@ -27,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ImageView
         android:id="@+id/todo_importance"
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.96" />
+            app:layout_constraintGuide_begin="395dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline18"
@@ -382,7 +382,7 @@
                         app:srcCompat="@drawable/ic_baseline_menu_24" />
 
                     <TextView
-                        android:id="@id/todo_item_detail_add_execute_text"
+                        android:id="@id/collection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="收集箱"
@@ -454,7 +454,7 @@
                         app:srcCompat="@drawable/ic_baseline_today_24" />
 
                     <TextView
-                        android:id="@+id/todo_item_detail_add_execute_text"
+                        android:id="@+id/text_execute_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/todo_item_detail_add_execute_time"
@@ -534,7 +534,7 @@
 
 
                     <TextView
-                        android:id="@+id/todo_item_detail_add_ddl_text"
+                        android:id="@+id/text__deadline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/todo_item_detail_add_ddl"

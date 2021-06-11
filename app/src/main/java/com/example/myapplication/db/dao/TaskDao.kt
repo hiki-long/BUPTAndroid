@@ -15,9 +15,20 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE todo_id = :id")
     fun getTask(id: Int): Flow<TaskEntity>
 
-    @Query("SELECT * FROM task ORDER BY datetime(todo_create_time)")
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY datetime(todo_create_time)")
     fun getTasks(): Flow<List<TaskEntity>>
 
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY project_id")
+    fun getTasksOrderByProject(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY todo_deadline")
+    fun getTasksOrderByDeadline(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY todo_execute_starttime")
+    fun getTasksOrderByExecuteTime(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY todo_priority DESC")
+    fun getTasksOrderByPriority(): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertTask(task: TaskEntity): Long
@@ -31,7 +42,7 @@ interface TaskDao {
     fun setTaskName(id: Int, name: String)
 
     @Update
-    fun updateTask(task: TaskEntity)
+    suspend fun updateTask(task: TaskEntity)
 
     @Query("SELECT * FROM task WHERE project_id = :project_id")
     fun getOneProjectTasks(project_id: Int): Flow<List<TaskEntity>>

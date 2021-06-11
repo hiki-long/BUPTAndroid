@@ -14,11 +14,11 @@ class InsertTodoCase (private val taskRepository: TaskRepository) {
         todo_name: String,
         project_id: Int,
         todo_priority: TaskPriority,
-        todo_execute_starttime: OffsetDateTime,
-        todo_execute_endtime: OffsetDateTime,
-        todo_execute_remind: OffsetDateTime,
-        todo_deadline: OffsetDateTime,
-        todo_deadline_remind: OffsetDateTime,
+        todo_execute_starttime: OffsetDateTime?,
+        todo_execute_endtime: OffsetDateTime?,
+        todo_execute_remind: OffsetDateTime?,
+        todo_deadline: OffsetDateTime?,
+        todo_deadline_remind: OffsetDateTime?,
         todo_description: String?
     ): Long? =
             taskRepository.insert(
