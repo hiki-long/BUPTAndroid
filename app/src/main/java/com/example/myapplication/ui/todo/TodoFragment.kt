@@ -85,7 +85,7 @@ class TodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).needDrawer(true)
-
+        (activity as MainActivity).replaceAdapterFragment(this)
         postponeEnterTransition()
         recyclerview.layoutManager = LinearLayoutManager(requireActivity())
         recyclerview.adapter = adapter
@@ -198,7 +198,9 @@ class TodoFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun databaseBinder(mode:TodoListDisplayOptions, index:Int=-1, projectId: Int=-1, projectName: String="None"){
-        lastLiveData?.removeObservers(viewLifecycleOwner)
+        if(view!=null){
+            lastLiveData?.removeObservers(viewLifecycleOwner)
+        }
         when(mode){
             TodoListDisplayOptions.initialization->{
                 lastLiveData=mainViewModel.getTasks(0)

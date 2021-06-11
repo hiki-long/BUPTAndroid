@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.db.dao.TaskDao
 import com.example.myapplication.db.entity.TaskEntity
 import java.time.OffsetDateTime
@@ -24,5 +23,7 @@ class TasksViewModelSimple(val taskDao: TaskDao): ViewModel() {
         var todayTasksLiveData=taskDao.getSomeDayTasksLiveData(timeLowerBar,timeUpperBar)
         return todayTasksLiveData
     }
+
+    fun getTaskLiveDataOfTaskId(taskId:Int):LiveData<TaskEntity> = taskDao.getTaskLiveDataOfTaskId(taskId)
 
 }

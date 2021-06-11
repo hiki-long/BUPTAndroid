@@ -267,4 +267,10 @@ class MainActivity : AppCompatActivity() {
             todo_slide_finished.undateTodoNum(it.size)
         })
     }
+
+    fun replaceAdapterFragment(fragment: TodoFragment){
+        if(this::adapter.isInitialized){
+            adapter.updateFragementInstance(fragment)
+        }
+    }
 }

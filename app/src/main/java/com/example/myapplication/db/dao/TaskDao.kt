@@ -25,6 +25,9 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE todo_execute_starttime<=:timeUpperBar and todo_execute_endtime>=:timeLowerBound")
     fun getSomeDayTasksLiveData(timeLowerBound:OffsetDateTime,timeUpperBar:OffsetDateTime):LiveData<List<TaskEntity>>
 
+    @Query("SELECT * FROM task WHERE todo_id=:taskId")
+    fun getTaskLiveDataOfTaskId(taskId:Int):LiveData<TaskEntity>
+
     @Query("SELECT * FROM task WHERE todo_state='PLANNED'")
     fun getPlannedTasksLiveData():LiveData<List<TaskEntity>>
 

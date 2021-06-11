@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class TodoItemAdapter(val itemList:List<listItem>,val fragment:TodoFragment):RecyclerView.Adapter<TodoItemAdapter.ViewHolder>() {
+class TodoItemAdapter(val itemList:List<listItem>,var fragment:TodoFragment):RecyclerView.Adapter<TodoItemAdapter.ViewHolder>() {
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val itemName:TextView=view.findViewById(R.id.todo_item_list_item_view_name)
         val todoNum:TextView=view.findViewById(R.id.todo_item_list_item_view_num)
@@ -34,5 +34,9 @@ class TodoItemAdapter(val itemList:List<listItem>,val fragment:TodoFragment):Rec
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    fun updateFragementInstance(newFragment:TodoFragment){
+        fragment=newFragment
     }
 }
