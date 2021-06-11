@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -20,10 +21,13 @@ import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.db.entity.ProjectEntity
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.model.Project
+import com.example.myapplication.model.TaskPriority
+import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.todo.DaySelectDialogCreate
 import com.example.myapplication.ui.todo.TimeBarDialogCreate
 import com.example.myapplication.ui.todo.TodoViewModel
 import com.example.myapplication.ui.todo.listItem
+import com.example.myapplication.ui.uti.UtiFunc
 import com.example.myapplication.viewmodel.MainViewModel
 import com.example.myapplication.viewmodel.ProjectsViewModelSimple
 import com.example.myapplication.viewmodel.TasksViewModelSimple
@@ -158,7 +162,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
         val bt: FloatingActionButton = findViewById(R.id.button_submit)
         //确认按钮
         bt.setOnClickListener {
-            var todo_priority=TaskPriority.COMMON
+            var todo_priority= TaskPriority.COMMON
             if(important)
                 todo_priority=TaskPriority.EMERGENCY
             mainViewModel.insertTask(
