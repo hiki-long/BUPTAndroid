@@ -31,14 +31,16 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE todo_state='PLANNED'")
     fun getPlannedTasksLiveData():LiveData<List<TaskEntity>>
 
-    @Query("SELECT * FROM task WHERE todo_priority='IMPORTANT'")
+    @Query("SELECT * FROM task WHERE todo_priority ='EMERGENCY'")
     fun getImportantTasksLiveData():LiveData<List<TaskEntity>>
 
-    @Query("SELECT * FROM task WHERE todo_state='FINISHED'")
+    @Query("SELECT * FROM task WHERE todo_state='DONE'")
     fun getFinshedTasksLiveData():LiveData<List<TaskEntity>>
 
     @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY datetime(todo_create_time)")
     fun getTasks(): Flow<List<TaskEntity>>
+
+
 
     @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY project_id")
     fun getTasksOrderByProject(): Flow<List<TaskEntity>>

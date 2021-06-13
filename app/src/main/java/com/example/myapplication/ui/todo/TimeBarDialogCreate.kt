@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.todo
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -138,10 +139,31 @@ class TimeBarDialogCreate : DialogFragment() {
             val confirm = view.findViewById(R.id.confirm_time_select) as Button
             confirm.setOnClickListener {
                 viewmodel.time_point3.value = RecordValue3
+                onListener?.checked(true,mode)
+
                 dismiss()
             }
         }
 
         return view
     }
+
+    private var onListener: OnListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context);
+        if (context is OnListener) {
+            onListener = context as OnListener;
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach();
+        onListener = null;
+    }
+
+    public interface OnListener{
+        fun checked(flag:Boolean,mode:Int?)
+    }
+
 }

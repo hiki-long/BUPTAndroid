@@ -84,21 +84,22 @@
                 android:id="@+id/img_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="48dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text__deadline"
+                app:layout_constraintEnd_toStartOf="@+id/img_descrip"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_baseline_notifications_24" />
 
             <ImageView
                 android:id="@+id/img_descrip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_alert"
+                app:layout_constraintEnd_toStartOf="@+id/textview_list"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.905"
                 app:srcCompat="@drawable/ic_baseline_assignment_24" />

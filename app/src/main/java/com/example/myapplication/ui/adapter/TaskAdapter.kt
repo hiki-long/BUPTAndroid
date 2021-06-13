@@ -17,6 +17,7 @@ import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.todo.TodoItemDetailActivity
 import com.example.myapplication.ui.uti.UtiFunc
+import java.time.OffsetDateTime
 
 class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback()) {
     lateinit var taskClickListener: TaskClickListener
@@ -55,7 +56,7 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
                 important=false
             }
             else{
-                holder.img_importance.setImageResource(R.drawable.ic_baseline_star_24)
+                holder.img_importance.setImageResource(R.drawable.ic_baseline_star_40)
                 holder.task.todo_priority=TaskPriority.EMERGENCY
                 important=true
             }
@@ -97,7 +98,7 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
 
         holder.checkBox.isChecked=task.todo_state==TaskState.DONE
 
-        if(task.todo_execute_remind==null&&task.todo_deadline_remind==null)
+        if((task.todo_execute_remind==null || task.todo_execute_remind!! < OffsetDateTime.now())&&(task.todo_deadline_remind==null || task.todo_deadline_remind!! < OffsetDateTime.now()))
             holder.img_alert.visibility=View.GONE
         else
             holder.img_alert.visibility=View.VISIBLE
@@ -111,7 +112,7 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
             holder.img_importance.setImageResource(R.drawable.ic_baseline_star_border_24)
         }
         else {
-            holder.img_importance.setImageResource(R.drawable.ic_baseline_star_24)
+            holder.img_importance.setImageResource(R.drawable.ic_baseline_star_40)
         }
         //根据清单id查表得到清单name
     }
