@@ -48,8 +48,10 @@ class TodoFragment : Fragment() {
     private lateinit var taskDao: TaskDao
     private lateinit var tasksViewModel: TasksViewModelSimple
     private var adapter = TaskAdapter()
-    private var currentProjectId = 2
-    private var currentProjectName = "dsfsdf"
+    private val defaultProjectName="dsfsdf"
+    private val defaultProjectId=2
+    private var currentProjectId = defaultProjectId
+    private var currentProjectName = defaultProjectName
     private var lastLiveData:LiveData<List<TaskEntity>>?=null
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ServiceCast")
@@ -62,17 +64,16 @@ class TodoFragment : Fragment() {
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_todo, container, false)
+        if(savedInstanceState!=null){
+            currentProjectId=savedInstanceState.getInt("currentProjectId",defaultProjectId)
+            currentProjectName= savedInstanceState.getString("currentProjectName",defaultProjectName)
+        }
 
         databaseBinder(TodoListDisplayOptions.initialization)
+        databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = currentProjectId,projectName = currentProjectName)
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
-//            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,"测试实例1",1,TaskPriority.COMMON, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(),"hhhhhh").observe(
-//                    viewLifecycleOwner,
-//                    {
-//                        findNavController().navigateUp()
-//                    }
-//            )
             var intent = Intent(requireActivity(), AddTaskActivity::class.java)
             intent.putExtra("projectId", currentProjectId)
             intent.putExtra("projectName", currentProjectName)
@@ -85,7 +86,7 @@ class TodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).needDrawer(true)
-
+        (activity as MainActivity).replaceAdapterFragment(this)
         postponeEnterTransition()
         recyclerview.layoutManager = LinearLayoutManager(requireActivity())
         recyclerview.adapter = adapter
@@ -94,27 +95,14 @@ class TodoFragment : Fragment() {
         }
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            0,
             ItemTouchHelper.START or ItemTouchHelper.END
         ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-//                var wordFrom=allWords.get(viewHolder.adapterPosition)
-//                var wordTo=allWords.get(target.adapterPosition)
-//                var idtemp=wordFrom.id
-//                wordFrom.id=wordTo.id
-//                wordTo.id=idtemp
-//                wordViewModel.updateWords(wordFrom,wordTo)
-                adapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                var word=allWords.get(viewHolder.adapterPosition)
-//                wordViewModel.deleteWords(word)
                 var p = tasklist.removeAt(viewHolder.adapterPosition)
                 var flag = true
                 Snackbar.make(
@@ -153,6 +141,7 @@ class TodoFragment : Fragment() {
         inflater.inflate(R.menu.menu_ordinarylist, menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.editlist -> {
@@ -195,8 +184,11 @@ class TodoFragment : Fragment() {
         return true;
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun databaseBinder(mode:TodoListDisplayOptions, index:Int=-1, projectId: Int=-1, projectName: String="None"){
-        lastLiveData?.removeObservers(viewLifecycleOwner)
+        if(view!=null){
+            lastLiveData?.removeObservers(viewLifecycleOwner)
+        }
         when(mode){
             TodoListDisplayOptions.initialization->{
                 lastLiveData=mainViewModel.getTasks(0)
@@ -244,6 +236,7 @@ class TodoFragment : Fragment() {
 
             }
             TodoListDisplayOptions.filterAll -> {
+                activity?.setTitle("所有")
                 lastLiveData = tasksViewModel.tasksLiveData
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>
@@ -252,7 +245,8 @@ class TodoFragment : Fragment() {
                 })
             }
             TodoListDisplayOptions.filterToday -> {
-                lastLiveData = tasksViewModel.todayTasksLiveData
+                activity?.setTitle("今天")
+                lastLiveData = tasksViewModel.todayTasksLiveData()
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>
                     adapter.submitList(tasklist)
@@ -260,6 +254,7 @@ class TodoFragment : Fragment() {
                 })
             }
             TodoListDisplayOptions.filterImportant -> {
+                activity?.setTitle("重要")
                 lastLiveData = tasksViewModel.importantTasksLiveData
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>
@@ -268,6 +263,7 @@ class TodoFragment : Fragment() {
                 })
             }
             TodoListDisplayOptions.filterPlanned -> {
+                activity?.setTitle("已计划")
                 lastLiveData=tasksViewModel.plannedTasksLiveData
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>
@@ -276,6 +272,7 @@ class TodoFragment : Fragment() {
                 })
             }
             TodoListDisplayOptions.filterFinished -> {
+                activity?.setTitle("已完成")
                 lastLiveData=tasksViewModel.finishedTasksLiveData
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>

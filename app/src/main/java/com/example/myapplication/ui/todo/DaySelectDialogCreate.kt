@@ -175,9 +175,6 @@ class DaySelectDialogCreate : DialogFragment() {
         super.onAttach(context);
         if (context is OnListener) {
             onListener = context as OnListener;
-        } else {
-            throw RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 

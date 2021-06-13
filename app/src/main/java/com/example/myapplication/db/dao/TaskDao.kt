@@ -16,6 +16,27 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE todo_id = :id")
     fun getTask(id: Int): Flow<TaskEntity>
 
+    @Query("SELECT * FROM task")
+    fun getAllTask():Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM task")
+    fun getAllTasksLiveData():LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_execute_starttime<=:timeUpperBar and todo_execute_endtime>=:timeLowerBound")
+    fun getSomeDayTasksLiveData(timeLowerBound:OffsetDateTime,timeUpperBar:OffsetDateTime):LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_id=:taskId")
+    fun getTaskLiveDataOfTaskId(taskId:Int):LiveData<TaskEntity>
+
+    @Query("SELECT * FROM task WHERE todo_state='PLANNED'")
+    fun getPlannedTasksLiveData():LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_priority='IMPORTANT'")
+    fun getImportantTasksLiveData():LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_state='FINISHED'")
+    fun getFinshedTasksLiveData():LiveData<List<TaskEntity>>
+
     @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY datetime(todo_create_time)")
     fun getTasks(): Flow<List<TaskEntity>>
 

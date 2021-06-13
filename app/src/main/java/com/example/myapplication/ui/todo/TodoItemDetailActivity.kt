@@ -2,35 +2,61 @@ package com.example.myapplication.ui.todo
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.BuildConfig
 import com.example.myapplication.R
+import com.example.myapplication.db.AppDatabase
+import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.ui.uti.UtiFunc
+import com.example.myapplication.viewmodel.TasksViewModelSimple
+import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import kotlinx.android.synthetic.main.activity_todo_item_detail.*
 
 class TodoItemDetailActivity : AppCompatActivity() {
     //目前有显示了多少个提醒
     var noticeNum = 0
+    var id: Int = 0
+    private lateinit var tasksViewModelSimple: TasksViewModelSimple
 
     companion object {
-        fun actionStart(context: Context?) {
-
+        fun actionStart(context: Context?, taskId: Int) {
             val intent = Intent(context, TodoItemDetailActivity::class.java)
+            intent.putExtra("taskId", taskId)
             context?.startActivity(intent)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        id = intent.getIntExtra("taskId", -1)
+        if (BuildConfig.DEBUG && id == -1) {
+            error("Assertion failed")
+        }
         setContentView(R.layout.activity_todo_item_detail)
-        initView()
+
+        tasksViewModelSimple = ViewModelProvider(
+            this,
+            TasksViewModelSimpleFactory(AppDatabase.getDatabase(this).taskDao())
+        ).get(TasksViewModelSimple::class.java)
+        tasksViewModelSimple.getTaskLiveDataOfTaskId(id).observe(this, {
+            initView(it)
+        })
+
+
 
     }
 
-    fun initView() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun initView(taskItem:TaskEntity) {
         setSupportActionBar(todo_item_detail_toolbar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
@@ -47,24 +73,88 @@ class TodoItemDetailActivity : AppCompatActivity() {
             popupMenu.show()
         }
 
+        val ddlTime=taskItem.todo_deadline
+        if(ddlTime!=null){
+            todo_item_detail_add_ddl_text.text = UtiFunc.Time2String(ddlTime)+" 到期"
+            todo_item_detail_add_ddl_del.visibility = View.VISIBLE
+        }
+        else{
+            todo_item_detail_add_ddl_text.text=getString(R.string.todo_item_detail_add_ddl)
+            todo_item_detail_add_ddl_del.visibility=View.GONE
+        }
+
+        val executeStartTime=taskItem.todo_execute_starttime
+        val executeEndTime=taskItem.todo_execute_endtime
+        if(executeStartTime!=null && executeEndTime!=null){
+            todo_item_detail_add_execute_time_text.text = UtiFunc.Time2String(executeStartTime)+" 至\n"+UtiFunc.Time2String(executeEndTime)+" 执行"
+            todo_item_detail_add_execute_time_del.visibility = View.VISIBLE
+        }
+        else{
+            todo_item_detail_add_execute_time_text.text=getString(R.string.todo_item_detail_add_execute_time)
+            todo_item_detail_add_execute_time_del.visibility=View.GONE
+        }
+
+        val ddlNotification=taskItem.todo_deadline_remind
+        if(ddlNotification!=null){
+            todo_item_detail_ddl_notice_ConstraintLayout.visibility = View.VISIBLE
+            todo_item_detail_ddl_notice_text.text="到期提醒:"+UtiFunc.Time2String(ddlNotification)
+        }
+        else{
+            todo_item_detail_ddl_notice_ConstraintLayout.visibility=View.GONE
+        }
+
+        val executeNotification=taskItem.todo_execute_remind
+        if(executeNotification!=null){
+            todo_item_detail_execute_notice_ConstraintLayout.visibility=View.VISIBLE
+            todo_item_detail_execute_notice_text.text="执行提醒"+UtiFunc.Time2String(executeNotification)
+        }
+        else{
+            todo_item_detail_execute_notice_ConstraintLayout.visibility=View.GONE
+        }
+
+        if(executeNotification!=null && ddlNotification!=null){
+            todo_remind_layout.visibility=View.GONE
+        }
+        else{
+            todo_remind_layout.visibility=View.VISIBLE
+        }
+        
+        val extraInfo=taskItem.todo_description
+        if(extraInfo!=null){
+            text_description.setText(extraInfo)
+        }
+        else{
+            text_description.setText("")
+        }
+
+        val createTime=taskItem.todo_create_time
+        todo_item_detail_create_time.text="创建于："+ UtiFunc.Time2String(createTime)
+
+
+
         todo_end_time_layout.setOnClickListener {
-            //For test
-            todo_item_detail_add_ddl_text.text = "4月18日 周日 到期"
+            //write here：
+
             todo_item_detail_add_ddl_del.visibility = View.VISIBLE
         }
         todo_execute_time_layout.setOnClickListener {
-            //For test
-            collection.text = "4月18日 周日 xx:xx-xx:xx 执行"
-            todo_item_detail_add_execute_del.visibility = View.VISIBLE
+            //write here：
+
+            todo_item_detail_add_execute_time_del.visibility = View.VISIBLE
         }
+
+
         todo_item_detail_add_ddl_del.setOnClickListener {
             todo_item_detail_add_ddl_text.text = getString(R.string.todo_item_detail_add_ddl)
             todo_item_detail_add_ddl_del.visibility = View.GONE
+            // write here
+
         }
-        todo_item_detail_add_execute_del.setOnClickListener {
-            collection.text =
+        todo_item_detail_add_execute_time_del.setOnClickListener {
+            todo_item_detail_add_execute_time_text.text =
                 getString(R.string.todo_item_detail_add_execute_time)
-            todo_item_detail_add_execute_del.visibility = View.GONE
+            todo_item_detail_add_execute_time_del.visibility = View.GONE
+            // write here:
         }
 
         todo_remind_layout.setOnClickListener {

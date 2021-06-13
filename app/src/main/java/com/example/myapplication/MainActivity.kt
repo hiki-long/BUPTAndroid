@@ -2,9 +2,11 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: TodoItemAdapter;
     private lateinit var tasksViewModel: TasksViewModelSimple
     private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -176,6 +179,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun initSlide(): TodoItemAdapter {
 
         setTopListVisibility()
@@ -245,11 +249,12 @@ class MainActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "listdialog")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setTopTasksNum(){
         tasksViewModel.tasksLiveData.observe(this, {
             todo_slide_all.undateTodoNum(it.size)
         })
-        tasksViewModel.todayTasksLiveData.observe(this,{
+        tasksViewModel.todayTasksLiveData().observe(this,{
             todo_slide_today.undateTodoNum(it.size)
         })
         tasksViewModel.importantTasksLiveData.observe(this,{
@@ -261,5 +266,11 @@ class MainActivity : AppCompatActivity() {
         tasksViewModel.finishedTasksLiveData.observe(this,{
             todo_slide_finished.undateTodoNum(it.size)
         })
+    }
+
+    fun replaceAdapterFragment(fragment: TodoFragment){
+        if(this::adapter.isInitialized){
+            adapter.updateFragementInstance(fragment)
+        }
     }
 }

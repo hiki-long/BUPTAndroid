@@ -382,7 +382,7 @@
                         app:srcCompat="@drawable/ic_baseline_menu_24" />
 
                     <TextView
-                        android:id="@id/collection"
+                        android:id="@id/todo_item_detail_add_execute_time_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="收集箱"
@@ -395,7 +395,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@id/todo_item_detail_add_execute_del"
+                        android:id="@id/todo_item_detail_add_execute_time_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_close_32"
@@ -467,7 +467,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/todo_item_detail_add_execute_del"
+                        android:id="@+id/todo_item_detail_add_execute_time_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_close_32"

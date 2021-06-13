@@ -1,13 +1,15 @@
 package com.example.myapplication.ui.todo
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 
-class TodoItemAdapter(val itemList:List<listItem>,val fragment:TodoFragment):RecyclerView.Adapter<TodoItemAdapter.ViewHolder>() {
+class TodoItemAdapter(val itemList:List<listItem>,var fragment:TodoFragment):RecyclerView.Adapter<TodoItemAdapter.ViewHolder>() {
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val itemName:TextView=view.findViewById(R.id.todo_item_list_item_view_name)
         val todoNum:TextView=view.findViewById(R.id.todo_item_list_item_view_num)
@@ -20,6 +22,7 @@ class TodoItemAdapter(val itemList:List<listItem>,val fragment:TodoFragment):Rec
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item=itemList[position]
         holder.itemName.text=item.itemName
@@ -31,5 +34,9 @@ class TodoItemAdapter(val itemList:List<listItem>,val fragment:TodoFragment):Rec
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    fun updateFragementInstance(newFragment:TodoFragment){
+        fragment=newFragment
     }
 }

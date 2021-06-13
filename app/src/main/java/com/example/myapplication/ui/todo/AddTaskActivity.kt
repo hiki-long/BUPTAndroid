@@ -2,7 +2,6 @@ package com.example.myapplication.ui.fragment
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,25 +13,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import androidx.lifecycle.observe
-import androidx.room.Room
+
 import com.example.myapplication.R
 import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.db.AppDatabase
-import com.example.myapplication.db.dao.ProjectDao
 import com.example.myapplication.db.entity.ProjectEntity
-import com.example.myapplication.db.entity.TaskEntity
-import com.example.myapplication.model.Project
-import com.example.myapplication.ui.todo.TodoViewModel
-import com.example.myapplication.ui.todo.listItem
 import com.example.myapplication.ui.todo.DaySelectDialogCreate
 import com.example.myapplication.ui.todo.TimeBarDialogCreate
 import com.example.myapplication.ui.uti.UtiFunc
 import com.example.myapplication.viewmodel.MainViewModel
 import com.example.myapplication.viewmodel.ProjectsViewModelSimple
-import com.example.myapplication.viewmodel.TasksViewModelSimple
 import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +33,6 @@ import java.time.OffsetDateTime
 import java.util.*
 import kotlinx.android.synthetic.main.activity_setting_lists.*
 import kotlinx.coroutines.flow.toList
-
 @AndroidEntryPoint
 class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
     private lateinit var addtaskViewModel: AddTaskViewModel
@@ -127,14 +118,6 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
             this,
             todo_project_type
         )
-        popupMenu2.menu.add(Menu.NONE, 0, 0, "收件箱")
-        popupMenu2.menu.add(Menu.NONE, 1, 1, "更多清单")
-        popupMenu2.setOnMenuItemClickListener(fun(it: MenuItem): Boolean {
-            when (it.itemId) {
-                //这里之后填充点击的事件
-
-            }
-            return true
         projectsViewModelSimple=ViewModelProvider(this,ProjectsViewModelSimpleFactory(projectDao)).get(ProjectsViewModelSimple::class.java)
         projectsViewModelSimple.projectsListLiveData.observe(this, {
             val projectList=it as ArrayList<ProjectEntity>
@@ -143,7 +126,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 if(currentProjectId!=-1) {
                     choosedProject= projectList.find{it?.project_id==currentProjectId }!!
                 }
-                collection.setText(choosedProject.project_name)
+                todo_item_detail_add_execute_time_text.setText(choosedProject.project_name)
                 var index=0
                 if (!projectList.isEmpty()) {
                     for(aProject in projectList){
@@ -153,7 +136,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 }
                 popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
                     choosedProject=projectList.get(it.itemId)
-                    collection.setText(choosedProject?.project_name)
+                    todo_item_detail_add_execute_time_text.setText(choosedProject?.project_name)
                     return true
                 })
             }
@@ -164,10 +147,34 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
 
         val bt: FloatingActionButton = findViewById(R.id.button_submit)
         bt.setOnClickListener {
-            //TODO 进行数据库插入操作
-
-
+            var todo_priority= TaskPriority.COMMON
+            if(important)
+                todo_priority=TaskPriority.EMERGENCY
+            mainViewModel.insertTask(
+                OffsetDateTime.now(),
+                TaskState.DOING,
+                editTextTextMultiLine.text.toString(),
+                1,
+                todo_priority,
+                todo_execute_starttime,
+                todo_execute_endtime,
+                todo_execute_remind,
+                todo_deadline,
+                todo_deadline_remind,
+                text_description.text.toString()
+            )
+                    .observe(this, {})
+            if(todo_deadline_remind!=null){
+                AlarmService.addNotification(this,todo_deadline_remind.toString() , "deadline", editTextTextMultiLine.text.toString()+"任务还未完成哦！")
+            }
+            if(todo_execute_remind!=null){
+                AlarmService.addNotification(this,todo_execute_remind.toString() , "execute", editTextTextMultiLine.text.toString()+"任务要做了哦！")
+            }
             this.finish()
         }
+    }
+
+    override fun confirm(flag: Boolean, mode: Int) {
+        TODO("Not yet implemented")
     }
 }
