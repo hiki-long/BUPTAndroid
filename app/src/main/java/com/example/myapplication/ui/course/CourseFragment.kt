@@ -1,12 +1,9 @@
 package com.example.myapplication.ui.course
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.SyncStateContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,7 +79,6 @@ class CourseFragment : Fragment() {
                     mTimetableView!!.changeWeekOnly(week)
                 }
                 .callback(IWeekView.OnWeekLeftClickedListener {
-//                    Toast.makeText(this.context, "click", Toast.LENGTH_SHORT).show()
                     onWeekLeftLayoutClicked()
                 })
                 .isShow(false) //设置隐藏，默认显示
@@ -90,7 +86,7 @@ class CourseFragment : Fragment() {
         mTimetableView!!.curWeek(1)
                 .source(mySubjects)
                 .curTerm("大三下学期")
-//                .callback(ISchedule.OnItemClickListener { v, scheduleList -> display(scheduleList) })
+                .callback(ISchedule.OnItemClickListener { v, scheduleList -> display(scheduleList) })
                 .callback(ISchedule.OnItemLongClickListener { v, day, start ->
                     Toast.makeText(this.context,
                             "长按:周" + day + ",第" + start + "节",
@@ -264,6 +260,7 @@ class CourseFragment : Fragment() {
             dataSource.removeIf { tempnamelist.contains(it.name) }
             mTimetableView!!.updateView()
             courseViewModel.deletedone.value = false
+            courseViewModel.deletelist.value = mutableSetOf()
         }
     }
 
@@ -286,6 +283,31 @@ class CourseFragment : Fragment() {
             }
             courseViewModel.change.value = false
         }
+    }
 
+    protected fun display(beans: List<Schedule>) {
+        val bean = beans[0]
+        val temp = Bundle()
+        temp.putString("name", bean.name)
+        var week:String = ""
+        when(bean.day) {
+            1 -> week = "一"
+            2 -> week = "二"
+            3 -> week = "三"
+            4 -> week = "四"
+            5 -> week = "五"
+            6 -> week = "六"
+            7 -> week = "七"
+        }
+        temp.putString("week", week)
+        temp.putInt("start", bean.start)
+        temp.putInt("end", bean.start+bean.step)
+        temp.putString("teacher", bean.teacher)
+        temp.putString("room", bean.room)
+        temp.putInt("weekstart", bean.weekList[0])
+        temp.putInt("weekend", bean.weekList.takeLast(1)[0])
+        val dialog = ShowCourseDialog()
+        dialog.arguments = temp
+        dialog.show(parentFragmentManager, "dialog")
     }
 }
