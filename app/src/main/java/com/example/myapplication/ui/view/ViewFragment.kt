@@ -37,5 +37,7 @@ class ViewFragment : Fragment() {
         (activity as MainActivity).needDrawer(false)
         activity?.setTitle("寸光阴")
 
+
+
     }
 }
