@@ -7,18 +7,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+
 import com.example.myapplication.R
-import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.db.dao.ProjectDao
-import com.example.myapplication.db.entity.ProjectEntity
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
+import com.example.myapplication.db.AppDatabase
+import com.example.myapplication.db.entity.ProjectEntity
 import com.example.myapplication.ui.todo.DaySelectDialogCreate
 import com.example.myapplication.ui.todo.TimeBarDialogCreate
 import com.example.myapplication.ui.uti.UtiFunc
@@ -29,9 +31,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_task.*
 import java.time.OffsetDateTime
-
+import java.util.*
 @AndroidEntryPoint
-class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
+class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, TimeBarDialogCreate.OnListener {
     private lateinit var addtaskViewModel: AddTaskViewModel
     private lateinit var projectsViewModelSimple: ProjectsViewModelSimple
     private lateinit var projectDao: ProjectDao
@@ -51,7 +53,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
-        projectDao=AppDatabase.getDatabase(this).projectDao()       //设置toolbar
+        projectDao=AppDatabase.getDatabase(this).projectDao()
         addTask_toolbar.title = "添加task"
         addTask_toolbar.setNavigationIcon(R.drawable.ic_back_24)
         setSupportActionBar(addTask_toolbar)
@@ -78,35 +80,32 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
             dialog.show(this.supportFragmentManager, "timeselect")
         }
 
-        val popupMenu1 = PopupMenu(
-            this,
-            todo_remind
-        )
-        //2、添加menu项目
-        popupMenu1.menu.add(Menu.NONE, 0, 0, "截止时间提醒")
-        popupMenu1.menu.add(Menu.NONE, 1, 1, "执行时间提醒")
-
-        popupMenu1.setOnMenuItemClickListener(fun(it: MenuItem): Boolean {
-            when (it.itemId) {
-                0 -> {
-                    val temp = Bundle()
-                    temp.putInt("mode", 3)
-                    val timedialog = TimeBarDialogCreate()
-                    timedialog.arguments = temp
-                    timedialog.show(supportFragmentManager, "ShowTimeBar")
-                }
-                1 -> {
-                    val temp = Bundle()
-                    temp.putInt("mode", 3)
-                    val timedialog = TimeBarDialogCreate()
-                    timedialog.arguments = temp
-                    timedialog.show(supportFragmentManager, "ShowTimeBar")
-                }
-            }
-            return true
-        })
         todo_remind.setOnClickListener {
-            popupMenu1.show()
+            val temp = Bundle()
+            temp.putInt("mode", 3)
+            val timedialog = TimeBarDialogCreate()
+            timedialog.arguments = temp
+            timedialog.show(supportFragmentManager, "ShowTimeBar")
+        }
+
+        executeRemind.setOnClickListener {
+            val temp = Bundle()
+            temp.putInt("mode", 4)
+            val timedialog = TimeBarDialogCreate()
+            timedialog.arguments = temp
+            timedialog.show(supportFragmentManager, "ShowTimeBar")
+        }
+
+        imageView3.setOnClickListener {
+            textView3.text="添加截止时间提醒"
+            imageView3.visibility=View.GONE
+            todo_deadline_remind=null
+        }
+
+        imageView2.setOnClickListener {
+            textView4.text="添加执行时间提醒"
+            imageView2.visibility=View.GONE
+            todo_execute_remind=null
         }
 
         //下面应该是根据数据库表来动态生成menu
@@ -137,7 +136,6 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 })
             }
         })
-
         todo_project_type.setOnClickListener {
             popupMenu2.show()
         }
@@ -145,13 +143,12 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
         todo_importance.setOnClickListener {
             important=!important
             if(important)
-                todo_importance.setImageResource(R.drawable.ic_baseline_star_24)
+                todo_importance.setImageResource(R.drawable.ic_baseline_star_40)
             else
                 todo_importance.setImageResource(R.drawable.ic_baseline_star_border_24)
         }
 
         val bt: FloatingActionButton = findViewById(R.id.button_submit)
-        //确认按钮
         bt.setOnClickListener {
             var todo_priority= TaskPriority.COMMON
             if(important)
@@ -210,8 +207,13 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                         }
                     }
                 }
-                if(todo_deadline!=null)
+                if(todo_deadline!=null) {
                     text__deadline.setText(UtiFunc.Time2String(todo_deadline!!))
+                }
+                if(todo_deadline_remind!=null){
+                    imageView3.visibility= View.VISIBLE
+                    textView3.text=UtiFunc.Time2String(todo_deadline_remind!!)
+                }
             }
             else if(mode==2){
                 //执行开始时间
@@ -247,12 +249,32 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener {
                 }
                 if(todo_execute_starttime!=null)
                     text_execute_time.setText(UtiFunc.Time2String(todo_execute_starttime!!))
+                if(todo_execute_remind!=null){
+                    imageView2.visibility= View.VISIBLE
+                    textView4.text=UtiFunc.Time2String(todo_execute_remind!!)
+                }
             }
             Log.d(TAG, "onCreate: pre_time " + addtaskViewModel.pre_time.value)
             Log.d(TAG, "onCreate: pre_time2 " + addtaskViewModel.pre_time2.value)
             Log.d(TAG, "onCreate: time_point " + addtaskViewModel.time_point.value)
             Log.d(TAG, "onCreate: time_point2" + addtaskViewModel.time_point2.value)
             Log.d(TAG, "onCreate: time_point3" + addtaskViewModel.time_point3.value)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun checked(flag: Boolean, mode: Int?) {
+        if(flag){
+            if(mode==3){
+                todo_deadline_remind=addtaskViewModel.time_point3.value
+                imageView3.visibility= View.VISIBLE
+                textView3.text=UtiFunc.Time2String(todo_deadline_remind!!)
+            }
+            else if(mode==4){
+                todo_execute_remind=addtaskViewModel.time_point3.value
+                imageView2.visibility= View.VISIBLE
+                textView4.text=UtiFunc.Time2String(todo_execute_remind!!)
+            }
         }
     }
 }

@@ -16,7 +16,6 @@
 
 package com.example.myapplication.usecase
 
-import androidx.lifecycle.observe
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.db.repository.TaskRepository
 import com.example.myapplication.model.Task
@@ -47,23 +46,4 @@ class GetTasksCase(
             taskRepository.getTasksOfAProject(projectId)
         else
             taskRepository.getTasks()
-
-//    operator fun getTask(mode:String): Flow<List<TaskEntity>> =
-//        when(mode){
-//            "all"->{
-//               taskRepository
-//            }
-//            "today"->{
-//
-//            }
-//            "important"->{
-//
-//            }
-//            "planned"->{
-//
-//            }
-//            "finished"->{
-//
-//            }
-//        }
 }

@@ -27,6 +27,7 @@ import com.example.myapplication.R
 import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.db.dao.TaskDao
 import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.adapter.TaskAdapter
 import com.example.myapplication.ui.fragment.AddTaskActivity
 import com.example.myapplication.viewmodel.MainViewModel
@@ -35,9 +36,11 @@ import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
 
 
 @AndroidEntryPoint
@@ -69,16 +72,11 @@ class TodoFragment : Fragment() {
             currentProjectName= savedInstanceState.getString("currentProjectName",defaultProjectName)
         }
 
+        databaseBinder(TodoListDisplayOptions.initialization)
         databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = currentProjectId,projectName = currentProjectName)
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
-//            mainViewModel.insertTask(OffsetDateTime.now(),TaskState.DOING,"测试实例1",1,TaskPriority.COMMON, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now(),"hhhhhh").observe(
-//                    viewLifecycleOwner,
-//                    {
-//                        findNavController().navigateUp()
-//                    }
-//            )
             var intent = Intent(requireActivity(), AddTaskActivity::class.java)
             intent.putExtra("projectId", currentProjectId)
             intent.putExtra("projectName", currentProjectName)
@@ -100,29 +98,16 @@ class TodoFragment : Fragment() {
         }
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            0,
             ItemTouchHelper.START or ItemTouchHelper.END
         ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-//                var wordFrom=allWords.get(viewHolder.adapterPosition)
-//                var wordTo=allWords.get(target.adapterPosition)
-//                var idtemp=wordFrom.id
-//                wordFrom.id=wordTo.id
-//                wordTo.id=idtemp
-//                wordViewModel.updateWords(wordFrom,wordTo)
-                adapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                var word=allWords.get(viewHolder.adapterPosition)
-//                wordViewModel.deleteWords(word)
                 var p = tasklist.removeAt(viewHolder.adapterPosition)
-                var flag = true
+                mainViewModel.deleteTask(p.todo_id)
                 Snackbar.make(
                     requireActivity().findViewById(R.id.fragment_todo),
                     "删除一项task",
@@ -130,14 +115,21 @@ class TodoFragment : Fragment() {
                 )
                     .setAction("撤销") {
                         tasklist.add(p)
-                        flag = false
-                        adapter.notifyDataSetChanged()
+                        mainViewModel.insertTask(
+                                p.todo_create_time,
+                                p.todo_state,
+                                p.todo_name,
+                                p.project_id,
+                                p.todo_priority,
+                                p.todo_execute_starttime,
+                                p.todo_execute_endtime,
+                                p.todo_execute_remind,
+                                p.todo_deadline,
+                                p.todo_deadline_remind,
+                                p.todo_description
+                        )
+                                .observe(viewLifecycleOwner, {})
                     }.show()
-                GlobalScope.launch {
-                    Thread.sleep(4000)
-                    if (flag)
-                        mainViewModel.deleteTask(p.todo_id)
-                }
                 adapter.notifyDataSetChanged()
             }
         }).attachToRecyclerView(recyclerview)
@@ -196,7 +188,13 @@ class TodoFragment : Fragment() {
                 }
             }
             R.id.showCompleted -> {
-
+                activity?.setTitle("已完成")
+                lastLiveData=tasksViewModel.finishedTasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
             }
         }
         return true;

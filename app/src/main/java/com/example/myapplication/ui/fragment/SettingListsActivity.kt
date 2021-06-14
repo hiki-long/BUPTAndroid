@@ -101,26 +101,11 @@ class SettingListsActivity : AppCompatActivity() {
                     viewHolder: RecyclerView.ViewHolder,
                     target: RecyclerView.ViewHolder
             ): Boolean {
-//                var wordFrom=allWords.get(viewHolder.adapterPosition)
-//                var wordTo=allWords.get(target.adapterPosition)
-//                var idtemp=wordFrom.id
-//                wordFrom.id=wordTo.id
-//                wordTo.id=idtemp
-//                wordViewModel.updateWords(wordFrom,wordTo)
                 adapter.notifyItemMoved(viewHolder.adapterPosition,target.adapterPosition)
                 return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                var word=allWords.get(viewHolder.adapterPosition)
-//                wordViewModel.deleteWords(word)
-//                var p = projectList.removeAt(viewHolder.adapterPosition)
-//                Snackbar.make(findViewById(R.id.activity_setting_lists),"删除一条清单", Snackbar.LENGTH_SHORT)
-//                        .setAction("撤销"){
-//                            projectList.add(p)
-//                            adapter.notifyDataSetChanged()
-//                        }.show()
-//                adapter.notifyDataSetChanged()
             }
         }).attachToRecyclerView(recycleView)
     }
