@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/delete_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请选择你要删除的课程"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/show_delete_cousre"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/delete_title"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/show_delete_cousre">
+        <Button
+            android:id="@+id/edit_cancel"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#AAA"
+            android:text="@string/cancel"
+            android:textColor="#fff" />
+        <Button
+            android:id="@+id/edit_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#02A7F0"
+            android:text="@string/confirm"
+            android:textColor="#fff"
+            app:layout_constraintHorizontal_bias="0.5" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
