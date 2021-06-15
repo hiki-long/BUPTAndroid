@@ -54,8 +54,8 @@ class TodoFragment : Fragment() {
     private lateinit var taskDao: TaskDao
     private lateinit var tasksViewModel: TasksViewModelSimple
     private var adapter = TaskAdapter()
-    private val defaultProjectName="dsfsdf"
-    private val defaultProjectId=2
+    private val defaultProjectName="全部"
+    private val defaultProjectId=-1
     private var currentProjectId = defaultProjectId
     private var currentProjectName = defaultProjectName
     private var lastLiveData:LiveData<List<TaskEntity>>?=null
@@ -76,7 +76,7 @@ class TodoFragment : Fragment() {
         }
 
         databaseBinder(TodoListDisplayOptions.initialization)
-        databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = currentProjectId,projectName = currentProjectName)
+        //databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = currentProjectId,projectName = currentProjectName)
 
         val bt: FloatingActionButton = root.findViewById(R.id.add)
         bt.setOnClickListener {
@@ -224,6 +224,7 @@ class TodoFragment : Fragment() {
         }
         when(mode){
             TodoListDisplayOptions.initialization->{
+                activity?.setTitle("所有")
                 lastLiveData=mainViewModel.getTasks(0)
                 lastLiveData!!.observe(
                     viewLifecycleOwner,
