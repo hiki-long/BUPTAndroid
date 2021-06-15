@@ -187,17 +187,7 @@ class TodoFragment : Fragment() {
                         items = myItems,
                         waitForPositiveButton = false
                     ) { dialog, index, text ->
-                        if(index==1){
-                            mainViewModel.getTasks(7).observe(
-                            viewLifecycleOwner,
-                            {
-                                tasklist = it as ArrayList<TaskEntity>
-                                adapter.submitList(tasklist)
-                                findNavController().navigateUp()
-                            }
-                        )
-                        }
-                        else databaseBinder(TodoListDisplayOptions.getTasksInOneOrder,index=index)
+                            databaseBinder(TodoListDisplayOptions.getTasksInOneOrder,index=index)
 //                        mainViewModel.getTasks(index).observe(
 //                            viewLifecycleOwner,
 //                            {
