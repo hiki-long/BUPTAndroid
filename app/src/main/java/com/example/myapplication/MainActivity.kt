@@ -14,7 +14,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
@@ -27,7 +26,9 @@ import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.ui.fragment.SettingListsActivity
 import com.example.myapplication.ui.todo.*
 import com.example.myapplication.viewmodel.MainViewModel
+import com.example.myapplication.viewmodel.ProjectsViewModelSimple
 import com.example.myapplication.viewmodel.TasksViewModelSimple
+import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
 import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var adapter: TodoItemAdapter;
     private lateinit var tasksViewModel: TasksViewModelSimple
+    private lateinit var projectsViewModelSimple:ProjectsViewModelSimple
     private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,13 +54,31 @@ class MainActivity : AppCompatActivity() {
             this,
             TasksViewModelSimpleFactory(taskDao)
         ).get(TasksViewModelSimple::class.java)
+        projectsViewModelSimple=ViewModelProvider(
+            this,
+            ProjectsViewModelSimpleFactory(AppDatabase.getDatabase(this).projectDao()))
+            .get(ProjectsViewModelSimple::class.java)
         adapter = initSlide()
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
 
 
-
-        todoViewModel.lists.observe(this, {
+        todoViewModel.lists.observe(this,{
+            var hasdefault=false
+            if(it.size!=0){
+                val default= it[0]
+                if(default!=null){
+                    if(default.project_name!="收集箱"){
+                        projectsViewModelSimple.updateAProject(0,"收集箱",0)
+                    }
+                    hasdefault=true;
+                }
+            }
+            if(hasdefault==false){
+                projectsViewModelSimple.insertAProject("收集箱",0)
+            }
+        })
+        projectsViewModelSimple.projectsListLiveData.observe(this, {
             tasksOfAProjectLiveDataList.forEach {
                 it.removeObservers(this)
             }
@@ -66,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             tasksOfAProjectLiveDataList.clear()
             for (value in it) {
                 if (value != null) {
-                    listList.add(listItem(value.project_name, value.tasks.size, value.project_id))
+                    listList.add(listItem(value.project_name, 0, value.project_id))
                 }
             }
             for(index in 0 until  listList.size){

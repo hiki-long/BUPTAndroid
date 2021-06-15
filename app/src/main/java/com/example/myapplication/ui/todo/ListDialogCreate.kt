@@ -9,11 +9,15 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
+import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
+import com.example.myapplication.viewmodel.ProjectsViewModelSimple
+import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
@@ -32,6 +36,7 @@ class ListDialogCreate : DialogFragment() {
     private lateinit var linearlayout: LinearLayout
     private var testview : View? = null
     private val testViewModel by viewModels<TodoViewModel>()
+    private lateinit var projectsViewModelSimple: ProjectsViewModelSimple
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null){
@@ -44,6 +49,15 @@ class ListDialogCreate : DialogFragment() {
                               savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.listdialog, container, false) as View
         testview = view
+        val thisContext=context
+        if(thisContext!=null){
+            projectsViewModelSimple= ViewModelProvider(
+                this,
+                ProjectsViewModelSimpleFactory(AppDatabase.getDatabase(thisContext).projectDao())
+            )
+                .get(ProjectsViewModelSimple::class.java)
+        }
+
         confirmbutton = view.findViewById(R.id.confirmcolorbutton)
         cancelbutton = view.findViewById(R.id.cancelcolorbutton)
         cancelbutton?.setOnClickListener {
@@ -77,21 +91,26 @@ class ListDialogCreate : DialogFragment() {
 
     private fun insertList() {
         val name = testview?.findViewById(R.id.list_name) as EditText
-        testViewModel.InsertList(name.text.toString(),lastColor, emptyList()).observe(
-                viewLifecycleOwner,
-                {
-                    findNavController().navigateUp()
-
-                    if(it?.compareTo(-1) == 0)
-                    {
-                        Toast.makeText(activity,"新增失败：已有同名清单",Toast.LENGTH_SHORT).show()
-                    }
-                }
-        )
+        val result=projectsViewModelSimple.insertAProject(name.text.toString(),lastColor)
+        findNavController().navigateUp()
+        if(result.compareTo(-1)==0){
+            Toast.makeText(activity,"新增失败：已有同名清单",Toast.LENGTH_SHORT).show()
+        }
+//        testViewModel.InsertList(name.text.toString(),lastColor, emptyList()).observe(
+//                viewLifecycleOwner,
+//                {
+//                    findNavController().navigateUp()
+//
+//                    if(it?.compareTo(-1) == 0)
+//                    {
+//                        Toast.makeText(activity,"新增失败：已有同名清单",Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun insertTodo() {
+    private fun insertfTodo() {
         val name = testview?.findViewById(R.id.list_name) as EditText
         testViewModel.InsertTask(OffsetDateTime.now(), TaskState.DONE,"sdf",1, TaskPriority.COMMON, OffsetDateTime.now(),OffsetDateTime.now(),OffsetDateTime.now(),OffsetDateTime.now(),OffsetDateTime.now(),"none").observe(
                 viewLifecycleOwner,

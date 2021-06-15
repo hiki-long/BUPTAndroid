@@ -157,7 +157,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
                 OffsetDateTime.now(),
                 TaskState.DOING,
                 editTextTextMultiLine.text.toString(),
-                1,
+                currentProjectId,
                 todo_priority,
                 todo_execute_starttime,
                 todo_execute_endtime,
