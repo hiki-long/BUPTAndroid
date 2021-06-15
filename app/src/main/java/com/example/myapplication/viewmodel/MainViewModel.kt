@@ -2,10 +2,12 @@ package com.example.myapplication.viewmodel
 
 import androidx.lifecycle.*
 import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.model.Project
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 import javax.inject.Inject
@@ -16,7 +18,7 @@ class MainViewModel @Inject constructor(
         private val getTasksCase: GetTasksCase,
         private val deleteTaskCase: DeleteTodoCase,
         private val updateTaskCase: UpdateTaskCase,
-        private val getListsCase:GetListsCase
+        private val getListCase: GetListCase,
 ) : ViewModel() {
     fun insertTask(todo_create_time: OffsetDateTime,
                    todo_state: TaskState,
@@ -45,4 +47,6 @@ class MainViewModel @Inject constructor(
     fun updateTask(task:TaskEntity) = viewModelScope.launch {
         updateTaskCase.invoke(task)
     }
+
+    fun getList(id :Int) : Flow<Project?> = getListCase.invoke(id)
 }

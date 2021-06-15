@@ -27,6 +27,7 @@ import com.example.myapplication.R
 import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.db.dao.TaskDao
 import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.model.Project
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.adapter.TaskAdapter
 import com.example.myapplication.ui.fragment.AddTaskActivity
@@ -39,6 +40,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.fragment_todo.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 
@@ -138,6 +141,10 @@ class TodoFragment : Fragment() {
             override fun updateTask(task: TaskEntity) {
                 mainViewModel.updateTask(task)
             }
+
+            override fun getProject(id: Int): Flow<Project?> {
+                return mainViewModel.getList(id)
+            }
         }
         taskDao = AppDatabase.getDatabase(activity as MainActivity).taskDao()
         tasksViewModel = ViewModelProvider(
@@ -173,7 +180,17 @@ class TodoFragment : Fragment() {
                         items = myItems,
                         waitForPositiveButton = false
                     ) { dialog, index, text ->
-                        databaseBinder(TodoListDisplayOptions.getTasksInOneOrder,index=index)
+                        if(index==1){
+                            mainViewModel.getTasks(7).observe(
+                            viewLifecycleOwner,
+                            {
+                                tasklist = it as ArrayList<TaskEntity>
+                                adapter.submitList(tasklist)
+                                findNavController().navigateUp()
+                            }
+                        )
+                        }
+                        else databaseBinder(TodoListDisplayOptions.getTasksInOneOrder,index=index)
 //                        mainViewModel.getTasks(index).observe(
 //                            viewLifecycleOwner,
 //                            {
@@ -231,7 +248,7 @@ class TodoFragment : Fragment() {
                     }
                 )
             }
-            TodoListDisplayOptions.getOneProjectTask-> {
+            TodoListDisplayOptions.getOneProjectTask -> {
                 if (BuildConfig.DEBUG && !(projectId != -1 && projectName != "None")) {
                     error("Assertion failed")
                 }

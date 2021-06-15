@@ -40,6 +40,11 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY datetime(todo_create_time)")
     fun getTasks(): Flow<List<TaskEntity>>
 
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING'")
+    fun getTodayTasks(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM task WHERE todo_state = 'DOING' and (todo_deadline is not null or todo_execute_starttime is not null)")
+    fun getPlanedTasks(): Flow<List<TaskEntity>>
 
 
     @Query("SELECT * FROM task WHERE todo_state = 'DOING' ORDER BY project_id")

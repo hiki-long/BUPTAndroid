@@ -28,6 +28,10 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTasksOrderByPriority(): Flow<List<TaskEntity>> =taskDao.getTasksOrderByPriority()
 
+    fun getTodayTasks(): Flow<List<TaskEntity>> = taskDao.getTodayTasks()
+
+    fun getPlanedTasks(): Flow<List<TaskEntity>> = taskDao.getPlanedTasks()
+
     suspend fun deleteTask(id: Int) = taskDao.deleteTask(id)
 
     suspend fun insert(task: Task): Long? = task.toEntity()?.let { taskDao.insertTask(it) }

@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.db.entity.TaskEntity
+import com.example.myapplication.model.Project
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.todo.TodoItemDetailActivity
 import com.example.myapplication.ui.uti.UtiFunc
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 
 class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback()) {
     lateinit var taskClickListener: TaskClickListener
-    private var important=false
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         var todoName: TextView =view.findViewById(R.id.text_todoName)
         var execute_time=view.findViewById<TextView>(R.id.text_execute_time)
@@ -30,6 +34,7 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         var img_descrip=view.findViewById<ImageView>(R.id.img_descrip)
         var img_importance=view.findViewById<ImageView>(R.id.img_importance)
         var checkBox=view.findViewById<CheckBox>(R.id.checkBox)
+        var textview_list=view.findViewById<TextView>(R.id.textview_list)
         lateinit var task:TaskEntity
     }
 
@@ -50,15 +55,13 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         var holder=ViewHolder(view)
 
         holder.img_importance.setOnClickListener {
-            if(important){
+            if(holder.task.todo_priority==TaskPriority.EMERGENCY){
                 holder.img_importance.setImageResource(R.drawable.ic_baseline_star_border_24)
                 holder.task.todo_priority=TaskPriority.COMMON
-                important=false
             }
             else{
                 holder.img_importance.setImageResource(R.drawable.ic_baseline_star_40)
                 holder.task.todo_priority=TaskPriority.EMERGENCY
-                important=true
             }
             taskClickListener.updateTask(holder.task)
         }
@@ -119,5 +122,6 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
 
     interface TaskClickListener {
         fun updateTask(task:TaskEntity)
+        fun getProject(id: Int): Flow<Project?>
     }
 }

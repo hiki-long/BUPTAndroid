@@ -38,15 +38,13 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
     private lateinit var projectsViewModelSimple: ProjectsViewModelSimple
     private lateinit var projectDao: ProjectDao
     private val mainViewModel by viewModels<MainViewModel>()
-    private var project_id=0
+    private var project_id=1
     private var important=false
     private var todo_execute_starttime: OffsetDateTime? = null
     private var todo_execute_endtime: OffsetDateTime? = null
     private var todo_execute_remind: OffsetDateTime? = null
     private var todo_deadline: OffsetDateTime? = null
     private var todo_deadline_remind: OffsetDateTime? = null
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pi:PendingIntent
     private val TAG = "AddTaskActivity"
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,6 +130,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
                 popupMenu2.setOnMenuItemClickListener (fun(it: MenuItem): Boolean{
                     choosedProject=projectList.get(it.itemId)
                     todo_item_detail_add_execute_time_text.setText(choosedProject?.project_name)
+                    project_id=choosedProject.project_id
                     return true
                 })
             }
@@ -157,7 +156,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
                 OffsetDateTime.now(),
                 TaskState.DOING,
                 editTextTextMultiLine.text.toString(),
-                1,
+                project_id,
                 todo_priority,
                 todo_execute_starttime,
                 todo_execute_endtime,
@@ -168,10 +167,12 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
             )
                     .observe(this, {})
             if(todo_deadline_remind!=null){
-                AlarmService.addNotification(this,todo_deadline_remind.toString() , "deadline", editTextTextMultiLine.text.toString()+"任务还未完成哦！")
+                if(todo_deadline_remind!! > OffsetDateTime.now())
+                    AlarmService.addNotification(this,todo_deadline_remind.toString() , "deadline", editTextTextMultiLine.text.toString()+"任务还未完成哦！")
             }
             if(todo_execute_remind!=null){
-                AlarmService.addNotification(this,todo_execute_remind.toString() , "execute", editTextTextMultiLine.text.toString()+"任务要做了哦！")
+                if(todo_execute_remind!! > OffsetDateTime.now())
+                    AlarmService.addNotification(this,todo_execute_remind.toString() , "execute", editTextTextMultiLine.text.toString()+"任务要做了哦！")
             }
             this.finish()
         }

@@ -44,6 +44,10 @@ class GetTasksCase(
         //获取某个project的所有tasks
         else if(order==5)
             taskRepository.getTasksOfAProject(projectId)
+//        else if(order==6)
+//            taskRepository.getTodayTasks()
+//        else if(order==7)
+//            taskRepository.getPlanedTasks()
         else
             taskRepository.getTasks()
 }

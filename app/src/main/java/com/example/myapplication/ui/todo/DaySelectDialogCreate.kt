@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CalendarView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -48,6 +49,7 @@ class DaySelectDialogCreate : DialogFragment() {
         val remindtime = view.findViewById(R.id.select_remind_time) as Button
         val cancel = view.findViewById(R.id.common_cancel) as Button
         val confirm = view.findViewById(R.id.confirm_alltime_button) as Button
+        val calendar = view.findViewById<CalendarView>(R.id.calendarview)
         dialogtitle?.text =  title
         if(mode == 1)
         {
