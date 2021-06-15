@@ -64,8 +64,13 @@ class ListDialogCreate : DialogFragment() {
             dismiss()
         }
         confirmbutton?.setOnClickListener {
-            //这里之后要加入对数据库的操作
-            insertList()
+            if(thistitle=="添加清单"){
+                insertList()
+            }
+            else{
+                updateList()
+            }
+
             dismiss()
         }
         showbutton = view.findViewById(R.id.color_show)
@@ -92,7 +97,7 @@ class ListDialogCreate : DialogFragment() {
     private fun insertList() {
         val name = testview?.findViewById(R.id.list_name) as EditText
         val result=projectsViewModelSimple.insertAProject(name.text.toString(),lastColor)
-        findNavController().navigateUp()
+        //findNavController().navigateUp()
         if(result.compareTo(-1)==0){
             Toast.makeText(activity,"新增失败：已有同名清单",Toast.LENGTH_SHORT).show()
         }
@@ -107,6 +112,21 @@ class ListDialogCreate : DialogFragment() {
 //                    }
 //                }
 //        )
+    }
+
+    private fun updateList(){
+        val name = testview?.findViewById(R.id.list_name) as EditText
+        val projectId=arguments?.getInt("projectId")
+        if(projectId!=null){
+            val result=projectsViewModelSimple.updateAProject(projectId,name.text.toString(),lastColor)
+            //findNavController().navigateUp()
+            if(result==false){
+                Toast.makeText(activity,"修改失败：已有同名清单",Toast.LENGTH_SHORT).show()
+            }
+        }
+        else{
+            Toast.makeText(activity,"修改失败：已有同名清单",Toast.LENGTH_SHORT).show()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

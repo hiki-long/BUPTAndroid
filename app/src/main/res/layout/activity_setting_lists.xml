@@ -169,6 +169,30 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout18"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/image_listsetting_size"
+                    android:layout_height="@dimen/image_listsetting_size"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_baseline_inbox_24" />
+
+                <Switch
+                    android:id="@+id/switch_collectbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="收集箱"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearLayout11"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -183,6 +207,7 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView4"

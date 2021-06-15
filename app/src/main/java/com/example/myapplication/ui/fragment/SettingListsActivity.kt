@@ -10,14 +10,19 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
+import com.example.myapplication.db.AppDatabase
+import com.example.myapplication.db.entity.ProjectEntity
 import com.example.myapplication.model.Project
 import com.example.myapplication.ui.adapter.ProjectAdapter
 import com.example.myapplication.ui.todo.ListDialogCreate
+import com.example.myapplication.viewmodel.ProjectsViewModelSimple
+import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,8 +30,10 @@ import kotlinx.android.synthetic.main.activity_setting_lists.*
 
 @AndroidEntryPoint
 class SettingListsActivity : AppCompatActivity() {
-    private var projectList=ArrayList<Project>()
+    private var projectList=ArrayList<ProjectEntity>()
 //    private lateinit var liveProjectList:LiveData<ArrayList<Project>>
+    private lateinit var projectsViewModelSimple: ProjectsViewModelSimple
+    lateinit var adapter: ProjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +43,27 @@ class SettingListsActivity : AppCompatActivity() {
         setting_toolbar.title = "清单设置"
         setting_toolbar.setNavigationIcon(R.drawable.ic_back_24)
         setting_toolbar.setNavigationOnClickListener { this.finish() }
+        projectsViewModelSimple= ViewModelProvider(
+            this,
+            ProjectsViewModelSimpleFactory(AppDatabase.getDatabase(this).projectDao())
+        )
+            .get(ProjectsViewModelSimple::class.java)
 
-        for(i in 0..6){
-            projectList.add(Project(i,"${i}号清单",0))
-        }
         //liveProjectList.value=projectList
         val recycleView=findViewById<RecyclerView>(R.id.listrecyclerView)
         val layoutManager= LinearLayoutManager(this)
         recycleView.layoutManager=layoutManager
-        val adapter= ProjectAdapter(this, supportFragmentManager)
-        adapter.submitList(projectList)
+        adapter= ProjectAdapter(this, supportFragmentManager,this)
+        projectsViewModelSimple.projectsListLiveData.observe(this,{
+            projectList.clear()
+            if(it!=null){
+                projectList.addAll(it as Iterable<ProjectEntity>)
+            }
+            projectList.removeAt(0)
+            adapter.submitList(projectList)
+            adapter.notifyDataSetChanged()
+        })
+
         recycleView.adapter=adapter
         linearLayout_List.setOnClickListener {
             var dialog = ListDialogCreate()
@@ -61,7 +79,9 @@ class SettingListsActivity : AppCompatActivity() {
         switch_planed.isChecked=shp.getBoolean("planned",true)
         switch_important.isChecked=shp.getBoolean("important",true)
         switch_completed.isChecked=shp.getBoolean("completed",true)
+        switch_collectbox.isChecked=shp.getBoolean("collectbox",true)
         switch_autohind.isChecked=shp.getBoolean("autohind",false)
+
         var editor=shp.edit()
 
         switch_all.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -82,6 +102,10 @@ class SettingListsActivity : AppCompatActivity() {
         }
         switch_completed.setOnCheckedChangeListener { buttonView, isChecked ->
             editor.putBoolean("completed", isChecked)
+            editor.apply()
+        }
+        switch_collectbox.setOnCheckedChangeListener{buttonView, isChecked->
+            editor.putBoolean("collectbox",isChecked)
             editor.apply()
         }
         switch_autohind.setOnCheckedChangeListener { buttonView, isChecked ->

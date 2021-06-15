@@ -13,6 +13,9 @@ interface TaskDao {
     @Query("DELETE FROM task WHERE todo_id = :id")
     fun deleteTask(id : Int)
 
+    @Query("DELETE FROM task WHERE project_id=:project_id")
+    fun deleteTasksOfAProject(project_id: Int)
+
     @Query("SELECT * FROM task WHERE todo_id = :id")
     fun getTask(id: Int): Flow<TaskEntity>
 
@@ -27,6 +30,9 @@ interface TaskDao {
 
     @Query("SELECT * FROM task WHERE todo_id=:taskId")
     fun getTaskLiveDataOfTaskId(taskId:Int):LiveData<TaskEntity>
+
+    @Query("SELECT * FROM task WHERE project_id=:project_id")
+    fun getTasksLiveDataOfAProject(project_id: Int):LiveData<List<TaskEntity>>
 
     @Query("SELECT * FROM task WHERE todo_state='PLANNED'")
     fun getPlannedTasksLiveData():LiveData<List<TaskEntity>>

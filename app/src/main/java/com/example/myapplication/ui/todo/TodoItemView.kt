@@ -27,11 +27,11 @@ class TodoItemView(context: Context, attrs: AttributeSet): LinearLayout(context,
         todo_item_list_item_view_name.text=description
     }
 
-    fun undateTodoNum(num:String){
+    fun updateTodoNum(num:String){
         todo_item_list_item_view_num.text=num
     }
 
-    fun undateTodoNum(num:Int){
+    fun updateTodoNum(num:Int){
         todo_item_list_item_view_num.text=num.toString()
     }
 

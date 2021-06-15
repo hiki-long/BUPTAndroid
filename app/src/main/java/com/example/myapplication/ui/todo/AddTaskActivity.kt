@@ -26,7 +26,9 @@ import com.example.myapplication.ui.todo.TimeBarDialogCreate
 import com.example.myapplication.ui.uti.UtiFunc
 import com.example.myapplication.viewmodel.MainViewModel
 import com.example.myapplication.viewmodel.ProjectsViewModelSimple
+import com.example.myapplication.viewmodel.TasksViewModelSimple
 import com.example.myapplication.viewmodelFactory.ProjectsViewModelSimpleFactory
+import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_task.*
@@ -38,6 +40,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
     private lateinit var projectsViewModelSimple: ProjectsViewModelSimple
     private lateinit var projectDao: ProjectDao
     private val mainViewModel by viewModels<MainViewModel>()
+    private lateinit var tasksViewModelSimple:TasksViewModelSimple
     private var project_id=1
     private var important=false
     private var todo_execute_starttime: OffsetDateTime? = null
@@ -57,8 +60,8 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
         setSupportActionBar(addTask_toolbar)
         addTask_toolbar.setNavigationOnClickListener { this.finish() }
         addtaskViewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
-        val currentProjectId=intent.getIntExtra("projectId",-1)
-        val currentProjectName=intent.getStringExtra("projectName")
+        val currentProjectId=intent.getIntExtra("projectId",1)
+        val currentProjectName=intent.getStringExtra("projectName")?:"收集箱"
 
         todo_end_time.setOnClickListener {
             val dialog = DaySelectDialogCreate()
@@ -112,12 +115,17 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
             todo_project_type
         )
         projectsViewModelSimple=ViewModelProvider(this,ProjectsViewModelSimpleFactory(projectDao)).get(ProjectsViewModelSimple::class.java)
+        tasksViewModelSimple=ViewModelProvider(this,TasksViewModelSimpleFactory(AppDatabase.getDatabase(this).taskDao())).get(TasksViewModelSimple::class.java)
         projectsViewModelSimple.projectsListLiveData.observe(this, {
             val projectList=it as ArrayList<ProjectEntity>
             if(!projectList.isEmpty()){
                 var choosedProject: ProjectEntity = projectList.get(0)
                 if(currentProjectId!=-1) {
-                    choosedProject= projectList.find{it?.project_id==currentProjectId }!!
+                    projectList.forEach {
+                        if(it.project_id==currentProjectId){
+                            choosedProject=it
+                        }
+                    }
                 }
                 todo_item_detail_add_execute_time_text.setText(choosedProject.project_name)
                 var index=0
@@ -152,7 +160,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
             var todo_priority= TaskPriority.COMMON
             if(important)
                 todo_priority=TaskPriority.EMERGENCY
-            mainViewModel.insertTask(
+            tasksViewModelSimple.insertTask(
                 OffsetDateTime.now(),
                 TaskState.DOING,
                 editTextTextMultiLine.text.toString(),
@@ -165,7 +173,20 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
                 todo_deadline_remind,
                 text_description.text.toString()
             )
-                    .observe(this, {})
+//            mainViewModel.insertTask(
+//                OffsetDateTime.now(),
+//                TaskState.DOING,
+//                editTextTextMultiLine.text.toString(),
+//                project_id,
+//                todo_priority,
+//                todo_execute_starttime,
+//                todo_execute_endtime,
+//                todo_execute_remind,
+//                todo_deadline,
+//                todo_deadline_remind,
+//                text_description.text.toString()
+//            )
+//                    .observe(this, {})
             if(todo_deadline_remind!=null){
                 if(todo_deadline_remind!! > OffsetDateTime.now())
                     AlarmService.addNotification(this,todo_deadline_remind.toString() , "deadline", editTextTextMultiLine.text.toString()+"任务还未完成哦！")

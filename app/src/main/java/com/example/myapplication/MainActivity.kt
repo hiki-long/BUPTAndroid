@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var projectsViewModelSimple:ProjectsViewModelSimple
     private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
     lateinit private var exclusiveSlideButtonList:Array<View>
+    lateinit var todoFragment:TodoFragment
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                     listList.add(listItem(value.project_name, 0, value.project_id))
                 }
             }
-            for(index in 0 until  listList.size){
+            for(index in 1 until  listList.size){
                 val item=listList[index]
                 val id=item.projectId
                 val liveData=mainViewModel.getTasks(5, id)
@@ -193,6 +194,8 @@ class MainActivity : AppCompatActivity() {
                 if (todo_slide_finished.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
             todo_slide_today.visibility =
                 if (todo_slide_today.todo_item_list_item_view_num.text != "0") View.VISIBLE else View.GONE
+            todo_slide_collectbox.visibility=
+                if (todo_slide_collectbox.todo_item_list_item_view_num.text!="0") View.VISIBLE else View.GONE
         } else {
             todo_slide_all.visibility = if (shp.getBoolean("all", true)) View.VISIBLE else View.GONE
             todo_slide_planned.visibility =
@@ -203,6 +206,8 @@ class MainActivity : AppCompatActivity() {
                 if (shp.getBoolean("completed", true)) View.VISIBLE else View.GONE
             todo_slide_today.visibility =
                 if (shp.getBoolean("today", true)) View.VISIBLE else View.GONE
+            todo_slide_collectbox.visibility=
+                if (shp.getBoolean("collectbox", true)) View.VISIBLE else View.GONE
         }
     }
 
@@ -213,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         createData()
         val layoutManager = LinearLayoutManager(this)
         todo_slide_recyclerView.layoutManager = layoutManager
-        val todoFragment =
+        todoFragment =
             (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).childFragmentManager.fragments.get(
                 0
             ) as TodoFragment
@@ -256,7 +261,7 @@ class MainActivity : AppCompatActivity() {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
             exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
             todo_slide_collectbox.setBackgroundColor(Color.argb(66 ,3,169,244))
-            todoFragment.databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = 0,projectName = "收集箱")
+            todoFragment.databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = 1,projectName = "收集箱")
         }
         todo_slide_add.setOnClickListener {
             addData()
@@ -294,25 +299,35 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setTopTasksNum(){
         tasksViewModel.tasksLiveData.observe(this, {
-            todo_slide_all.undateTodoNum(it.size)
+            todo_slide_all.updateTodoNum(it.size)
+            setTopListVisibility()
         })
         tasksViewModel.todayTasksLiveData().observe(this,{
-            todo_slide_today.undateTodoNum(it.size)
+            todo_slide_today.updateTodoNum(it.size)
+            setTopListVisibility()
         })
         tasksViewModel.importantTasksLiveData.observe(this,{
-            todo_slide_important.undateTodoNum(it.size)
+            todo_slide_important.updateTodoNum(it.size)
+            setTopListVisibility()
         })
         tasksViewModel.plannedTasksLiveData.observe(this,{
-            todo_slide_planned.undateTodoNum(it.size)
+            todo_slide_planned.updateTodoNum(it.size)
+            setTopListVisibility()
         })
         tasksViewModel.finishedTasksLiveData.observe(this,{
-            todo_slide_finished.undateTodoNum(it.size)
+            todo_slide_finished.updateTodoNum(it.size)
+            setTopListVisibility()
+        })
+        tasksViewModel.collecboxTaksLiveData.observe(this,{
+            todo_slide_collectbox.updateTodoNum(it.size)
+            setTopListVisibility()
         })
     }
 
     fun replaceAdapterFragment(fragment: TodoFragment){
         if(this::adapter.isInitialized){
             adapter.updateFragementInstance(fragment)
+            todoFragment=fragment
         }
     }
 }
