@@ -17,5 +17,6 @@ enum class TodoListDisplayOptions {
     filterImportant,
     filterPlanned,
     filterFinished,
+    filterCollectbox
 }
 

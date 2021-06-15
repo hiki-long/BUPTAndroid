@@ -124,6 +124,7 @@ class AddTaskActivity : AppCompatActivity(), DaySelectDialogCreate.OnListener, T
                     projectList.forEach {
                         if(it.project_id==currentProjectId){
                             choosedProject=it
+                            project_id=it.project_id
                         }
                     }
                 }

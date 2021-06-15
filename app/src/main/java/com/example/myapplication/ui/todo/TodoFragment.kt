@@ -276,7 +276,7 @@ class TodoFragment : Fragment() {
                 )
                 currentProjectId = projectId
                 currentProjectName = projectName
-
+                (activity as MainActivity).slideTopCancelSelected()
             }
             TodoListDisplayOptions.filterAll -> {
                 activity?.setTitle("所有")
@@ -327,6 +327,17 @@ class TodoFragment : Fragment() {
                 currentProjectId = defaultProjectId
                 currentProjectName = defaultProjectName
                 lastLiveData=tasksViewModel.finishedTasksLiveData
+                lastLiveData!!.observe(viewLifecycleOwner, {
+                    tasklist = it as ArrayList<TaskEntity>
+                    adapter.submitList(tasklist)
+                    findNavController().navigateUp()
+                })
+            }
+            TodoListDisplayOptions.filterCollectbox -> {
+                activity?.setTitle("收集箱")
+                currentProjectId = defaultProjectId
+                currentProjectName = defaultProjectName
+                lastLiveData=tasksViewModel.collecboxTaksLiveData
                 lastLiveData!!.observe(viewLifecycleOwner, {
                     tasklist = it as ArrayList<TaskEntity>
                     adapter.submitList(tasklist)

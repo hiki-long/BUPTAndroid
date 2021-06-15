@@ -39,10 +39,9 @@ import kotlinx.android.synthetic.main.todo_item_list_item_view.view.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val listList = ArrayList<listItem>()
-    private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var adapter: TodoItemAdapter
-    private lateinit var tasksViewModel: TasksViewModelSimple
+    private lateinit var tasksViewModelSimple: TasksViewModelSimple
     private lateinit var projectsViewModelSimple:ProjectsViewModelSimple
     private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
     lateinit private var exclusiveSlideButtonList:Array<View>
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val taskDao = AppDatabase.getDatabase(this).taskDao()
-        tasksViewModel = ViewModelProvider(
+        tasksViewModelSimple = ViewModelProvider(
             this,
             TasksViewModelSimpleFactory(taskDao)
         ).get(TasksViewModelSimple::class.java)
@@ -62,8 +61,6 @@ class MainActivity : AppCompatActivity() {
             ProjectsViewModelSimpleFactory(AppDatabase.getDatabase(this).projectDao()))
             .get(ProjectsViewModelSimple::class.java)
         adapter = initSlide()
-        todoViewModel =
-            ViewModelProvider(this).get(TodoViewModel::class.java)
 
 
         exclusiveSlideButtonList=arrayOf(todo_slide_all,todo_slide_today,todo_slide_planned,
@@ -71,13 +68,13 @@ class MainActivity : AppCompatActivity() {
         //设置all选中
         todo_slide_all.setBackgroundColor(Color.argb(66 ,3,169,244))
 
-        todoViewModel.lists.observe(this,{
+        projectsViewModelSimple.projectsListLiveData.observe(this,{
             var hasdefault=false
             if(it.size!=0){
                 val default= it[0]
                 if(default!=null){
                     if(default.project_name!="收集箱"){
-                        projectsViewModelSimple.updateAProject(0,"收集箱",0)
+                        projectsViewModelSimple.updateAProject(1,"收集箱",0)
                     }
                     hasdefault=true;
                 }
@@ -94,17 +91,20 @@ class MainActivity : AppCompatActivity() {
             tasksOfAProjectLiveDataList.clear()
             for (value in it) {
                 if (value != null) {
+                    if(value.project_id==1){
+                        continue
+                    }
                     listList.add(listItem(value.project_name, 0, value.project_id))
                 }
             }
-            for(index in 1 until  listList.size){
+            for(index in 0 until  listList.size){
                 val item=listList[index]
                 val id=item.projectId
-                val liveData=mainViewModel.getTasks(5, id)
+                val liveData=tasksViewModelSimple.getTasksLiveDataOfAProject(id)
                 liveData.observe(
                     this,
                     {
-                        item.todoNum=it.size
+                        listList[index].todoNum=it.size
                         adapter.notifyDataSetChanged()
                     }
                 )
@@ -229,39 +229,39 @@ class MainActivity : AppCompatActivity() {
 
         todo_slide_all.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
-            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            slideTopCancelSelected()
             todo_slide_all.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterAll)
         }
         todo_slide_planned.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
-            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            slideTopCancelSelected()
             todo_slide_planned.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterPlanned)
         }
         todo_slide_important.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
-            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            slideTopCancelSelected()
             todo_slide_important.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterImportant)
         }
         todo_slide_finished.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
-            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            slideTopCancelSelected()
             todo_slide_finished.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterFinished)
         }
         todo_slide_today.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
-            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            slideTopCancelSelected()
             todo_slide_today.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterToday)
         }
         todo_slide_collectbox.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
-            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            slideTopCancelSelected()
             todo_slide_collectbox.setBackgroundColor(Color.argb(66 ,3,169,244))
-            todoFragment.databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = 1,projectName = "收集箱")
+            todoFragment.databaseBinder(TodoListDisplayOptions.filterCollectbox)
         }
         todo_slide_add.setOnClickListener {
             addData()
@@ -298,27 +298,27 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setTopTasksNum(){
-        tasksViewModel.tasksLiveData.observe(this, {
+        tasksViewModelSimple.tasksLiveData.observe(this, {
             todo_slide_all.updateTodoNum(it.size)
             setTopListVisibility()
         })
-        tasksViewModel.todayTasksLiveData().observe(this,{
+        tasksViewModelSimple.todayTasksLiveData().observe(this,{
             todo_slide_today.updateTodoNum(it.size)
             setTopListVisibility()
         })
-        tasksViewModel.importantTasksLiveData.observe(this,{
+        tasksViewModelSimple.importantTasksLiveData.observe(this,{
             todo_slide_important.updateTodoNum(it.size)
             setTopListVisibility()
         })
-        tasksViewModel.plannedTasksLiveData.observe(this,{
+        tasksViewModelSimple.plannedTasksLiveData.observe(this,{
             todo_slide_planned.updateTodoNum(it.size)
             setTopListVisibility()
         })
-        tasksViewModel.finishedTasksLiveData.observe(this,{
+        tasksViewModelSimple.finishedTasksLiveData.observe(this,{
             todo_slide_finished.updateTodoNum(it.size)
             setTopListVisibility()
         })
-        tasksViewModel.collecboxTaksLiveData.observe(this,{
+        tasksViewModelSimple.collecboxTaksLiveData.observe(this,{
             todo_slide_collectbox.updateTodoNum(it.size)
             setTopListVisibility()
         })
@@ -330,4 +330,6 @@ class MainActivity : AppCompatActivity() {
             todoFragment=fragment
         }
     }
+
+    fun slideTopCancelSelected()=exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
 }
