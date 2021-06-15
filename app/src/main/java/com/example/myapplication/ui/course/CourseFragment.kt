@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.zhuangfei.timetable.TimetableView
 import com.zhuangfei.timetable.listener.ISchedule
@@ -55,6 +56,8 @@ class CourseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).needDrawer(false)
+        activity?.setTitle("课程")
         courseViewModel.change.observe(viewLifecycleOwner, Observer {
             updatecourse(it)
         })

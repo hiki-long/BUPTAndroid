@@ -98,4 +98,5 @@ dependencies {
     implementation 'com.kongzue.stacklabel:stacklabelview:1.1.9'
 
     implementation 'com.github.zfman:TimetableView:2.0.7-beta'
+    implementation 'com.necer.ncalendar:ncalendar:5.0.2'
 }
