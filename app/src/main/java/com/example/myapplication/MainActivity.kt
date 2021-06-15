@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -40,10 +41,11 @@ class MainActivity : AppCompatActivity() {
     private val listList = ArrayList<listItem>()
     private lateinit var todoViewModel: TodoViewModel
     private val mainViewModel by viewModels<MainViewModel>()
-    private lateinit var adapter: TodoItemAdapter;
+    private lateinit var adapter: TodoItemAdapter
     private lateinit var tasksViewModel: TasksViewModelSimple
     private lateinit var projectsViewModelSimple:ProjectsViewModelSimple
     private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
+    lateinit private var exclusiveSlideButtonList:Array<View>
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +64,11 @@ class MainActivity : AppCompatActivity() {
         todoViewModel =
             ViewModelProvider(this).get(TodoViewModel::class.java)
 
+
+        exclusiveSlideButtonList=arrayOf(todo_slide_all,todo_slide_today,todo_slide_planned,
+            todo_slide_important,todo_slide_finished,todo_slide_collectbox)
+        //设置all选中
+        todo_slide_all.setBackgroundColor(Color.argb(66 ,3,169,244))
 
         todoViewModel.lists.observe(this,{
             var hasdefault=false
@@ -217,25 +224,40 @@ class MainActivity : AppCompatActivity() {
 
         todo_slide_all.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
+            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            todo_slide_all.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterAll)
         }
         todo_slide_planned.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
+            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            todo_slide_planned.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterPlanned)
         }
         todo_slide_important.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
+            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            todo_slide_important.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterImportant)
         }
         todo_slide_finished.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
+            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            todo_slide_finished.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterFinished)
         }
         todo_slide_today.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
+            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            todo_slide_today.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterToday)
         }
-
+        todo_slide_collectbox.setOnClickListener {
+            mainDrawerLayout.closeDrawer(GravityCompat.START)
+            exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+            todo_slide_collectbox.setBackgroundColor(Color.argb(66 ,3,169,244))
+            todoFragment.databaseBinder(TodoListDisplayOptions.getOneProjectTask,projectId = 0,projectName = "收集箱")
+        }
         todo_slide_add.setOnClickListener {
             addData()
         }

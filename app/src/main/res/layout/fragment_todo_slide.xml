@@ -52,6 +52,7 @@
                 android:id="@+id/todo_slide_important"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#77FFFFFF"
                 android:src="@drawable/ic_baseline_star_24"
                 app:description="@string/collectbox_important"
                 app:num="0">
