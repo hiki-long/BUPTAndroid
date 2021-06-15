@@ -65,6 +65,28 @@
                 android:text="关于我们"
                 android:textColor="?attr/colorOnSurface" />
         </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardAbout"
+        app:layout_constraintVertical_bias="0.07999998">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="324dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="我们是来自北邮2018级软件工程专业的本科生，该app为我们的移动开发课程的最终交付产品，是一个基于安卓的时间管理app，结合了todo+课程表"
+            android:textSize="16sp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
