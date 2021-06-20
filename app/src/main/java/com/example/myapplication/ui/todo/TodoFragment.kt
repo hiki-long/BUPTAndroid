@@ -256,7 +256,8 @@ class TodoFragment : Fragment() {
                 activity?.setTitle(projectName)
                 activity?.findViewById<DrawerLayout>(R.id.mainDrawerLayout)
                     ?.closeDrawer(GravityCompat.START)
-                lastLiveData = mainViewModel.getTasks(5, projectId)
+                lastLiveData=tasksViewModel.getTasksLiveDataOfAProject(projectId)
+                //lastLiveData = mainViewModel.getTasks(5, projectId)
                 lastLiveData!!.observe(
                     viewLifecycleOwner,
                     {
