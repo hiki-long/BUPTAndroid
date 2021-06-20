@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,7 +35,7 @@ class ViewFragment : Fragment() {
 
     private lateinit var viewViewModel: ViewViewModel
     private val mainViewModel by viewModels<MainViewModel>()
-    private var adapter = TaskAdapter()
+    private lateinit var adapter:TaskAdapter
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -51,6 +52,7 @@ class ViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = TaskAdapter(activity as AppCompatActivity)
         (activity as MainActivity).needDrawer(false)
         postponeEnterTransition()
         calendar_recycleview.layoutManager = LinearLayoutManager(requireActivity())

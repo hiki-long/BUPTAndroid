@@ -8,24 +8,37 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.db.AppDatabase
 import com.example.myapplication.db.entity.TaskEntity
 import com.example.myapplication.model.Project
 import com.example.myapplication.model.TaskPriority
 import com.example.myapplication.model.TaskState
 import com.example.myapplication.ui.todo.TodoItemDetailActivity
 import com.example.myapplication.ui.uti.UtiFunc
+import com.example.myapplication.viewmodel.TasksViewModelSimple
+import com.example.myapplication.viewmodelFactory.TasksViewModelSimpleFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 
-class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback()) {
+class TaskAdapter(val activity: AppCompatActivity) : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback()) {
     lateinit var taskClickListener: TaskClickListener
+    private lateinit var tasksViewModelSimple: TasksViewModelSimple
+    init {
+        tasksViewModelSimple= ViewModelProvider(
+            activity,
+            TasksViewModelSimpleFactory(AppDatabase.getDatabase(activity).taskDao())
+        )
+            .get(TasksViewModelSimple::class.java)
+    }
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         var todoName: TextView =view.findViewById(R.id.text_todoName)
         var execute_time=view.findViewById<TextView>(R.id.text_execute_time)
@@ -69,9 +82,11 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         holder.checkBox.setOnClickListener{
             if(holder.checkBox.isChecked) {
                 holder.task.todo_state = TaskState.DONE
+                tasksViewModelSimple.setTaskState(holder.task.todo_id,TaskState.DONE)
             }
             else {
                 holder.task.todo_state = TaskState.DOING
+                tasksViewModelSimple.setTaskState(holder.task.todo_id,TaskState.DOING)
             }
             taskClickListener.updateTask(holder.task)
         }

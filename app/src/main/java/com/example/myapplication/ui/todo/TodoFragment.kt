@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnPreDraw
 import androidx.drawerlayout.widget.DrawerLayout
@@ -53,7 +54,7 @@ class TodoFragment : Fragment() {
     private lateinit var tasklist: ArrayList<TaskEntity>
     private lateinit var taskDao: TaskDao
     private lateinit var tasksViewModel: TasksViewModelSimple
-    private var adapter = TaskAdapter()
+    private lateinit var adapter:TaskAdapter
     private val defaultProjectName="全部"
     private val defaultProjectId=-1
     private var currentProjectId = defaultProjectId
@@ -97,6 +98,7 @@ class TodoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = TaskAdapter(activity as AppCompatActivity)
         (activity as MainActivity).needDrawer(true)
         (activity as MainActivity).replaceAdapterFragment(this)
         postponeEnterTransition()

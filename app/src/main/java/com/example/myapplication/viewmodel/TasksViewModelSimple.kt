@@ -20,6 +20,7 @@ class TasksViewModelSimple(val taskDao: TaskDao): ViewModel() {
     val finishedTasksLiveData=taskDao.getFinshedTasksLiveData()
     val collecboxTaksLiveData=taskDao.getTasksLiveDataOfAProject(1)
 
+    fun setTaskState(taskId: Int,taskState: TaskState)=taskDao.setTodoState(taskId,taskState)
     fun getTasksLiveDataOfAProject(project_id: Int)=taskDao.getTasksLiveDataOfAProject(project_id)
 
     fun deleteTasksOfAProject(project_id:Int):Unit{
