@@ -71,10 +71,12 @@ class TaskAdapter(val activity: AppCompatActivity) : ListAdapter<TaskEntity, Tas
             if(holder.task.todo_priority==TaskPriority.EMERGENCY){
                 holder.img_importance.setImageResource(R.drawable.ic_baseline_star_border_24)
                 holder.task.todo_priority=TaskPriority.COMMON
+                tasksViewModelSimple.updateTaskPriority(holder.task.todo_id,TaskPriority.COMMON)
             }
             else{
                 holder.img_importance.setImageResource(R.drawable.ic_baseline_star_40)
                 holder.task.todo_priority=TaskPriority.EMERGENCY
+                tasksViewModelSimple.updateTaskPriority(holder.task.todo_id,TaskPriority.EMERGENCY)
             }
             taskClickListener.updateTask(holder.task)
         }
