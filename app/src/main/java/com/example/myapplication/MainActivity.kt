@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private val tasksOfAProjectLiveDataList=ArrayList<LiveData<List<TaskEntity>>>()
     lateinit private var exclusiveSlideButtonList:Array<View>
     lateinit var todoFragment:TodoFragment
+    private var isAllNow:Boolean=true
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -232,6 +234,8 @@ class MainActivity : AppCompatActivity() {
             slideTopCancelSelected()
             todo_slide_all.setBackgroundColor(Color.argb(66 ,3,169,244))
             todoFragment.databaseBinder(TodoListDisplayOptions.filterAll)
+            isAllNow=true
+            invalidateOptionsMenu()
         }
         todo_slide_planned.setOnClickListener {
             mainDrawerLayout.closeDrawer(GravityCompat.START)
@@ -331,5 +335,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun slideTopCancelSelected()=exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+    fun slideTopCancelSelected():Unit{
+        exclusiveSlideButtonList.forEach { it.setBackgroundColor(Color.rgb(255,255,255)) }
+        isAllNow=false
+        invalidateOptionsMenu()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        menu.forEach { it.setEnabled(isAllNow) }
+        return true
+    }
 }

@@ -165,19 +165,20 @@ class TodoFragment : Fragment() {
         inflater.inflate(R.menu.menu_ordinarylist, menu)
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.editlist -> {
-                var dialog = ListDialogCreate()
-                var args = Bundle()
-                args.putString("title", "编辑清单")
-                dialog.arguments = args
-                dialog.show(parentFragmentManager, "listdialog")
-            }
-            R.id.deletelist -> {
-
-            }
+//            R.id.editlist -> {
+//                var dialog = ListDialogCreate()
+//                var args = Bundle()
+//                args.putString("title", "编辑清单")
+//                dialog.arguments = args
+//                dialog.show(parentFragmentManager, "listdialog")
+//            }
+//            R.id.deletelist -> {
+//
+//            }
             R.id.sort -> {
                 val myItems = listOf("清单", "创建日期", "截至日期", "执行时间", "重要级")
                 MaterialDialog(requireContext()).show {
@@ -201,15 +202,15 @@ class TodoFragment : Fragment() {
                     negativeButton(R.string.cancel)
                 }
             }
-            R.id.showCompleted -> {
-                activity?.setTitle("已完成")
-                lastLiveData=tasksViewModel.finishedTasksLiveData
-                lastLiveData!!.observe(viewLifecycleOwner, {
-                    tasklist = it as ArrayList<TaskEntity>
-                    adapter.submitList(tasklist)
-                    findNavController().navigateUp()
-                })
-            }
+//            R.id.showCompleted -> {
+//                activity?.setTitle("已完成")
+//                lastLiveData=tasksViewModel.finishedTasksLiveData
+//                lastLiveData!!.observe(viewLifecycleOwner, {
+//                    tasklist = it as ArrayList<TaskEntity>
+//                    adapter.submitList(tasklist)
+//                    findNavController().navigateUp()
+//                })
+//            }
         }
         return true;
     }

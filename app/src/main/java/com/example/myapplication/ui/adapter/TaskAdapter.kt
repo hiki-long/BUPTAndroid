@@ -34,7 +34,7 @@ class TaskAdapter() : ListAdapter<TaskEntity, TaskAdapter.ViewHolder>(MyCallback
         var img_descrip=view.findViewById<ImageView>(R.id.img_descrip)
         var img_importance=view.findViewById<ImageView>(R.id.img_importance)
         var checkBox=view.findViewById<CheckBox>(R.id.checkBox)
-        var textview_list=view.findViewById<TextView>(R.id.textview_list)
+       // var textview_list=view.findViewById<TextView>(R.id.textview_list)
         lateinit var task:TaskEntity
     }
 
